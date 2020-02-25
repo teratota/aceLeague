@@ -1,0 +1,55 @@
+<div class="container full-page">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-header">Inscription</div>
+      <div class="card-body">
+  
+        <div *ngIf="MsgConfirmation">
+          <p style="color: green">Merci de votre inscription<i class="fa fa-check"></i></p>
+        </div>
+        <!-- <div *ngIf="confirmation"> -->
+          <form [formGroup]="registerForm" (ngSubmit)="checkData()">
+            <div class="row">
+              <div class="col-md-6">
+                <label> Pseudo : </label>
+                <input class="form-control" type="text" formControlName="pseudo">
+              </div>
+
+              <div class="col-md-6">
+                <label> Mail : </label>
+                <input class="form-control" type="email" formControlName="mail">
+                <p *ngIf="password" style="color: red">Cette email est déja utlisé</p>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+                <label> Anniversaire : </label>
+                <input class="form-control" type="date" formControlName="birthday">
+            </div>
+  
+  
+            <div class="row">
+              <div class="col-md-6">
+                <label> Mot de passe : </label>
+                <input class="form-control" type="password" formControlName="password1">
+              </div>
+              <div class="col-md-6">
+                <label> Confirmation du mot de passe : </label>
+                <input class="form-control" type="password" formControlName="password2">
+                 <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
+              </div>
+            </div>
+  
+            <div class="row" *ngIf="password">
+              <p style="color: red">Les mots de passes ne sont pas identiques</p>
+            </div>
+  
+            <div class="row my-4">
+              <div class="col-md-12 mx-auto text-center">
+                <input type="submit" [disabled]="!registerForm.valid" class="btn btn-success" value="Enregister">
+              </div>
+            </div>
+          </form>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>

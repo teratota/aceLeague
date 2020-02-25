@@ -1,0 +1,40 @@
+.full-page {
+    position: relative;
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: auto;
+}
+
+.full-page .card{
+    width: 320px;
+    height: 400px;
+}
+
+
+.full-page .card-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: auto;
+    flex-direction: column;
+}
+
+.full-page .card-body fieldset .form-group > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: auto;
+    flex-direction: column;
+}
+
+.full-page .card-body fieldset .form-group > div input {
+    width: 100%;
+    margin: 10px;
+}
+
+.btn-outline-secondary:hover{
+    color: #2c3e50;
+}
