@@ -7,9 +7,55 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+  json: string;
+  jsonParsed: string;
+
+  name: string;
+  certified: boolean;
+  profilePicture: string;
+  description: string;
+  friends: any;
+  friendsNumber: number;
+  
+  clubs: any;
+  clubsNumber: number;
+
+  constructor() { 
+    this.json = '{"name":"myNameIs","profilePicture":"/picture/id/profile.png","certified":1,"pseudo":"UserName","description":"i\'m a user of AceLeague","friends":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]},"clubs":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]}}';
+
+    this.jsonParsed = JSON.parse(this.json)
+    
+    this.name = this.jsonParsed['name']
+
+    this.certified = this.jsonParsed['certified']
+    
+    this.profilePicture = this.jsonParsed['profilePicture']
+    
+    this.description = this.jsonParsed['description']
+
+    this.friends = this.jsonParsed['friends']
+    let friends = this.friends
+    this.friends = Object.keys(friends).map(function(personNamedIndex){
+      let person = friends[personNamedIndex];
+      console.log(person);
+      return person;
+    });
+    this.friendsNumber = Object.keys(friends).length
+    
+    this.clubs = this.jsonParsed['friends']
+    let clubs = this.clubs
+    this.clubs = Object.keys(clubs).map(function(personNamedIndex){
+      let club = clubs[personNamedIndex];
+      console.log(club);
+      return club;
+    });
+    this.clubsNumber = Object.keys(clubs).length
+    
+  }
 
   ngOnInit() {
   }
+
+  
 
 }
