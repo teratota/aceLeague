@@ -24,7 +24,7 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },*/
-  { path : '', component : AuthenticationComponent},
+  { path : 'auth', component : AuthenticationComponent},
   { path : 'home', component : HomeComponent},
   { path : 'chat', component : ChatComponent},
   { path : 'cv', component : CvComponent},
@@ -32,7 +32,7 @@ const routes: Routes = [
   { path : 'listCommunication', component : ListCommunicationComponent},
   { path : 'listNotification', component : ListNotificationComponent},
   { path : 'listPublication', component : ListPublicationComponent},
-  { path : 'login', component : LoginComponent},
+  { path : '', component : LoginComponent},
   { path : 'notification', component : NotificationComponent},
   { path : 'profile', component : ProfileComponent},
   { path : 'publication', component : PublicationComponent},

@@ -1,7 +1,8 @@
-//import { UserService } from 'src/app/service/user.service';
 import { Component, OnInit } from '@angular/core';
 //import { ValidationService } from 'src/app/service/validation.service';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { UserService } from '../../service/user.service';
+
 
 @Component({
   selector: 'app-login',
@@ -9,14 +10,15 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  config: any;
 
-  //constructor(private UserService: UserService, private ValidationService: ValidationService) { }
+  constructor(private UserService: UserService) { }
 
-  MessageMail: boolean;
-  MessagePass: boolean;
+  messageMail: boolean;
+  messagePass: boolean;
 
   registerForm = new FormGroup({
-    mail:new FormControl('',[
+    email:new FormControl('',[
       Validators.required,
       Validators.email,
       Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
@@ -29,16 +31,26 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.MessageMail = false;
-    this.MessagePass = false;
+    this.request();
+    this.messageMail = false;
+    this.messagePass = false;
   }
 
   connection() {
+    console.log(this.registerForm.value);
+    this.request();
+    console.log(this.config);
+   // let connectionResult = this.UserService.connection(this.registerForm.value);
     // // let connectionResult = this.UserService.connection(this.registerForm.value.mail, this.registerForm.value.password);
     //   if (connectionResult !== false) {
     //     document.cookie = 'tokenValidation = ' + connectionResult + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
     //     window.location.href = '/';
     //   }
      }
+
+  request(){
+    this.UserService.connection(this.registerForm.value)
+    .subscribe((data: any) => this.config = data);
+  }
 
 }
