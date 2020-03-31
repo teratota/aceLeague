@@ -1,1 +1,46 @@
-<p>settings works!</p>
+<div *ngIf="isShown" class="arrow" (click)="defaultDisplay()" >
+    <- Retour a la page d'avant
+</div>
+
+<p *ngIf="pageBasic">Paramètres</p>
+
+<div *ngIf="pageBasic" class="selector">
+    <p (click)="toggleShow('confidentiality')" >Confidentialité et sécurité</p>
+    <p (click)="toggleShow('notification')" >Notifications</p>
+    <p (click)="toggleShow('preference')" >Préférences relatives au contenu</p>
+    <p (click)="toggleShow('account')" >Compte</p>
+</div>
+
+<p *ngIf="pageBasic">A propos</p>
+
+<div *ngIf="pageBasic" class="selector">
+    <p (click)="toggleShow('dataUse')" >Utilisation des données</p>
+    <p (click)="toggleShow('about')" >A propos de Ace League</p>
+</div>
+
+
+<!-- Below we have the divs that will be displayed at the press of the button -->
+<div *ngIf="affichage==='confidentiality' && isShown">
+    Je suis la page de Confidentialité et sécurité
+</div>
+
+<div *ngIf="affichage==='notification' && isShown">
+    Je suis la page de Notifications
+</div>
+
+<div *ngIf="affichage==='preference' && isShown">
+    Je suis la page de Préférences relatives au contenu
+</div>
+
+<div *ngIf="affichage==='account' && isShown">
+    Je suis la page de Compte
+</div>
+
+<!-- here the second section -->
+<div *ngIf="affichage==='dataUse' && isShown">
+    Je suis la page d'Utilisation des données
+</div>
+
+<div *ngIf="affichage==='about' && isShown">
+    Je suis la page de A propos de Ace League
+</div>

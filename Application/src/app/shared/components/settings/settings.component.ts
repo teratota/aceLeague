@@ -12,4 +12,20 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {
   }
 
+  isShown: boolean = false ; // hidden by default
+  pageBasic: boolean = true ; // displayed by default
+
+  affichage: string;
+
+  defaultDisplay() {
+    this.isShown = false
+    this.pageBasic = true
+  }
+
+  toggleShow(div) {
+    this.isShown = ! this.isShown;
+    this.pageBasic = ! this.pageBasic;
+    this.affichage = div;
+  }
+
 }
