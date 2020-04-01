@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
+import { ValidationService } from '../../service/validation.service';
 
 @Component({
   selector: 'app-register',
@@ -39,15 +40,15 @@ export class RegisterComponent implements OnInit {
   confirmation: boolean;
   MsgConfirmation : boolean;
 
-/*  constructor(private ValidationService: ValidationService, private UserService: UserService) {
+  constructor(private ValidationService: ValidationService, private UserService: UserService) {
     this.confirmation = true;
-  }*/
+  }
   
 
   ngOnInit() { }
 
   checkData() {
-  /*  var mail = this.ValidationService.validationEmail(this.registerForm.value.mail)
+    var mail = this.ValidationService.validationEmail(this.registerForm.value.mail)
     if(mail=false){
       this.mail = true;
     }else{
@@ -64,7 +65,7 @@ export class RegisterComponent implements OnInit {
         this.MsgConfirmation = true;
       }
     }
-    }*/
+    }
   }
 
 }
