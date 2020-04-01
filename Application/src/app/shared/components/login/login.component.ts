@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   messageMail: boolean;
   messagePass: boolean;
 
-  registerForm = new FormGroup({
+  loginForm = new FormGroup({
     email:new FormControl('',[
       Validators.required,
       Validators.email,
@@ -37,11 +37,9 @@ export class LoginComponent implements OnInit {
   }
 
   connection() {
-    console.log(this.registerForm.value);
+    console.log(this.loginForm.value);
     this.request();
     console.log(this.config);
-   // let connectionResult = this.UserService.connection(this.registerForm.value);
-    // // let connectionResult = this.UserService.connection(this.registerForm.value.mail, this.registerForm.value.password);
     //   if (connectionResult !== false) {
     //     document.cookie = 'tokenValidation = ' + connectionResult + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
     //     window.location.href = '/';
@@ -49,7 +47,7 @@ export class LoginComponent implements OnInit {
      }
 
   request(){
-    this.UserService.connection(this.registerForm.value)
+    this.UserService.connection(this.loginForm.value)
     .subscribe((data: any) => this.config = data);
   }
 
