@@ -3,6 +3,7 @@ var express      = require('express');
 var usersCtrl    = require('./routes/usersCtrl');
 var messagesCtrl = require('./routes/messagesCtrl');
 var likesCtrl    = require('./routes/likesCtrl');
+//var chatCtrl    = require('./routes/chatCtrl');
 
 // Router
 exports.router = (function() {
@@ -21,6 +22,10 @@ exports.router = (function() {
   // Likes
   apiRouter.route('/messages/:messageId/vote/like').post(likesCtrl.likePost);
   apiRouter.route('/messages/:messageId/vote/dislike').post(likesCtrl.dislikePost);
+
+  // Chat
+  //apiRouter.route('/chat').get(chatCtrl.chatPost);
+
 
   return apiRouter;
 })();
