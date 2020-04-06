@@ -1,18 +1,62 @@
-'use strict';
-module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    email: DataTypes.STRING,
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    bio: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        models.User.hasMany(models.Message);
-      }
+/* jshint indent: 2 */
+
+module.exports = function(sequelize, DataTypes) {
+  return sequelize.define('user', {
+    'id': {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true,
+      primaryKey: true,
+      comment: "null",
+      autoIncrement: true
+    },
+    'email': {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      comment: "null"
+    },
+    'username': {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      comment: "null",
+      unique: true
+    },
+    'password': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null"
+    },
+    'bio': {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      comment: "null"
+    },
+    'isAdmin': {
+      type: DataTypes.INTEGER(4),
+      allowNull: false,
+      comment: "null"
+    },
+    'createdAt': {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "null"
+    },
+    'updateAt': {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "null"
+    },
+    'token': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null"
+    },
+    'token_date': {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "null"
     }
+  }, {
+    tableName: 'user'
   });
-  return User;
 };
