@@ -8,11 +8,16 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
   
-  configUrl = 'http://10.0.0.15:8080/api/users/login';
+  configUrl = 'http://localhost:8000/user/connexion';
 
 
-  connection(data) {
+  connection(data) 
+  {
     console.log("connection");
+    return this.http.post(this.configUrl,data);
+  }
+  insertUser(data){
+    console.log("insertuser");
     return this.http.post(this.configUrl,data);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { ValidationService } from '../../service/validation.service';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-register',
@@ -8,6 +9,7 @@ import { ValidationService } from '../../service/validation.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  config: any;
 
   registerForm = new FormGroup({
     pseudo:new FormControl('',[
@@ -58,12 +60,13 @@ export class RegisterComponent implements OnInit {
       this.password=true;
     }else{
       this.password=false;
-      var user = JSON.stringify(this.registerForm.value)
-      var info = this.UserService.insertUser(user);
-      if(info==true){
+     /* var user = JSON.stringify(this.registerForm.value)
+      this.UserService.insertUser(this.registerForm.value)
+      .subscribe((data: any) => this.config = data);
+      if(this.config==true){
         this.confirmation = false;
         this.MsgConfirmation = true;
-      }
+      }*/
     }
     }
   }

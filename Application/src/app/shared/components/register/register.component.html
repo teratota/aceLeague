@@ -38,14 +38,41 @@
                  <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
               </div>
             </div>
-  
-            <div class="row" *ngIf="password">
-              <p style="color: red">Les mots de passes ne sont pas identiques</p>
+
+            <div class="row">
+                <label>Pratiquez-vous un sport ?</label><br>
+                <input type="radio" name="oui" value="oui" formControlName="sport">
+                <label for="oui">oui</label><br>
+                <input type="radio" name="non" value="non" formControlName="sport">
+                <label for="non">non</label><br> 
             </div>
-  
+
+            <div class="row">
+              <label>Quel sport pratiquez-vous ?</label><br>
+              <input type="checkbox" name="karate" value="karate" formControlName="karate">
+              <label for="oui">Karate</label><br>
+              <input type="checkbox" name="tennis" value="tennis" formControlName="sport">
+              <label for="non">Tennis</label><br> 
+              <input type="checkbox" name="natation" value="natation" formControlName="sport">
+              <label for="oui">Natation</label><br>
+              <input type="checkbox" name="football" value="footbal" formControlName="sport">
+              <label for="non">Football</label><br> 
+              <label for="non">Autres</label>
+              <input class="form-control" type="text" formControlName="autre" placeholder="sport,sport">
+              
+          </div>
+
+          <div class="row">
+            <label>Quel est votre niveau dans votre domaine ?</label><br>
+            <label for="non">Niveau:</label>
+            <input class="form-control" type="text" formControlName="niveau" placeholder="autres"><br>
+            <label for="non">Justificatif:</label>
+            <input class="form-control" type="file" formControlName="justificatif" placeholder="autres">
+        </div>
+
             <div class="row my-4">
               <div class="col-md-12 mx-auto text-center">
-                <input type="submit" [disabled]="!registerForm.valid" class="btn btn-success" value="Enregister">
+                <input type="submit" class="btn btn-success" value="Enregister">
               </div>
             </div>
           </form>
