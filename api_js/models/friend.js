@@ -1,7 +1,7 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('like', {
+  return sequelize.define('friend', {
     'id': {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -10,16 +10,7 @@ module.exports = function(sequelize, DataTypes) {
       comment: "null",
       autoIncrement: true
     },
-    'ref_id_publication': {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      comment: "null",
-      references: {
-        model: 'publication',
-        key: 'id'
-      }
-    },
-    'ref_id_user': {
+    'ref_id_user_principal': {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       comment: "null",
@@ -28,12 +19,22 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    'etat': {
+    'ref_id_user_friend': {
       type: DataTypes.INTEGER(11),
       allowNull: false,
+      comment: "null",
+      references: {
+        model: 'user',
+        key: 'id'
+      }
+    },
+    'validate': {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: '0',
       comment: "null"
     }
   }, {
-    tableName: 'like'
+    tableName: 'friend'
   });
 };
