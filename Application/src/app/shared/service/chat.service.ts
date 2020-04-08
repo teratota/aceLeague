@@ -11,27 +11,31 @@ export class ChatService {
 
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Document } from '../models/chat';
+import { Message } from '../models/chat';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentService {
-  currentDocument = this.socket.fromEvent<Document>('document');
-  documents = this.socket.fromEvent<string[]>('documents');
+export class ChatService {
+  currentMessage = this.socket.fromEvent<Message>('message');
+  messages = this.socket.fromEvent<string[]>('messages');
 
   constructor(private socket: Socket) { }
 
-  getDocument(id: string) {
-    this.socket.emit('getDoc', id);
+  getMessages(id: string) {
+    //fonction pour changer de room 
+    console.log(id)
+    this.socket.emit('getMess', id);
   }
 
-  newDocument() {
-    this.socket.emit('addDoc', { id: this.docId(), doc: '' });
+  newMessages() {
+    //fonction pour créer une nouvelle discussion
+    this.socket.emit('addMess', { id: this.docId(), doc: '' });
   }
 
-  editDocument(document: Document) {
-    this.socket.emit('editDoc', document);
+  editMessages(message: Message) {
+    //fonction pour envoyer de mesage
+    this.socket.emit('editMess', message);
   }
 
   private docId() {

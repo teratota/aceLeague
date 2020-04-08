@@ -18,32 +18,32 @@ export class ChatComponent implements OnInit {
 */
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DocumentService } from './../../service/chat.service';
+import { ChatService } from './../../service/chat.service';
 import { Subscription } from 'rxjs';
-import { Document } from './../../models/chat';
+import { Message } from './../../models/chat';
 import { startWith } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-document',
+  selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class DocumentComponent implements OnInit, OnDestroy {
-  document: Document;
-  private _docSub: Subscription;
-  constructor(private documentService: DocumentService) { }
+export class ChatComponent implements OnInit, OnDestroy {
+  message: Message;
+  private _messageSub: Subscription;
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    this._docSub = this.documentService.currentDocument.pipe(
-      startWith({ id: '', doc: 'Select an existing document or create a new one to get started'})
-    ).subscribe(document => this.document = document);
+    this._messageSub = this.chatService.currentMessage.pipe(
+      startWith({ id: '', token: '', username: '',doc: '',})
+    ).subscribe(message => this.message = message);
   }
 
   ngOnDestroy() {
-    this._docSub.unsubscribe();
+    this._messageSub.unsubscribe();
   }
 
-  editDoc() {
-    this.documentService.editDocument(this.document);
+  editMessage() {
+    this.chatService.editMessages(this.message);
   }
 }

@@ -37,30 +37,34 @@ const documents = {};
 io.on('connection', socket => {
           let previousId;
           const safeJoin = currentId => {
+              //entrer dans la room
               socket.leave(previousId);
               socket.join(currentId, () => console.log(`Socket ${socket.id} joined room ${currentId}`));
               previousId = currentId;
           }
       
-          socket.on('getDoc', docId => {
+          socket.on('getMess', docId => {
+              //fonction de renvoi de la conversation
               safeJoin(docId);
-              socket.emit('document', documents[docId]);
+              socket.emit('message', documents[docId]);
           });
       
-          socket.on('addDoc', doc => {
+          socket.on('addMess', doc => {
+              // creation de la room
               documents[doc.id] = doc;
               safeJoin(doc.id);
-              io.emit('documents', Object.keys(documents));
+              io.emit('messages', Object.keys(documents));
               socket.emit('document', doc);
           });
       
-          socket.on('editDoc', doc => {
+          socket.on('editMess', doc => {
+              //fonction qui recupere le message
               documents[doc.id] = doc;
-              socket.to(doc.id).emit('document', doc);
+              console.log(doc);
+              socket.to(doc.id).emit('message', doc);
           });
       
-          io.emit('documents', Object.keys(documents));
-      
+          io.emit('messages', Object.keys(documents));
           console.log(`Socket ${socket.id} has connected`);
 });
 // Launch server

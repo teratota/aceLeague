@@ -19,15 +19,15 @@ import { NotificationComponent } from './components/notification/notification.co
 import { ListNotificationComponent } from './components/list-notification/list-notification.component';
 import { ListCommunicationComponent } from './components/list-communication/list-communication.component';
 // import { ChatComponent } from './components/chat/chat.component';
-import { DocumentComponent } from './components/chat/chat.component';
-import { DocumentListComponent } from './components/list-chat-message/list-chat-message.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
 // import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
 import { SendChatMessageComponent } from './components/send-chat-message/send-chat-message.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   // declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
-  declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, DocumentComponent, DocumentListComponent, SendChatMessageComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
   imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, RouterModule],
   exports: [TranslateModule, WebviewDirective, FormsModule]
 })

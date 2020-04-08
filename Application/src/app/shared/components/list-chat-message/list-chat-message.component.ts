@@ -19,35 +19,37 @@ export class ListChatMessageComponent implements OnInit {
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { DocumentService } from './../../service/chat.service';
+import { ChatService } from './../../service/chat.service';
 
 @Component({
-  selector: 'app-document-list',
+  selector: 'app-chat-list',
   templateUrl: './list-chat-message.component.html',
   styleUrls: ['./list-chat-message.component.scss']
 })
-export class DocumentListComponent implements OnInit, OnDestroy {
-  documents: Observable<string[]>;
-  currentDoc: string;
-  private _docSub: Subscription;
+export class ListChatMessageComponent implements OnInit, OnDestroy {
+  messages: Observable<string[]>;
+  currentMess: string;
+  private _messageSub: Subscription;
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private chatService: ChatService) { }
 
   ngOnInit() {
-    this.documents = this.documentService.documents;
-    this._docSub = this.documentService.currentDocument.subscribe(doc => this.currentDoc = doc.id);
+    this.messages = this.chatService.messages;
+    this._messageSub = this.chatService.currentMessage.subscribe(doc => this.currentMess = doc.id);
   }
 
   ngOnDestroy() {
-    this._docSub.unsubscribe();
+    this._messageSub.unsubscribe();
   }
 
-  loadDoc(id: string) {
-    this.documentService.getDocument(id);
+  loadMess(id: string) {
+    this.chatService.getMessages(id);
   }
 
-  newDoc() {
-    this.documentService.newDocument();
+  newMess() {
+    console.log("eeeeeee")
+    this.chatService.newMessages();
+    console.log(this.messages)
   }
 
 }

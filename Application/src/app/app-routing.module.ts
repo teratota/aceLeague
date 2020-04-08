@@ -4,10 +4,10 @@ import { PageNotFoundComponent } from './shared/components';
 import { HomeComponent } from './shared/components/home/home.component';
 import { AuthenticationComponent } from './shared/components/authentication/authentication.component';
 // import { ChatComponent } from './shared/components/chat/chat.component';
-import { DocumentComponent } from './shared/components/chat/chat.component';
+import { ChatComponent } from './shared/components/chat/chat.component';
 import { CvComponent } from './shared/components/cv/cv.component';
 // import { ListChatMessageComponent } from './shared/components/list-chat-message/list-chat-message.component';
-import { DocumentListComponent } from './shared/components/list-chat-message/list-chat-message.component';
+import { ListChatMessageComponent } from './shared/components/list-chat-message/list-chat-message.component';
 import { ListCommunicationComponent } from './shared/components/list-communication/list-communication.component';
 import { ListNotificationComponent } from './shared/components/list-notification/list-notification.component';
 import { ListPublicationComponent } from './shared/components/list-publication/list-publication.component';
@@ -28,10 +28,10 @@ const routes: Routes = [
   },*/
   { path : '', component : AuthenticationComponent},
   { path : 'home', component : HomeComponent},
-  { path : 'chat', component : DocumentComponent},
+  { path : 'chat', component : ChatComponent},
   // { path : 'chat', component : ChatComponent},
   { path : 'cv', component : CvComponent},
-  { path : 'listChatMessage', component : DocumentListComponent},
+  { path : 'listChatMessage', component : ListChatMessageComponent},
   // { path : 'listChatMessage', component : ListChatMessageComponent},
   { path : 'listCommunication', component : ListCommunicationComponent},
   { path : 'listNotification', component : ListNotificationComponent},
