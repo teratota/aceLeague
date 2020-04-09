@@ -35,17 +35,19 @@ export class ChatService {
     //fonction pour créer une nouvelle discussion
     var newroom = this.docId();
     this.socket.emit('addMess', { id: newroom, token: ''});
-    fs.writeFile("./src/app/file/"+newroom+".json", "[]", {flag: "a+"}, function(err) {
+    /*fs.writeFile("./src/app/file/"+newroom+".json", "[]", {flag: "a+"}, function(err) {
       if(err) {
           return console.log(err);
       }
       console.log("The file was saved!");
-  }); 
+  }); */
+    fs.writeFileSync("./src/app/file/"+newroom+".json", "[]")
   }
 
   editMessages(message: Message) {
     //fonction pour envoyer le message
     this.socket.emit('editMess', message);
+    console.log(this.currentMessage);
   }
 
   private docId() {
