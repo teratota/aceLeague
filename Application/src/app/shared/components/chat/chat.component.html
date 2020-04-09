@@ -1,1 +1,19 @@
-<textarea [(ngModel)]='message.doc' (keyup)='editMessage()' placeholder='Start typing...'></textarea>
+<p>message :{{ message.message }}</p>
+<li *ngFor="let loadmessage of discussions">
+    <p>
+        clubs name :{{ discussions['username'] }}
+    </p>
+    <p>
+        clubs desc :{{ discussion['message']}}
+    </p>
+</li>
+
+
+<form [formGroup]="messageForm" (ngSubmit)="editMessage()">
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <input class="form-control" type="text" formControlName="message" #email name="message" id="" placeholder="Envoyer un message">
+            <input class="btn btn-outline-secondary" type="submit" value="GO !" id="">
+        </div>
+    </div>
+</form>

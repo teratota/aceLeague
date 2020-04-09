@@ -12,12 +12,14 @@ export class ChatService {
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Message } from '../models/chat';
+import * as fs from 'fs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   currentMessage = this.socket.fromEvent<Message>('message');
+  loadMessage =this.socket.fromEvent<object>('loadmessage');
   messages = this.socket.fromEvent<string[]>('messages');
 
   constructor(private socket: Socket) { }
@@ -26,15 +28,23 @@ export class ChatService {
     //fonction pour changer de room 
     console.log(id)
     this.socket.emit('getMess', id);
+    
   }
 
   newMessages() {
     //fonction pour créer une nouvelle discussion
-    this.socket.emit('addMess', { id: this.docId(), doc: '' });
+    var newroom = this.docId();
+    this.socket.emit('addMess', { id: newroom, token: ''});
+    fs.writeFile("./src/app/file/"+newroom+".json", "[]", {flag: "a+"}, function(err) {
+      if(err) {
+          return console.log(err);
+      }
+      console.log("The file was saved!");
+  }); 
   }
 
   editMessages(message: Message) {
-    //fonction pour envoyer de mesage
+    //fonction pour envoyer le message
     this.socket.emit('editMess', message);
   }
 

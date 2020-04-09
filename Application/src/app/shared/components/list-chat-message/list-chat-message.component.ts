@@ -17,9 +17,11 @@ export class ListChatMessageComponent implements OnInit {
 }*/
 
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ChatService } from './../../service/chat.service';
+import * as fs from 'fs';
+import { chatMessage } from '../../models/chat';
 
 @Component({
   selector: 'app-chat-list',
@@ -29,9 +31,11 @@ import { ChatService } from './../../service/chat.service';
 export class ListChatMessageComponent implements OnInit, OnDestroy {
   messages: Observable<string[]>;
   currentMess: string;
+  discussion: object;
+  tampon: object;
   private _messageSub: Subscription;
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private chatmessage: chatMessage) { }
 
   ngOnInit() {
     this.messages = this.chatService.messages;
@@ -41,15 +45,17 @@ export class ListChatMessageComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._messageSub.unsubscribe();
   }
-
+  
   loadMess(id: string) {
     this.chatService.getMessages(id);
+    var contents = fs.readFileSync("./src/app/file/"+id+".json", 'utf8');
+    console.log(contents);
+    this.chatmessage = JSON.parse(contents);
   }
 
   newMess() {
     console.log("eeeeeee")
     this.chatService.newMessages();
-    console.log(this.messages)
   }
 
 }

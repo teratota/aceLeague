@@ -54,7 +54,7 @@ io.on('connection', socket => {
               documents[doc.id] = doc;
               safeJoin(doc.id);
               io.emit('messages', Object.keys(documents));
-              socket.emit('document', doc);
+              socket.emit('message', doc);
           });
       
           socket.on('editMess', doc => {

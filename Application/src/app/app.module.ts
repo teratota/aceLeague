@@ -25,6 +25,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { chatMessage } from './shared/models/chat';
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 @NgModule({
@@ -53,7 +54,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
       }
     })
   ],
-  providers: [],
+  providers: [
+    chatMessage
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
