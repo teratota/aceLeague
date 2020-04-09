@@ -24,7 +24,7 @@ import { Message, Jsonformat, chatMessage } from './../../models/chat';
 import { startWith } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as fs from 'fs';
-import { ListChatMessageComponent } from '../list-chat-message/list-chat-message.component';
+//import { ListChatMessageComponent } from '../list-chat-message/list-chat-message.component';
 
 @Component({
   selector: 'app-chat',
@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   discussion: object;
   jsonformat : Jsonformat;
   private _messageSub: Subscription;
-  constructor(private chatService: ChatService, private chatmessage: chatMessage, private chatlist: ListChatMessageComponent) {this.jsonformat = new Jsonformat();}
+  constructor(private chatService: ChatService, private chatmessage: chatMessage) {this.jsonformat = new Jsonformat();}
 
   messageForm = new FormGroup({
     message:new FormControl('',[
@@ -46,6 +46,10 @@ export class ChatComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
+    console.log(history.state.data);
+    var contents = fs.readFileSync("./src/app/file/"+history.state.data+".json", 'utf8');
+    console.log(contents);
+    this.chatmessage = JSON.parse(contents);
     this._messageSub = this.chatService.currentMessage.pipe(
       startWith({ id: '', token: '', message: '',})
     ).subscribe(message => this.message = message);
@@ -83,6 +87,5 @@ export class ChatComponent implements OnInit, OnDestroy {
     console.log(contents);
     this.chatmessage = JSON.parse(contents);
     console.log(this.chatmessage);
-    this.chatlist.loadMess(this.message.id);
     }
 }

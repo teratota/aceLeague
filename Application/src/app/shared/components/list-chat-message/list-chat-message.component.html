@@ -3,11 +3,3 @@
 	<p [class.selected]='docId === currentDocId' (click)='loadMess(docId)' *ngFor='let docId of messages | async'>{{ docId }}</p>
 </div>
 
-<div *ngFor="let discussions of chatmessage">
-    <p>
-    {{ discussions.username }}
-    </p>
-    <p>
-    {{ discussions.message }}
-    </p>
-</div>

@@ -22,6 +22,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ChatService } from './../../service/chat.service';
 import * as fs from 'fs';
 import { chatMessage } from '../../models/chat';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-list',
@@ -35,7 +36,7 @@ export class ListChatMessageComponent implements OnInit, OnDestroy {
   tampon: object;
   private _messageSub: Subscription;
 
-  constructor(private chatService: ChatService, private chatmessage: chatMessage) { }
+  constructor(private chatService: ChatService, private chatmessage: chatMessage, private router: Router) { }
 
   ngOnInit() {
     this.messages = this.chatService.messages;
@@ -48,9 +49,10 @@ export class ListChatMessageComponent implements OnInit, OnDestroy {
   
   loadMess(id: string) {
     this.chatService.getMessages(id);
-    var contents = fs.readFileSync("./src/app/file/"+id+".json", 'utf8');
+    this.router.navigate(['/chat'], {state: {data: id}});
+   /* var contents = fs.readFileSync("./src/app/file/"+id+".json", 'utf8');
     console.log(contents);
-    this.chatmessage = JSON.parse(contents);
+    this.chatmessage = JSON.parse(contents);*/
   }
 
   newMess() {

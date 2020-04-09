@@ -1,13 +1,11 @@
-<p>message :{{ message.message }}</p>
-<li *ngFor="let loadmessage of discussions">
+<div *ngFor="let discussions of chatmessage">
     <p>
-        clubs name :{{ discussions['username'] }}
+    {{ discussions.username }}
     </p>
     <p>
-        clubs desc :{{ discussion['message']}}
+    {{ discussions.message }}
     </p>
-</li>
-
+</div>
 
 <form [formGroup]="messageForm" (ngSubmit)="editMessage()">
     <div class="form-group row">
