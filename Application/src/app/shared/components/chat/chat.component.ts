@@ -37,7 +37,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   discussion: object;
   jsonformat : Jsonformat;
   private _messageSub: Subscription;
-  constructor(private chatService: ChatService, private chatmessage: chatMessage) {this.jsonformat = new Jsonformat();}
+  constructor(private chatService: ChatService, private chatmessage: chatMessage) {
+    this.jsonformat = new Jsonformat();}
 
   messageForm = new FormGroup({
     message:new FormControl('',[
@@ -46,14 +47,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-    console.log(history.state.data);
+    //console.log(history.state.data);
     try {
     var contents = fs.readFileSync("./src/app/file/"+history.state.data+".json", 'utf8');
     } catch (err) {
       fs.writeFileSync("./src/app/file/"+history.state.data+".json", "[]")
       var contents = fs.readFileSync("./src/app/file/"+history.state.data+".json", 'utf8');
     }
-    console.log(contents);
+    //console.log(contents);
     this.chatmessage = JSON.parse(contents);
     this._messageSub = this.chatService.currentMessage.pipe(
       startWith({ id: '', token: '', message: '',})
@@ -77,7 +78,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     console.log(this.message)
     this.chatService.editMessages(this.message);
     //this._messageSub = this.chatService.currentMessage.subscribe(message => this.message = message);
-    console.log(this._messageSub);
+    //console.log(this._messageSub);
     console.log(this.message);
     
     // var data = fs.readFileSync("./src/app/file/"+this.message.id+".json",'utf8')
@@ -95,10 +96,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         console.error(err);
       }
     var contents = fs.readFileSync("./src/app/file/"+this.message.id+".json", 'utf8');
-    console.log(contents);
+    //console.log(contents);
     this.chatmessage = JSON.parse(contents);
-    console.log(contents);
-    console.log(this.message.message);
+    //console.log(contents);
+    //console.log(this.message.message);
     
     }
 }

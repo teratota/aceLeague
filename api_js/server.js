@@ -39,6 +39,7 @@ io.on('connection', socket => {
           let previousId;
           const safeJoin = currentId => {
               //entrer dans la room
+              console.log('trouver');
               socket.leave(previousId);
               socket.join(currentId, () => console.log(`Socket ${socket.id} joined room ${currentId}`));
               previousId = currentId;
@@ -47,13 +48,15 @@ io.on('connection', socket => {
           socket.on('getMess', docId => {
               //fonction de renvoi de la conversation
               safeJoin(docId);
+              console.log(documents[docId]);
               socket.emit('message', documents[docId]);
           });
       
           socket.on('addMess', doc => {
               // creation de la room
               documents[doc.id] = doc;
-              safeJoin(doc.id);
+              //safeJoin(doc.id);
+              console.log(doc)
               io.emit('messages', Object.keys(documents));
               socket.emit('message', doc);
           });
@@ -82,14 +85,14 @@ io.on('connection', socket => {
               var contents = fs.readFileSync("./files/chat/"+doc.id+".json", 'utf8');
               // console.log(contents);
               doc.message = contents;
-              console.log(doc.message);
+             // console.log(doc.message);
               doc.token = contents; 
               console.log("-----------");
               console.log(doc);
               console.log("----");
-              console.log(documents);
+             // console.log(documents);
               console.log("-----------");
-              socket.to(doc.id).emit('message', doc);
+              socket.emit('message', doc);
           });
       
           io.emit('messages', Object.keys(documents));

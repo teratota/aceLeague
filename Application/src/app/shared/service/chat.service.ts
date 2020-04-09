@@ -34,7 +34,7 @@ export class ChatService {
   newMessages() {
     //fonction pour créer une nouvelle discussion
     var newroom = this.docId();
-    this.socket.emit('addMess', { id: newroom, token: ''});
+    this.socket.emit('addMess', { id: newroom, token: "",message: ""});
     /*fs.writeFile("./src/app/file/"+newroom+".json", "[]", {flag: "a+"}, function(err) {
       if(err) {
           return console.log(err);
