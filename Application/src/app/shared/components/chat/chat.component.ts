@@ -58,6 +58,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this._messageSub = this.chatService.currentMessage.pipe(
       startWith({ id: '', token: '', message: '',})
     ).subscribe(message => this.message = message);
+    console.log(this.message);
+    
   }
 
   ngOnDestroy() {
@@ -74,16 +76,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message.message = JSON.stringify(this.jsonformat)
     console.log(this.message)
     this.chatService.editMessages(this.message);
-    var data = fs.readFileSync("./src/app/file/"+this.message.id+".json",'utf8')
-      console.log(data);
-      data = data.slice(0, -1);
-      console.log(data);
-      let virgule = '';
-      if(data != '['){
-        virgule = ',';
-      }
+    //this._messageSub = this.chatService.currentMessage.subscribe(message => this.message = message);
+    console.log(this._messageSub);
+    console.log(this.message);
+    
+    // var data = fs.readFileSync("./src/app/file/"+this.message.id+".json",'utf8')
+    //   console.log(data);
+    //   data = data.slice(0, -1);
+    //   console.log(data);
+    //   let virgule = '';
+    //   if(data != '['){
+    //     virgule = ',';
+    //   }
       try {
-        fs.writeFileSync("./src/app/file/"+this.message.id+".json", data+virgule+this.message.message+"]", {flag: "w+"});
+        fs.writeFileSync("./src/app/file/"+this.message.id+".json",this.message.message, {flag: "w+"});
       } catch(err) {
         // An error occurred
         console.error(err);
@@ -91,6 +97,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     var contents = fs.readFileSync("./src/app/file/"+this.message.id+".json", 'utf8');
     console.log(contents);
     this.chatmessage = JSON.parse(contents);
-    console.log(this.chatmessage);
+    console.log(contents);
+    console.log(this.message.message);
+    
     }
 }

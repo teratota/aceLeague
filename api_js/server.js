@@ -3,6 +3,7 @@ var express     = require('express');
 const app = express();
 var bodyParser  = require('body-parser');
 var apiRouter   = require('./apiRouter').router;
+var fs = require('fs');
 
 // Instantiate server
 var server = express();
@@ -60,7 +61,34 @@ io.on('connection', socket => {
           socket.on('editMess', doc => {
               //fonction qui recupere le message
               documents[doc.id] = doc;
+              try {
+                var data = fs.readFileSync("./files/chat/"+doc.id+".json",'utf8')
+              } catch (err) {
+                fs.writeFileSync("./files/chat/"+doc.id+".json", "[]")
+                var data = fs.readFileSync("./files/chat/"+doc.id+".json", 'utf8');
+              }
+              data = data.slice(0, -1);
+              console.log(data);
+              let virgule = '';
+              if(data != '['){
+                  virgule = ',';
+              }
+              try {
+                  fs.writeFileSync("./files/chat/"+doc.id+".json", data+virgule+doc.message+"]", {flag: "w+"});
+              } catch(err) {
+                  // An error occurred
+                  console.error(err);
+              }
+              var contents = fs.readFileSync("./files/chat/"+doc.id+".json", 'utf8');
+              // console.log(contents);
+              doc.message = contents;
+              console.log(doc.message);
+              doc.token = contents; 
+              console.log("-----------");
               console.log(doc);
+              console.log("----");
+              console.log(documents);
+              console.log("-----------");
               socket.to(doc.id).emit('message', doc);
           });
       
