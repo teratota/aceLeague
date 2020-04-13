@@ -64,6 +64,7 @@ io.on('connection', socket => {
           socket.on('editMess', doc => {
               //fonction qui recupere le message
               documents[doc.id] = doc;
+              console.log(doc);
               try {
                 var data = fs.readFileSync("./files/chat/"+doc.id+".json",'utf8')
               } catch (err) {

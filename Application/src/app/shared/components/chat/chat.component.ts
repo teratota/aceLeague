@@ -57,29 +57,30 @@ export class ChatComponent implements OnInit, OnDestroy {
     //console.log(contents);
     this.chatmessage = JSON.parse(contents);
     this._messageSub = this.chatService.currentMessage.pipe(
-      startWith({ id: '', token: '', message: '',})
+      startWith({ id: '', token: '',message: ''})
     ).subscribe(message => this.message = message);
     console.log(this.message);
-    
+    this.loadDisc(history.state.data);
   }
 
   ngOnDestroy() {
     this._messageSub.unsubscribe();
   }
 
-  loadDisc(){
-    
+  loadDisc(id){
+    this.chatService.editMessages({ id: id, token: '',message: ''});
+    console.log(this.message)
   }
 
   editMessage() {
     this.jsonformat.username = 'toto'
     this.jsonformat.message = this.messageForm.value.message
     this.message.message = JSON.stringify(this.jsonformat)
-    console.log(this.message)
     this.chatService.editMessages(this.message);
+    console.log(this.message.token)
     //this._messageSub = this.chatService.currentMessage.subscribe(message => this.message = message);
     //console.log(this._messageSub);
-    console.log(this.message);
+    //console.log();
     
     // var data = fs.readFileSync("./src/app/file/"+this.message.id+".json",'utf8')
     //   console.log(data);
