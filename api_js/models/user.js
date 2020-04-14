@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "null"
     },
-    'updateAt': {
+    'updatedAt': {
       type: DataTypes.DATE,
       allowNull: false,
       comment: "null"
