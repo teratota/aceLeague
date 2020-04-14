@@ -100,13 +100,14 @@ module.exports = {
 
     asyncLib.waterfall([
       function(done) {
-        models.User.findOne({
+        models.user.findOne({
           where: { email: email }
         })
         .then(function(userFound) {
           done(null, userFound);
         })
         .catch(function(err) {
+          console.log(err)
           return res.status(200).json({ 'victoire': 'unable to verify user' });
         });
       },
@@ -116,7 +117,7 @@ module.exports = {
             done(null, userFound, resBycrypt);
           });
         } else {
-          return res.status(404).json({ 'error': 'user not exist in DB' });
+          return res.status(201).json({ 'error': 'user not exist in DB' });
         }
       },
       function(userFound, resBycrypt, done) {
