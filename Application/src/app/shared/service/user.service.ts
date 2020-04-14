@@ -8,7 +8,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
   
-  configUrl = 'http://localhost:8000/user/connexion';
+  configUrl = 'http://localhost:4444/api/users/login';
 
 
   connection(data) 
