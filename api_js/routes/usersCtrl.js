@@ -147,15 +147,15 @@ module.exports = {
   getUserProfile: function(req, res) {
     // Getting auth header
     var headerAuth  = req.headers['authorization'];
-    var userId      = jwtUtils.getUserId(headerAuth);
+    let userId = 1;
+    /*var userId      = jwtUtils.getUserId(headerAuth);
 
     if (userId < 0)
-      return res.status(400).json({ 'error': 'wrong token' });
+      return res.status(400).json({ 'error': 'wrong token' });*/
 
-    models.User.findOne({
-      attributes: [ 'id', 'email', 'username', 'bio' ],
-      where: { id: userId }
-    }).then(function(user) {
+    sequelize.query('Select username, bio from user where id = $id',
+      { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(user) {
       if (user) {
         res.status(201).json(user);
       } else {
