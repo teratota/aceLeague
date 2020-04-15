@@ -18,7 +18,7 @@ export class UserService {
   }
 
   getInfosUser(token) {
-    return this.http.get(this.configUrl+"users/friend/",token);
+    return this.http.get(this.configUrl+"users/me/",token);
   }
 
 

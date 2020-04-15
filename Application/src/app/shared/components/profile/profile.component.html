@@ -1,18 +1,35 @@
-<p>name: {{name}}</p>
-<p>certif: {{certified}}</p>
-<p>picture: {{profilePicture}}</p>
-<p>desc: {{description}}</p>
-<p>amis: {{friendsNumber}}</p>
+<div class="container">
+    <div class="ace-navbar">
+
+    </div>
+    <div class="ace-content">
+
+    </div>
+</div>
+
+<ul>
+    <li *ngFor="let info of informationData">
+        <p>
+            info name :{{ info.ref_id_user_friend }}
+        </p>
+    </li>
+</ul>
+
+
+<ul>
+    <li *ngFor="let publi of publication">
+        <p>
+            publi name :{{ publi.description }}
+        </p>
+    </li>
+</ul>
+
+
+
 <ul>
     <li *ngFor="let friend of friends">
         <p>
-            Friend name :{{ friend[0] }}
-        </p>
-        <p>
-            Friend desc :{{ friend[1] }}
-        </p>
-        <p>
-            Friend link :{{ friend[2] }}
+            Friend name :{{ friend }}
         </p>
     </li>
 </ul>
