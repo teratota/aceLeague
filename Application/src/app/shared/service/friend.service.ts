@@ -4,20 +4,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class FriendService {
 
   constructor(private http: HttpClient) { }
-  
+
   configUrl = 'http://localhost:4444/api/';
 
-
-  connection(data) {
-    console.log("connection");
-    return this.http.post(this.configUrl+"users/login",data);
-  }
-
-  getInfosUser(token) {
+  getFriendList(token) {
     return this.http.get(this.configUrl+"users/friend/",token);
   }
-
 }

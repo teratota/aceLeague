@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../../service/user.service';
+import { PublicationService } from './../../service/publication.service';
+import { FriendService } from './../../service/friend.service';
+
 
 @Component({
   selector: 'app-profile',
@@ -14,13 +18,17 @@ export class ProfileComponent implements OnInit {
   certified: boolean;
   profilePicture: string;
   description: string;
-  friends: any;
+  //friends: any;
   friendsNumber: number;
   
   clubs: any;
   clubsNumber: number;
 
-  constructor() { 
+  publication: any;
+  friends: any;
+  user: any;
+
+  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { 
     this.json = '{"name":"myNameIs","profilePicture":"/picture/id/profile.png","certified":1,"pseudo":"UserName","description":"i\'m a user of AceLeague","friends":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]},"clubs":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]}}';
 
     this.jsonParsed = JSON.parse(this.json)
@@ -54,8 +62,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getDataProfile()
   }
 
-  
+  getDataProfile() {
+    let token = 1;
+
+    this.UserService.getInfosUser(token)
+    .subscribe((data: any) => this.user = data);
+    
+    this.PublicationService.getPublications(token)
+    .subscribe((data: any) => this.publication = data);
+    
+    this.FriendService.getFriendList(token)
+    .subscribe((data: any) => this.friends = data);
+  }
 
 }
