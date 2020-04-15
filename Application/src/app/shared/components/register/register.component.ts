@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { ValidationService } from '../../service/validation.service';
 import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +11,7 @@ import { UserService } from '../../service/user.service';
 })
 export class RegisterComponent implements OnInit {
   config: any;
+  token: any;
 
   registerForm = new FormGroup({
     username:new FormControl('',[
@@ -42,7 +44,7 @@ export class RegisterComponent implements OnInit {
   confirmation: boolean;
   MsgConfirmation : boolean;
 
-  constructor(private ValidationService: ValidationService, private UserService: UserService) {
+  constructor(private ValidationService: ValidationService, private UserService: UserService,private router : Router) {
     this.confirmation = true;
   }
   
@@ -62,11 +64,14 @@ export class RegisterComponent implements OnInit {
       this.password=true;
     }else{
       this.password=false;
-      console.log(this.registerForm.value)
       var user = JSON.stringify(this.registerForm.value)
       this.UserService.newUser(this.registerForm.value)
-      .subscribe((data: any) => this.config = data);
-      console.log(this.config)
+      .subscribe(response => {
+        this.config = response;
+        document.cookie = 'tokenValidation = ' + this.config + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
+        this.router.navigate(['/profile']);
+        return this.config;
+      });
     }
     }
   }
