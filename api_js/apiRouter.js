@@ -3,6 +3,8 @@ var express      = require('express');
 var usersCtrl    = require('./routes/usersCtrl');
 var messagesCtrl = require('./routes/messagesCtrl');
 var likesCtrl    = require('./routes/likesCtrl');
+var publicationCtrl    = require('./routes/publicationCtrl');
+var friendCtrl    = require('./routes/friendCtrl');
 
 // Router
 exports.router = (function() {
@@ -13,6 +15,12 @@ exports.router = (function() {
   apiRouter.route('/users/login/').post(usersCtrl.login);
   apiRouter.route('/users/me/').get(usersCtrl.getUserProfile);
   apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
+  
+  // Friends
+  apiRouter.route('/users/friend/').get(friendCtrl.getUserFriend);
+
+  // Publications
+  apiRouter.route('/publication/me/').get(publicationCtrl.getUserPublication);
 
   // Messages routes
   apiRouter.route('/messages/new/').post(messagesCtrl.createMessage);
