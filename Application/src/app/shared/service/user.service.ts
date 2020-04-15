@@ -14,8 +14,13 @@ export class UserService {
   connection(data) 
   {
     console.log("connection");
-    return this.http.post(this.configUrl+"/users/login/",data);
+    return this.http.post(this.configUrl+"users/login",data);
   }
+
+  getInfosUser(token) {
+    return this.http.get(this.configUrl+"users/friend/",token);
+  }
+
 
   newUser(data)
   {
