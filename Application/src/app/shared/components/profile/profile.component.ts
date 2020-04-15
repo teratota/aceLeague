@@ -70,6 +70,7 @@ export class ProfileComponent implements OnInit {
 
     this.UserService.getInfosUser(token)
     .subscribe((data: any) => this.user = data);
+    console.log(this.user);
     
     this.PublicationService.getPublications(token)
     .subscribe((data: any) => this.publication = data);
