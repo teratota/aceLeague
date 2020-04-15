@@ -48,12 +48,12 @@ module.exports = {
       },
       token: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
         comment: "null"
       },
       token_date: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
         comment: "null"
       }
     });

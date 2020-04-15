@@ -36,7 +36,7 @@ module.exports = {
 
     asyncLib.waterfall([
       function(done) {
-        models.User.findOne({
+        models.user.findOne({
           attributes: ['email'],
           where: { email: email }
         })
@@ -57,17 +57,20 @@ module.exports = {
         }
       },
       function(userFound, bcryptedPassword, done) {
-        var newUser = models.User.create({
+        var newUser = models.user.create({
           email: email,
           username: username,
           password: bcryptedPassword,
           bio: bio,
+          createdAt: sequelize.fn('NOW'),
+          upadated:  sequelize.fn('NOW'),
           isAdmin: 0
         })
         .then(function(newUser) {
           done(newUser);
         })
         .catch(function(err) {
+          console.log(err);
           return res.status(500).json({ 'error': 'cannot add user' });
         });
       }
