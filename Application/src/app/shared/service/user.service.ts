@@ -11,13 +11,23 @@ export class UserService {
   configUrl = 'http://localhost:4444/api/';
 
 
-  connection(data) {
+  connection(data) 
+  {
     console.log("connection");
     return this.http.post(this.configUrl+"users/login",data);
   }
 
   getInfosUser(token) {
-    return this.http.get(this.configUrl+"users/friend/",token);
+    return this.http.get(this.configUrl+"users/me/",token);
   }
 
+
+  newUser(data)
+  {
+    console.log("newUser");
+    return this.http.post(this.configUrl+"users/register/",data);
+  }
+  test(){
+    return this.http.get(this.configUrl+"users/test/");
+  }
 }

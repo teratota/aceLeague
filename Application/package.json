@@ -90,6 +90,8 @@
     "node": ">=10.9.0"
   },
   "dependencies": {
-    "ajax-request": "1.2.3"
+    "ajax-request": "1.2.3",
+    "bootstrap": "4.4.1",
+    "font-awesome": "4.7.0"
   }
 }
