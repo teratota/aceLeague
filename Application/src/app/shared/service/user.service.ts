@@ -25,6 +25,9 @@ export class UserService {
   newUser(data)
   {
     console.log("newUser");
-    return this.http.post(this.configUrl+"/users/register/",data);
+    return this.http.post(this.configUrl+"users/register/",data);
+  }
+  test(){
+    return this.http.get(this.configUrl+"users/test/");
   }
 }

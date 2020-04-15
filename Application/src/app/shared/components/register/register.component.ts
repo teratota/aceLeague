@@ -47,7 +47,9 @@ export class RegisterComponent implements OnInit {
   }
   
 
-  ngOnInit() { }
+  ngOnInit() { 
+    this.UserService.test().subscribe((data: any) => this.config = data);
+  }
 
   checkData() {
     var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
@@ -64,6 +66,7 @@ export class RegisterComponent implements OnInit {
       var user = JSON.stringify(this.registerForm.value)
       this.UserService.newUser(this.registerForm.value)
       .subscribe((data: any) => this.config = data);
+      console.log(this.config)
     }
     }
   }
