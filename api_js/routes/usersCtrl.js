@@ -92,11 +92,6 @@ module.exports = {
     // Params
     var email    = req.body.email;
     var password = req.body.password;
-    if (req.method == "OPTIONS")
-    {
-        res.writeHead(200, {"Content-Type": "application/json"});
-        res.end();
-    }
 
     if (email == null ||  password == null) {
       console.log('erreur 404');
@@ -106,9 +101,10 @@ module.exports = {
 
     asyncLib.waterfall([
       function(done) {
-        models.user.findOne({
-          where: { email: email }
-        })
+      
+        sequelize.query('Select * From user WHERE email = $email',
+        { bind: { email: email }, type: sequelize.QueryTypes.SELECT }
+        )
         .then(function(userFound) {
           done(null, userFound);
         })
@@ -119,7 +115,7 @@ module.exports = {
       },
       function(userFound, done) {
         if (userFound) {
-          bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
+          bcrypt.compare(password, userFound['0'].password, function(errBycrypt, resBycrypt) {
             done(null, userFound, resBycrypt);
           });
         } else {
@@ -136,7 +132,7 @@ module.exports = {
     ], function(userFound) {
       if (userFound) {
         return res.status(201).json({
-          'userId': userFound.id,
+          'userId': userFound['0'].id,
           'token': jwtUtils.generateTokenForUser(userFound)
         });
       } else {

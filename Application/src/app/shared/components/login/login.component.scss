@@ -1,0 +1,49 @@
+.parent{
+    position: relative;
+}
+.box {
+    font-family:Helvetica;
+    color:#fff;
+    max-width: 400px;
+    background:rgba(168, 168, 168, 0.13);
+    padding:30px 0px;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+}
+.box h4{
+    text-align:center;
+    color:  #007B99;
+    margin:30px 0;
+    font-size:30px;
+  }
+.box input{
+    display:block;
+    width:300px;
+    margin:20px auto;
+    padding:15px;
+    background:rgba(141, 141, 141, 0.2);
+    color:  #007B99;
+    border:0;
+  }
+.box input:focus,.box input:active,.box button:focus,.box button:active{
+    outline:none;
+  }
+.box button{
+    color:#fff;
+    background-color: #007B99;
+    padding:10px;
+    font-size:16px;
+    width:200px;
+    margin:20px auto;
+    display:block;
+    cursor:pointer;
+  }
+.box p{
+    font-size:14px;
+    text-align:center;
+  }
+.box p span{
+    cursor:pointer;
+    color:#666;
+  }

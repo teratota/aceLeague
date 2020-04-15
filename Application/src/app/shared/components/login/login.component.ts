@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 //import { ValidationService } from 'src/app/service/validation.service';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { UserService } from '../../service/user.service';
 export class LoginComponent implements OnInit {
   config: any;
 
-  constructor(private UserService: UserService) { }
+  constructor(private UserService: UserService, private router : Router) { }
 
   messageMail: boolean;
   messagePass: boolean;
@@ -31,24 +32,19 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.request();
     this.messageMail = false;
     this.messagePass = false;
   }
 
   connection() {
     console.log(this.loginForm.value);
-    this.request();
-    console.log(this.config);
-    //   if (connectionResult !== false) {
-    //     document.cookie = 'tokenValidation = ' + connectionResult + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
-    //     window.location.href = '/';
-    //   }
-     }
-
-  request(){
     this.UserService.connection(this.loginForm.value)
-    .subscribe((data: any) => this.config = data);
+    .subscribe(response => {
+      this.config = response;
+      document.cookie = 'tokenValidation = ' + this.config.token + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
+      this.router.navigate(['/profile']);
+      return this.config;
+    });
   }
 
 }
