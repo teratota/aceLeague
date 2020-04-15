@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class UserService {
   }
 
 
-  newUser(data)
+  newUser(data): any
   {
     console.log("newUser");
     return this.http.post(this.configUrl+"users/register/",data);
