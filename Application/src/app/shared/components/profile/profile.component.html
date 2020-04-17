@@ -1,50 +1,70 @@
 <div class="container">
-    <div class="ace-navbar">
+    <div class="row">
+        <div class="navbar col-md-4">
+            <p>Future navbar</p>
+        </div>
+        <div class="content col-md-8">
+            <div class="row infos-ctn">
+                <div class="infos col-md-3">
+                    <div class="profilePic" style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')"></div>
+                </div>
+                <div class="username col-md-9">
+                    <p class="name">{{ user.username }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12 descritpion"> {{ user.bio }}</div>
+            </div>
+            <div class="row">
+                <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
+                <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
+            </div>
+            <div class="row friends-title section-bloc-title">
+                <p class="block-title col-md-12 bold">Amis</p>
+            </div>
 
-    </div>
-    <div class="ace-content">
+            <div class="row section-bloc">
+                <div class="block-ctn">
+                    <div *ngFor="let info of friends" class="block">
+                        <p>
+                            {{info.username}}
+                        </p>
+                        <p>
+                            {{info.bio}}
+                        </p>
+                        <a href="link">Link to profile</a>
+                    </div>
+                </div>
+            </div>
 
+            
+            <div class="row club-title section-bloc-title">
+                <p class="block-title col-md-12">Clubs</p>
+            </div>
+            <div class="row section-bloc">
+                <div class="block-ctn">
+                    <div *ngFor="let info of friends" class="block">
+                        <p>
+                            Name of clubs
+                        </p>
+                        <p>
+                            Desc of clubs
+                        </p>
+                        <a href="link">Link to clubs</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publications">
+                <div class="row section-publication">
+                    <div class="block-ctn">
+                        <div *ngFor="let publication of publication" class="block">
+                            <!-- Afficher les publication ici  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
-
-<ul>
-    <li *ngFor="let info of informationData">
-        <p>
-            info name :{{ info.ref_id_user_friend }}
-        </p>
-    </li>
-</ul>
-
-
-<ul>
-    <li *ngFor="let publi of publication">
-        <p>
-            publi name :{{ publi.description }}
-        </p>
-    </li>
-</ul>
-
-
-
-<ul>
-    <li *ngFor="let friend of friends">
-        <p>
-            Friend name :{{ friend }}
-        </p>
-    </li>
-</ul>
-
-<p>clubs: {{clubsNumber}}</p>
-<ul>
-    <li *ngFor="let club of clubs">
-        <p>
-            clubs name :{{ club[0] }}
-        </p>
-        <p>
-            clubs desc :{{ club[1] }}
-        </p>
-        <p>
-            clubs link :{{ club[2] }}
-        </p>
-    </li>
-</ul>
