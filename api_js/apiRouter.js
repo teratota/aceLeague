@@ -6,6 +6,7 @@ var likesCtrl    = require('./routes/likesCtrl');
 var publicationCtrl    = require('./routes/publicationCtrl');
 var friendCtrl    = require('./routes/friendCtrl');
 
+
 // Router
 exports.router = (function() {
   var apiRouter = express.Router();
@@ -22,6 +23,7 @@ exports.router = (function() {
 
   // Publications
   apiRouter.route('/publication/me/').get(publicationCtrl.getUserPublication);
+  apiRouter.route('/publication/upload/').post(publicationCtrl.uploadPubliction);
 
   // Messages routes
   apiRouter.route('/messages/new/').post(messagesCtrl.createMessage);
