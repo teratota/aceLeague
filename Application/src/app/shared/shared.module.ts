@@ -22,9 +22,10 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
 import { SendChatMessageComponent } from './components/send-chat-message/send-chat-message.component';
 import { RouterModule } from '@angular/router';
+import { NewsFeedComponent } from './components/news-feed/news-feed.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent, NewsFeedComponent],
   imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, RouterModule],
   exports: [TranslateModule, WebviewDirective, FormsModule]
 })

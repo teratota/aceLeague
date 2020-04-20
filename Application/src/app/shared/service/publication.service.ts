@@ -14,5 +14,8 @@ export class PublicationService {
     return this.http.get(this.configUrl+"publication/me/",token);
   }
 
+  uploadPublication(file,form){
+    return this.http.post(this.configUrl+"publication/upload/",{file: file, form: form});
+  }
 
 }
