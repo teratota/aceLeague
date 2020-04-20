@@ -29,7 +29,12 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
         comment: "null"
-      }
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        comment: "null"
+      },
     });
   },
 
