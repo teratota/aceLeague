@@ -17,6 +17,7 @@ exports.router = (function() {
   apiRouter.route('/users/me/').get(usersCtrl.getUserProfile);
   apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
   apiRouter.route('/users/test/').get(usersCtrl.test);
+  apiRouter.route('/users/getlist/').get(usersCtrl.getlist);
   
   // Friends
   apiRouter.route('/users/friend/').get(friendCtrl.getUserFriend);
@@ -32,6 +33,12 @@ exports.router = (function() {
   // Likes
   apiRouter.route('/messages/:messageId/vote/like').post(likesCtrl.likePost);
   apiRouter.route('/messages/:messageId/vote/dislike').post(likesCtrl.dislikePost);
+
+  // Pro
+  apiRouter.route('/pro/getlist').post(proCtrl.getList);
+
+  // Groupe
+  apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);
 
   return apiRouter;
 })();
