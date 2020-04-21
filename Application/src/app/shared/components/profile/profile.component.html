@@ -11,21 +11,21 @@
           </div>
         </div>
         <div class="username col-md-9">
-          <p class="name">{{ user.username }}</p>
+          <!-- <p class="name">{{ user.username }}</p> -->
         </div>
       </div>
       <div class="row">
-        <div class=" col-md-12 descritpion"> {{ user.bio }}</div>
+        <!-- <div class=" col-md-12 descritpion"> {{ user.bio }}</div> -->
       </div>
       <div class="row">
-        <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
-        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
+        <!-- <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
+        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div> -->
       </div>
       <div class="row friends-title section-bloc-title">
         <p class="block-title col-md-12 bold">Amis</p>
       </div>
 
-      <div class="row section-bloc">
+      <!-- <div class="row section-bloc">
         <div class="block-ctn">
           <div *ngFor="let info of friends" class="block">
             <p>
@@ -37,10 +37,10 @@
             <a href="link">Link to profile</a>
           </div>
         </div>
-      </div>
+      </div> -->
 
 
-      <div class="row club-title section-bloc-title">
+      <!-- <div class="row club-title section-bloc-title">
         <p class="block-title col-md-12">Clubs</p>
       </div>
       <div class="row section-bloc">
@@ -97,12 +97,26 @@
         <div class="row section-publication">
           <div class="block-ctn">
             <div *ngFor="let publication of publication" class="block">
-              <!-- Afficher les publication ici  -->
-            </div>
+               Afficher les publication ici  -->
+            <!-- </div>
           </div>
         </div>
+      </div> -->
+
+      <div>
+        <h1>Home</h1>
+        <ngx-tiny-slider class="slider" #ngxSlider [config]="tinySliderConfig">
+          <ng-container class="items">
+              <button class="card" #slideList *ngFor="let card of cards" [routerLink]="card.route">
+                  <div>
+                      <img [src]="card.img">
+                  </div>
+              </button>
+          </ng-container>
+      </ngx-tiny-slider>
+        
       </div>
 
     </div>
   </div>
-</div>
+</div> 
