@@ -1,128 +1,90 @@
 <div class="container">
-    <div class="row">
-        <div class="navbar col-md-4">
-            <p>Future navbar</p>
-        </div>
-        <div class="content col-md-8">
-            <div class="row infos-ctn">
-                <div class="infos col-md-3">
-                    <div class="profilePic" style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')"></div>
-                </div>
-                <div class="username col-md-9">
-                    <p class="name">{{ user.username }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class=" col-md-12 descritpion"> {{ user.bio }}</div>
-            </div>
-            <div class="row">
-                <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
-                <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
-            </div>
-            <div class="row friends-title section-bloc-title">
-                <p class="block-title col-md-12 bold">Amis</p>
-            </div>
-
-            <div class="row section-bloc">
-                <div class="block-ctn">
-                    <div *ngFor="let info of friends" class="block">
-                        <p>
-                            {{info.username}}
-                        </p>
-                        <p>
-                            {{info.bio}}
-                        </p>
-                        <a href="link">Link to profile</a>
-                    </div>
-                </div>
-            </div>
-
-            
-            <div class="row club-title section-bloc-title">
-                <p class="block-title col-md-12">Clubs</p>
-            </div>
-            <div class="row section-bloc">
-                <div class="block-ctn">
-                    <div *ngFor="let info of friends" class="block">
-                        <p>
-                            Name of clubs
-                        </p>
-                        <p>
-                            Desc of clubs
-                        </p>
-                        <a href="link">Link to clubs</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="publications">
-                <div class="row section-publication">
-                    <div class="block-ctn">
-                        <div *ngFor="let publication of publication" class="block">
-                            <!-- Afficher les publication ici  -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+  <div class="row">
+    <div class="navbar col-md-4">
+      <p>Future navbar</p>
     </div>
-</div>
+    <div class="content col-md-8">
+      <div class="row infos-ctn">
+        <div class="infos col-md-3">
+          <div class="profilePic"
+            style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+          </div>
+        </div>
+        <div class="username col-md-9">
+          <p class="name">{{ user.username }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class=" col-md-12 descritpion"> {{ user.bio }}</div>
+      </div>
+      <div class="row">
+        <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
+        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
+      </div>
+      <div class="row friends-title section-bloc-title">
+        <p class="block-title col-md-12 bold">Amis</p>
+      </div>
 
-<div class="center">
-    <b>Slider demo #1:</b>
-  
-    <div class="mb-15 component-wrapper">
-      <ngx-tiny-slider [config]="tinySliderConfig" #slider>
+      <div class="row section-bloc">
+        <div class="block-ctn">
+          <div *ngFor="let info of friends" class="block">
+            <p>
+              {{info.username}}
+            </p>
+            <p>
+              {{info.bio}}
+            </p>
+            <a href="link">Link to profile</a>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row club-title section-bloc-title">
+        <p class="block-title col-md-12">Clubs</p>
+      </div>
+      <div class="row section-bloc">
+        <div class="block-ctn">
+
+          <ngx-tiny-slider [config]="tinySliderConfig">
+            <ng-container class="items slider">
+              <div *ngFor="let info of friends" class="block item">
+                <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg" />
+              </div>
+            </ng-container>
+          </ngx-tiny-slider>
+
+        </div>
+      </div>
+
+
+      <ngx-tiny-slider [config]="tinySliderConfig">
         <ng-container class="items">
           <div class="item">
             <a target="_blank" href="google.com">
-              <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
+              <p>pppp</p>
+              
             </a>
           </div>
-  
+     
           <div class="item">
             <a target="_blank" href="google.com">
               <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
             </a>
           </div>
-  
+     
           <div class="item">
             <a target="_blank" href="google.com">
               <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
             </a>
           </div>
-  
+     
           <div class="item">
             <a target="_blank" href="google.com">
               <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
             </a>
           </div>
-  
-          <div class="item">
-            <a target="_blank" href="google.com">
-              <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
-            </a>
-          </div>
-  
-          <div class="item">
-            <a target="_blank" href="google.com">
-              <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
-            </a>
-          </div>
-  
-          <div class="item">
-            <a target="_blank" href="google.com">
-              <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
-            </a>
-          </div>
-  
-          <div class="item">
-            <a target="_blank" href="google.com">
-              <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
-            </a>
-          </div>
-  
+     
           <div class="item">
             <a target="_blank" href="google.com">
               <img src="http://www.mattsorger.com/newsletterpics/gsw07_01.jpg">
@@ -130,15 +92,17 @@
           </div>
         </ng-container>
       </ngx-tiny-slider>
-    </div>
-    <div class="mb-15">
-      Custom controls:
-      <div>
-        Go to <button class="btn-black" (click)="next()">next</button>
+
+      <div class="publications">
+        <div class="row section-publication">
+          <div class="block-ctn">
+            <div *ngFor="let publication of publication" class="block">
+              <!-- Afficher les publication ici  -->
+            </div>
+          </div>
+        </div>
       </div>
-  
-      <div>
-        Go to <button class="btn-black" (click)="prev()">prev</button>
-      </div>
+
     </div>
   </div>
+</div>

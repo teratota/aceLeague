@@ -1,8 +1,9 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Component, OnInit, NgModule} from '@angular/core';
 import { UserService } from '../../service/user.service';
 import { PublicationService } from './../../service/publication.service';
 import { FriendService } from './../../service/friend.service';
 import {NgxTinySliderSettingsInterface, NgxTinySliderModule} from 'ngx-tiny-slider';
+
 
 @Component({
   selector: 'app-profile',
@@ -31,22 +32,25 @@ export class ProfileComponent implements OnInit{
   userPicture;
   userName;
   userBio;
-
-
+  
 
   constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { }
 
+  
   ngOnInit() {
-    this.getDataProfile()
-
+    this.getDataProfile()  
     this.tinySliderConfig = {
       arrowKeys: true,
       autoWidth: true,
       gutter: 10,
-      controlsText: ['<', '>']
+      controlsText: ['<', '>'],
+      touch: true,
+      waiteForDom: true
     };
+  
   }
 
+  
   getDataProfile() {
     let token = 1;
 
