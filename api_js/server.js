@@ -12,10 +12,12 @@ server.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-
 // Body Parser configuration
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }));
+server.use(bodyParser.json({limit: '100mb'}));
+
+server.use(express.json({limit: '100mb'}));
+server.use(express.urlencoded({limit: '100mb'}));
 
 // Configure routes
 server.get('/', function (req, res) {

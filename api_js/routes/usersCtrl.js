@@ -205,5 +205,20 @@ module.exports = {
         return res.status(500).json({ 'error': 'cannot update user profile' });
       }
     });
+  },
+  getlist: function(req, res) {
+    let nom = req.body.data;
+    sequelize.query('Select id, username From user WHERE username LIKE %$nom%',
+      { bind: { nom: nom }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(user) {
+      console.log(user)
+      if (user) {
+        res.status(201).json(user);
+      } else {
+        res.status(404).json({ 'error': 'friend not found' });
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
   }
 }
