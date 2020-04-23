@@ -28,7 +28,13 @@ export class UserService {
     console.log("newUser");
     return this.http.post(this.configUrl+"users/register/",data);
   }
+
   test(){
     return this.http.get(this.configUrl+"users/test/");
+  }
+
+  getlist(value)
+  {
+    return this.http.post(this.configUrl+"user/getlist",{data: value});
   }
 }
