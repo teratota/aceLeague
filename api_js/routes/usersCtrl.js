@@ -153,7 +153,7 @@ module.exports = {
     if (userId < 0)
       return res.status(400).json({ 'error': 'wrong token' });*/
 
-    sequelize.query('Select username, bio from user where id = $id',
+    sequelize.query('Select username, bio from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
       if (user) {
