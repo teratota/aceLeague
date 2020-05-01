@@ -207,7 +207,12 @@ module.exports = {
     });
   },
   getlist: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
     let nom = req.body.data;
+    if(userId){
+      res.status
+    }
     sequelize.query('Select id, username From user WHERE username LIKE %$nom%',
       { bind: { nom: nom }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
