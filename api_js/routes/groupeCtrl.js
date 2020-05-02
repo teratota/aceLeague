@@ -12,10 +12,15 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
 // Routes
 module.exports = {
 
-  getlist: function(req, res) {
+  getList: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }
     let nom = req.body.data;
-    sequelize.query('Select id, nom From groupe WHERE nom LIKE %$nom%',
-      { bind: { nom: nom }, type: sequelize.QueryTypes.SELECT }
+    sequelize.query('Select id, nom From groupe WHERE nom LIKE $nom',
+      { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
       console.log(groupe)
       if (groupe) {

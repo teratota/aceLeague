@@ -3,6 +3,8 @@ var express      = require('express');
 var usersCtrl    = require('./routes/usersCtrl');
 var messagesCtrl = require('./routes/messagesCtrl');
 var likesCtrl    = require('./routes/likesCtrl');
+var proCtrl    = require('./routes/proCtrl');
+var groupeCtrl    = require('./routes/groupeCtrl');
 var publicationCtrl    = require('./routes/publicationCtrl');
 var friendCtrl    = require('./routes/friendCtrl');
 

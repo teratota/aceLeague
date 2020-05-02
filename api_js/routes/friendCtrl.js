@@ -13,10 +13,12 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
 module.exports = {
 
   getUserFriend: function(req, res) {
-    // Getting auth header
-    // var headerAuth  = req.headers['authorization'];
-    let userId = 1;
-
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+	console.log(userId)
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }
     sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
