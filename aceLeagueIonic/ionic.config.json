@@ -1,0 +1,7 @@
+{
+  "name": "aceLeague",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
