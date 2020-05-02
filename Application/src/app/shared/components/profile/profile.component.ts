@@ -4,6 +4,7 @@ import { PublicationService } from './../../service/publication.service';
 import { FriendService } from './../../service/friend.service';
 import {NgxTinySliderSettingsInterface, NgxTinySliderModule} from 'ngx-tiny-slider';
 import { NgxTinySliderComponent } from 'ngx-tiny-slider/lib/ngx-tiny-slider.component';
+import { SecurityService } from '../../service/security.service';
 
 
 @Component({
@@ -47,7 +48,7 @@ export class ProfileComponent implements OnInit{
   userBio;
   
 
-  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { }
+  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService, private securityService:SecurityService) { }
 
   
   ngOnInit() {
@@ -80,6 +81,7 @@ export class ProfileComponent implements OnInit{
   
   getDataProfile() {
     let token = 1;
+    //let token = this.securityService.getToken();
 
     this.UserService.getInfosUser(token).subscribe(response => {
       this.user = response[0];
