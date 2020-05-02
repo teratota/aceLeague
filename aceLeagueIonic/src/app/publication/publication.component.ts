@@ -34,7 +34,8 @@ export class PublicationComponent implements OnInit {
 
   send(){
     console.log(this.photoService.blob)
-    this.PublicationService.uploadPublication(this.photoService.blob, this.publicationForm.value).subscribe(response => {
+    console.log(this.photoService.base)
+    this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
       this.publication = response;
       console.log(this.publication);
       return this.publication;

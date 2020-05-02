@@ -15,6 +15,7 @@ export class PhotoService {
 
   public image: any;
   public blob: any;
+  public base:any;
 
   constructor( private sanitizer: DomSanitizer,public platform: Platform) { }
 
@@ -27,6 +28,8 @@ export class PhotoService {
 
     this.image = this.sanitizer.bypassSecurityTrustResourceUrl(capturedPhoto && (capturedPhoto.webPath));
     this.blob = await fetch(capturedPhoto.webPath).then(r => r.blob());
+
+    this.base = await this.readAsBase64(capturedPhoto);
 
     const savedImageFile = await this.savePicture(capturedPhoto);
     this.photos.unshift(savedImageFile);

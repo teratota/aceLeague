@@ -18,10 +18,7 @@ export class PublicationService {
   }
 
   uploadPublication(file,form){
-    console.log(file)
     let token = this.securityService.getToken();
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post(this.configUrl+"publication/upload/", formData);
+    return this.http.post(this.configUrl+"publication/upload/",{file: file, form: form, token: token});
   }
 }

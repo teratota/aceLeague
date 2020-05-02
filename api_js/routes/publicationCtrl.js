@@ -51,38 +51,26 @@ module.exports = {
     })
   },
   uploadPubliction: function(req, res){
-    //var headerAuth  = req.body.token;
-    //var userId      = jwtUtils.getUserId(headerAuth);
-    /*if(userId<0){
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
-    }*/
-	
-	req.on('data', (data) => {
-    console.log(data)
-				try {
-		  fs.writeFileSync('./files/publication/test.jpeg', data);
-		} catch(err) {
-		  // An error occurred
-		  console.error(err);
-		}
-        });
-   /* let result = req.body.form.image.split("\\");
-    let type = result[2].split(".");
+    }
     let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r+"."+type[1];*/
-    /*sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
+    let nameFile = r+".png";
+    sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
       { bind: { ref_id_user: userId, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
 		console.log(req.body.file);
-      fs.writeFile('./files/publication/'+r+"."+type[1], req.body.file, function (err) {
+      fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
         if (err) return console.log(err);
         res.status(201).json('test');
       });
     }).catch(function(err) {
       console.log(err)
       res.status(500).json({ 'error': 'cannot fetch publications' });
-    })*/
+    })
   }
 
 }
