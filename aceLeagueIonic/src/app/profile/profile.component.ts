@@ -12,9 +12,9 @@ export class ProfileComponent implements OnInit {
 
 
 
-  //Publications
+  // Publications
   publication: object;
-  
+
   // Friends
   friends: object;
   friendsNumber: number = 0;
@@ -22,24 +22,24 @@ export class ProfileComponent implements OnInit {
   // Infos
   user: object = {
     username: 'toto',
-    bio:'blablabla'
+    bio: 'blablabla'
   };
   userPicture;
   userName;
   userBio;
 
 
-  
+
 
   constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { }
 
-  
+
   ngOnInit() {
-    this.getDataProfile()  
+    this.getDataProfile();
   }
 
 
-  
+
   getDataProfile() {
 
 
@@ -48,13 +48,13 @@ export class ProfileComponent implements OnInit {
       console.log(this.user);
       return this.user;
     });
-    
+
     this.PublicationService.getPublications().subscribe(response => {
       this.publication = response;
       console.log(this.publication);
       return this.publication;
     });
-    
+
     this.FriendService.getFriendList().subscribe(response => {
       this.friends = response;
       console.log(this.friends);

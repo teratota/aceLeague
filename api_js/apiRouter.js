@@ -20,6 +20,7 @@ exports.router = (function() {
   apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
   apiRouter.route('/users/test/').post(usersCtrl.test);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
+  apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
   
   // Friends
   apiRouter.route('/users/friend/').post(friendCtrl.getUserFriend);

@@ -56,7 +56,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }
-    let userId = 15;
+    //let userId = 15;
     let r = Math.random().toString(36).substring(7);
     let nameFile = r+".png";
     sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
@@ -71,6 +71,63 @@ module.exports = {
       console.log(err)
       res.status(500).json({ 'error': 'cannot fetch publications' });
     })
-  }
+  },
+  getAllPublications: function(req, res) {   
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    asyncLib.waterfall([
+      function(done) {
+        sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1',
+        { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(friendFound) {
+          done(null, friendFound);
+        })
+        .catch(function(err) {
+          console.log(err)
+          return res.status(500).json({ 'error': 'unable to find friends' });
+        });
+      },
+      function(friendFound, done) {
+        let friendList = "";
+
+        console.log(friendFound.length);
+        console.log(friendFound);
+        
+
+        for (let i = 0; i < friendFound.length; i++) {
+        console.log(friendFound[i]);
+        
+          if (i == 0) {
+            friendList += friendFound[i].ref_id_user_friend;
+          }
+          else
+            friendList += "," + friendFound[i].ref_id_user_friend;
+        }
+
+        friendList = '(\'' + friendList + '\')'
+        console.log(friendList);
+        
+        
+        sequelize.query('SELECT id,image,description,ref_id_user FROM publication WHERE ref_id_user IN '+ friendList,
+        { type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(publicationList) {
+          done(null, friendFound, publicationList);
+        })
+        .catch(function(err) {
+          console.log(err)
+          return res.status(500).json({ 'error': 'unable to find friends' });
+        });
+      }
+    ],function(friendFound, publicationList) {
+      if (publicationList) {
+        console.log(publicationList);
+        return res.status(201).json(publicationList);
+      } else {
+        return res.status(500).json({ 'error': 'cannot fetch publication' });
+      }
+    });
+  },
 
 }

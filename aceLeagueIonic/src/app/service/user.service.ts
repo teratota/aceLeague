@@ -9,35 +9,32 @@ import { SecurityService } from './security.service';
 export class UserService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
-  
+
   configUrl = 'http://localhost:4444/api/';
 
-  connection(data) 
-  {
+  connection(data) {
     console.log("connection");
-    return this.http.post(this.configUrl+"users/login",data);
+    return this.http.post(this.configUrl+"users/login", data);
   }
 
   getInfosUser() {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/me/",{token: token});
+    return this.http.post(this.configUrl+"users/me/", {token: token});
   }
 
-
-  newUser(data): any
-  {
+  newUser(data): any {
     console.log("newUser");
-    return this.http.post(this.configUrl+"users/register/",data);
+    return this.http.post(this.configUrl+"users/register/", data);
   }
 
-  testConnection(){
+  testConnection() {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/test/",{token: token});
+    return this.http.post(this.configUrl+"users/test/", {token: token});
   }
 
-  getlist(value)
-  {
+  getlist(value) {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/getlist",{data: value, token: token});
+    return this.http.post(this.configUrl+"users/getlist", {data: value, token: token});
   }
+
 }
