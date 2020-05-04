@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private securityService: SecurityService) { }
   
   configUrl = 'http://localhost:4444/api/';
-
 
   connection(data) 
   {
@@ -19,7 +19,7 @@ export class UserService {
   }
 
   getInfosUser(token) {
-    return this.http.get(this.configUrl+"users/me/",token);
+    return this.http.post(this.configUrl+"users/me/",{token: token});
   }
 
 
@@ -29,12 +29,14 @@ export class UserService {
     return this.http.post(this.configUrl+"users/register/",data);
   }
 
-  test(){
-    return this.http.get(this.configUrl+"users/test/");
+  testConnection(){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"users/test/",{token: token});
   }
 
   getlist(value)
   {
-    return this.http.post(this.configUrl+"user/getlist",{data: value});
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"user/getlist",{data: value, token: token});
   }
 }
