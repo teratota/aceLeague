@@ -19,6 +19,12 @@ import { AppComponent } from './app.component';
 import { HomeModule } from './shared/components/home/home.module';
 import { RouterModule } from '@angular/router';
 
+// Bootstrap
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+// TinySlider 
+import {NgxTinySliderModule} from 'ngx-tiny-slider';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -39,6 +45,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     HomeModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    NgbModule,
+    NgxTinySliderModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -46,6 +54,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         deps: [HttpClient]
       }
     })
+  ],
+  exports: [
+    NgxTinySliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

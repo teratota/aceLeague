@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
   
 
   ngOnInit() { 
-    this.UserService.test().subscribe((data: any) => this.config = data);
+    this.UserService.testConnection().subscribe((data: any) => this.config = data);
   }
 
   checkData() {

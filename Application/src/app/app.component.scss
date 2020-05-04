@@ -1,0 +1,84 @@
+//Fonts
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-Regular.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Patua One';
+    src: url('./../assets/fonts/PatuaOne-Regular.woff2') format('woff2'),
+        url('./../assets/fonts/PatuaOne-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-ExtraBold.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-Medium.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-Bold.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-Light.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-SemiBold.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Manrope';
+    src: url('./../assets/fonts/Manrope-ExtraLight.woff2') format('woff2'),
+        url('./../assets/fonts/Manrope-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+//Variables
+$primary-color: #007B99;
+
+p,
+span {
+    font-family: Manrope;
+    font-weight: 500;
+}
+
+.bold {
+    font-weight: bold !important;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: Patua One;
+}
