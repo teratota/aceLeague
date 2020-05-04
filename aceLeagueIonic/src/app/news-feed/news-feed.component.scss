@@ -1,0 +1,14 @@
+//Variables
+$profilePicture-size: 70px;
+
+// Profil picture
+.profilePic{
+    border-radius: 50%;
+    border: 1px solid black;
+    overflow: hidden;
+    width: $profilePicture-size;
+    height: $profilePicture-size;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}

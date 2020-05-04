@@ -109,18 +109,18 @@ module.exports = {
         console.log(friendList);
         
         
-        sequelize.query('SELECT id,image,description,ref_id_user FROM publication WHERE ref_id_user IN '+ friendList,
+        sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user IN '+ friendList,
         { type: sequelize.QueryTypes.SELECT }
         )
         .then(function(publicationList) {
-          done(null, friendFound, publicationList);
+          done(friendList, publicationList);
         })
         .catch(function(err) {
           console.log(err)
           return res.status(500).json({ 'error': 'unable to find friends' });
         });
       }
-    ],function(friendFound, publicationList) {
+    ],function(friendList, publicationList) {
       if (publicationList) {
         console.log(publicationList);
         return res.status(201).json(publicationList);

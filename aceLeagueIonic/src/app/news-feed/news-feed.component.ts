@@ -13,9 +13,6 @@ export class NewsFeedComponent implements OnInit {
   // Publications
   publications: object;
 
-  // Friends
-  friends: object;
-
   constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { }
 
   ngOnInit() {
@@ -29,7 +26,26 @@ export class NewsFeedComponent implements OnInit {
       console.log(this.publications);
       return this.publications;
     });
+  }
 
+  PublicationLike() {
+    console.log('Like');
+    
+  }
+
+  PublicationReply() {
+    console.log('reply');
+    
+  }
+
+  Sharing() {
+    console.log('share');
+    
+  }
+
+  moreOptions() {
+    console.log('more');
+    
   }
 
 }
