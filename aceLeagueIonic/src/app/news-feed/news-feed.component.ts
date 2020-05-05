@@ -1,3 +1,4 @@
+import { PhotoService } from './../service/photo.service';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { PublicationService } from 'src/app/service/publication.service';
@@ -13,7 +14,7 @@ export class NewsFeedComponent implements OnInit {
   // Publications
   publications: object;
 
-  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService) { }
+  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService, private PhotoService: PhotoService) { }
 
   ngOnInit() {
     this.getPublications();
@@ -28,17 +29,17 @@ export class NewsFeedComponent implements OnInit {
     });
   }
 
-  PublicationLike() {
+  publicationLike() {
     console.log('Like');
     
   }
 
-  PublicationReply() {
+  publicationReply() {
     console.log('reply');
     
   }
 
-  Sharing() {
+  sharing() {
     console.log('share');
     
   }

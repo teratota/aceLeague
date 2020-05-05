@@ -77,8 +77,6 @@ export class PhotoService {
         webviewPath: cameraPhoto.webPath
       };
     }
-
-   
   }
 
   private async readAsBase64(cameraPhoto: CameraPhoto) {

@@ -91,13 +91,7 @@ module.exports = {
       function(friendFound, done) {
         let friendList = "";
 
-        console.log(friendFound.length);
-        console.log(friendFound);
-        
-
         for (let i = 0; i < friendFound.length; i++) {
-        console.log(friendFound[i]);
-        
           if (i == 0) {
             friendList += friendFound[i].ref_id_user_friend;
           }
@@ -106,13 +100,29 @@ module.exports = {
         }
 
         friendList = '(\'' + friendList + '\')'
-        console.log(friendList);
         
         
         sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user IN '+ friendList,
         { type: sequelize.QueryTypes.SELECT }
         )
         .then(function(publicationList) {
+          var stringified = JSON.stringify(publicationList);
+
+          for (let i = 0; i < publicationList.length; i++) {
+            
+              if (publicationList[i].image != null) {
+                //async
+                /*
+                fs.readFile('../files/publication/'+publicationList[i].image, {encoding: 'utf8'}, function (err, data) {
+                    if (err) throw err;
+                    console.log(data);
+                });
+                */
+                let file = fs.readFileSync ('./files/publication/' + publicationList[i].image,  'utf8' );
+                publicationList[i].image = file
+              }
+
+            }
           done(friendList, publicationList);
         })
         .catch(function(err) {
@@ -122,7 +132,6 @@ module.exports = {
       }
     ],function(friendList, publicationList) {
       if (publicationList) {
-        console.log(publicationList);
         return res.status(201).json(publicationList);
       } else {
         return res.status(500).json({ 'error': 'cannot fetch publication' });

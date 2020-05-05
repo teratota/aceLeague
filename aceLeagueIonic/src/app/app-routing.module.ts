@@ -14,6 +14,7 @@ import { SearchComponent } from './search/search.component';
 import { SendChatMessageComponent } from './send-chat-message/send-chat-message.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path : 'search', component : SearchComponent},
   { path : 'sendChatMessage', component : SendChatMessageComponent},
   { path : 'settings', component : SettingsComponent},
-  { path : 'newsfeed', component : NewsFeedComponent}
+  { path : 'newsfeed', component : NewsFeedComponent},
+  { path : 'edit', component : EditProfileComponent}
 ];
 @NgModule({
   imports: [

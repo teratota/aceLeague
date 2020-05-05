@@ -28,23 +28,29 @@
       <ion-card-content>
         {{ publication.description }}
       </ion-card-content>
-      <div *ngIf="publication.image">
-        <img src="publication.image" alt="">
-      </div>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <div *ngIf="publication.image" class="publicationPic">
+              <img src="{{publication.image}}" alt="">
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
       <div class="button-bottom">
         <ion-grid>
           <ion-row>
-            <div class="button" (click)="PublicationLike()">
+            <div class="button" (click)="publicationLike()">
               <ion-col size="1">
                 <ion-icon name="heart-outline" size="large"></ion-icon>
               </ion-col>
             </div>
-            <div class="button" (click)="PublicationReply()">
+            <div class="button" (click)="publicationReply()">
               <ion-col size="1">
                 <ion-icon name="chatbubble-outline" size="large"></ion-icon>
               </ion-col>
             </div>
-            <div class="button" (click)="Sharing()">
+            <div class="button" (click)="sharing()">
               <ion-col size="1">
                 <ion-icon name="share-social-outline" size="large"></ion-icon>
               </ion-col>

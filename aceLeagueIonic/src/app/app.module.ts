@@ -25,9 +25,28 @@ import { NewsFeedComponent } from './news-feed/news-feed.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
-  declarations: [AppComponent,ChatComponent,LoginComponent,RegisterComponent,ListPublicationComponent,ListNotificationComponent,ListCommunicationComponent,ListChatMessageComponent,PublicationComponent,ProfileComponent,SettingsComponent,SendChatMessageComponent,SearchComponent,NotificationComponent,NewsFeedComponent,NavbarComponent],
+  declarations: [
+    AppComponent,
+    ChatComponent,
+    LoginComponent,
+    RegisterComponent,
+    ListPublicationComponent,
+    ListNotificationComponent,
+    ListCommunicationComponent,
+    ListChatMessageComponent,
+    PublicationComponent,
+    ProfileComponent,
+    SettingsComponent,
+    SendChatMessageComponent,
+    SearchComponent,
+    NotificationComponent,
+    NewsFeedComponent,
+    NavbarComponent,
+    EditProfileComponent
+  ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule],
   providers: [
