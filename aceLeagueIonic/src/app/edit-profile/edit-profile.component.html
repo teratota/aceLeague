@@ -1,3 +1,11 @@
-<p>
-  edit-profile works! {{ user.username }}
-</p>
+
+  <form [formGroup]="profileForm" (ngSubmit)="checkData()">
+    <ion-item>
+      <ion-input type="text" formControlName="username"  placeholder="Username" ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
+    </ion-item>  
+      <ion-button  class="btn btn-success" type="submit">Modifier</ion-button>
+  </form>
+

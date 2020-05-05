@@ -209,6 +209,13 @@ module.exports = {
       }
     });
   },
+  updateUser: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }
+  },
   getlist: function(req, res) {
     let nom = req.body.data;
     var headerAuth  = req.body.token;

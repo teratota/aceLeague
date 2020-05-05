@@ -37,4 +37,9 @@ export class UserService {
     return this.http.post(this.configUrl+"users/getlist", {data: value, token: token});
   }
 
+  userUpdate(value){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"users/update", {data: value, token: token});
+  }
+
 }

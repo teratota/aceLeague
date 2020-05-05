@@ -58,7 +58,7 @@ module.exports = {
     }
     //let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r+".png";
+    let nameFile = r;
     sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
       { bind: { ref_id_user: userId, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
