@@ -21,7 +21,7 @@ exports.router = (function() {
   apiRouter.route('/users/test/').post(usersCtrl.test);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
   apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
-  apiRouter.route('/users/update').post(publicationCtrl.updateUser);
+  apiRouter.route('/users/update').post(usersCtrl.updateUser);
   
   
   // Friends
