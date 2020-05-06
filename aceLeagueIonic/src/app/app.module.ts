@@ -26,6 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ListSettingsComponent } from './list-settings/list-settings.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     NotificationComponent,
     NewsFeedComponent,
     NavbarComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    ListSettingsComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule],

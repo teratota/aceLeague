@@ -47,22 +47,6 @@ ion-title{
     margin-bottom: 0;
 }
 
-// Profile bloc
-/*
-.section-bloc-title {
-    padding-top: 20px;
+::ng-deep .red .action-sheet-button-inner.sc-ion-action-sheet-md{
+    color:red!important;
 }
-.section-bloc-title > .block-title {
-    margin-bottom: 0;
-}
-.section-bloc .block-ctn {
-    display: flex;
-    flex-direction: row;
-    border: red 1px solid;
-}
-.section-bloc .block {
-    border: black 1px solid;
-    border-radius: 25px;
-    padding: 20px;
-    margin-right: 200px;
-}*/

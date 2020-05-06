@@ -1,3 +1,4 @@
+import { ListSettingsComponent } from './list-settings/list-settings.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path : 'sendChatMessage', component : SendChatMessageComponent},
   { path : 'settings', component : SettingsComponent},
   { path : 'newsfeed', component : NewsFeedComponent},
-  { path : 'edit', component : EditProfileComponent}
+  { path : 'edit', component : EditProfileComponent},
+  { path : 'listSetting', component : ListSettingsComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

@@ -1,5 +1,7 @@
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditProfileComponent } from './../edit-profile/edit-profile.component';
 import { Component, OnInit } from '@angular/core';
+import { ActionSheetController } from '@ionic/angular';
 import { UserService } from 'src/app/service/user.service';
 import { PublicationService } from 'src/app/service/publication.service';
 import { FriendService } from 'src/app/service/friend.service';
@@ -36,11 +38,17 @@ export class ProfileComponent implements OnInit {
     private UserService: UserService,
     private PublicationService: PublicationService,
     private FriendService: FriendService,
-    public modalController: ModalController ) { }
+    public modalController: ModalController,
+    public actionSheetController: ActionSheetController,
+    private router: Router,
+    private activeRoute: ActivatedRoute
+    ) { }
 
 
   ngOnInit() {
-    this.getDataProfile();
+    this.activeRoute.params.subscribe(routeParams => {
+      this.getDataProfile();
+    });
   }
 
 
@@ -79,5 +87,32 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  async choiceAction() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Modification',
+      buttons: [{
+        text: 'Modifié profil',
+        icon: 'create-outline',
+        handler: () => {
+          this.editing();
+        }
+      }, {
+        text: 'Paramètres',
+        icon: 'settings-outline',
+        handler: () => {
+          this.router.navigate(['settings']);
+        }
+      }, {
+        text: 'Déconnexion',
+        icon: 'exit-outline',
+        handler: () => {
+          localStorage.removeItem('token');
+          this.router.navigate(['']);
+        }
+      }
+    ]
+    });
+    await actionSheet.present();
+  }
 
 }

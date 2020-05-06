@@ -20,16 +20,16 @@ exports.router = (function() {
   apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
   apiRouter.route('/users/test/').post(usersCtrl.test);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
-  apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
   apiRouter.route('/users/update').post(usersCtrl.updateUser);
   
   
   // Friends
   apiRouter.route('/users/friend/').post(friendCtrl.getUserFriend);
-
+  
   // Publications
   apiRouter.route('/publication/me/').post(publicationCtrl.getUserPublication);
   apiRouter.route('/publication/upload/').post(publicationCtrl.uploadPubliction);
+  apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
 
   // Messages routes
   apiRouter.route('/messages/new/').post(messagesCtrl.createMessage);

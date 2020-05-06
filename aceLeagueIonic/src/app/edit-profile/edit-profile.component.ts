@@ -15,34 +15,32 @@ export class EditProfileComponent implements OnInit {
 
   config: any;
 
-  //username: string = this.user.username;
-  //bio: string = this.user.bio;
-
   profileForm = new FormGroup({
-    username:new FormControl('',[
+    username: new FormControl('',
+    [
       Validators.required,
       Validators.maxLength(50),
       Validators.minLength(1),
       Validators.pattern('^[a-zA-Z]+(([ -][a-zA-Z ])?[a-zA-Z]*)*$')
     ]),
-    bio:new FormControl('',[
+    bio: new FormControl('',
+    [
       Validators.required
-    ]),                                                                      
+    ]),
   });
 
 
-  constructor(private UserService: UserService, private router : Router) { }
+  constructor(private UserService: UserService, private router: Router) { }
 
   ngOnInit() {
     console.log(this.user['username']);
     this.profileForm.setValue({
-      username:this.user['username'],bio:this.user['bio']
+      username: this.user['username'], bio: this.user['bio']
     });
   }
 
-  checkData()
-  {
-    (this.profileForm.value)
+  checkData() {
+    console.log(this.profileForm.value);
     this.UserService.userUpdate(this.profileForm.value).subscribe(response => {
       this.config = response;
       this.router.navigate(['/profile']);
