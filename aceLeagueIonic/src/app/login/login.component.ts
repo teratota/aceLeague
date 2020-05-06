@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.UserService.connection(this.loginForm.value)
     .subscribe(response => {
       this.config = response;
-      document.cookie = 'tokenValidation = ' + this.config.token + '; expires=Thu, 18 Dec 3000 12:00:00 UTC' ;
+      localStorage.setItem('token',this.config.token);
       this.router.navigate(['/profile']);
       return this.config;
     });

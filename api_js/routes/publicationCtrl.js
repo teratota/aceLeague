@@ -35,20 +35,20 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
-    }
-    
-    sequelize.query('Select id, image, description From publication WHERE ref_id_user = $id',
+    }else{
+      sequelize.query('Select id, image, description From publication WHERE ref_id_user = $id',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
-    ).then(function(publication) {
-      PubObject = publication;
-      if (publication) {
-        res.status(201).json(publication);
-      } else {
-        res.status(404).json({ 'error': 'publications not found' });
-      }
-    }).catch(function(err) {
-      res.status(500).json({ 'error': 'cannot fetch publications' });
-    })
+      ).then(function(publication) {
+        PubObject = publication;
+        if (publication) {
+          res.status(201).json(publication);
+        } else {
+          res.status(404).json({ 'error': 'publications not found' });
+        }
+      }).catch(function(err) {
+        res.status(500).json({ 'error': 'cannot fetch publications' });
+      })
+    }
   },
   uploadPubliction: function(req, res){
     var headerAuth  = req.body.token;

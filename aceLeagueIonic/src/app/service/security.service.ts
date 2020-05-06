@@ -11,9 +11,9 @@ export class SecurityService {
 
   getToken()
   {
-    var oRegex = new RegExp("(?:; )?" + this.tokenName + "=([^;]*);?");
-    if (oRegex.test(document.cookie)) {
-        return decodeURIComponent(RegExp["$1"]);
+    let token = localStorage.getItem('token');
+    if (token) {
+        return token;
     } else {
         return null;
     }
