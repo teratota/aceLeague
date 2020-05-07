@@ -9,15 +9,18 @@
 <ion-content>
 
   <ion-grid fixed>
-    <ion-row>
+    <ion-row *ngIf=" option === 'p1'">
       <ion-col class="ion-align-self-center" size-md="6" size-xs="12">
         <ion-item color="secondary">
           <ion-label>Toggle</ion-label>
-          <ion-toggle slot="end" name="firstOption" checked="{{settingStorage.firstOption}}" (ionChange)="validateOptions($event, 'firstOption')"></ion-toggle>
+          <ion-toggle slot="end" checked="{{settingStorage.firstOption}}" (ionChange)="validateOptions($event, 'firstOption')"></ion-toggle>
         </ion-item>
       </ion-col>
-      <ion-col align-self-center size-md="12">
-
+      <ion-col class="ion-align-self-center" size-md="6" size-xs="12">
+        <ion-item color="secondary">
+          <ion-label>Toggle 2</ion-label>
+          <ion-toggle slot="end" checked="{{settingStorage.secondOption}}" (ionChange)="validateOptions($event, 'secondOption')"></ion-toggle>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>

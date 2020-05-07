@@ -19,7 +19,8 @@ export class ListSettingsComponent implements OnInit {
   });
 
   settingStorage: object = {
-    firstOption: true
+    firstOption: true,
+    secondOption: false,
   };
 
   constructor(private router: Router, private activeRoute: ActivatedRoute) { }
