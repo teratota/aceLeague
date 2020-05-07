@@ -1,12 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="goBack()">
+      <ion-icon name="arrow-back-outline" ></ion-icon>
+      <span class="back">Retour</span>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
+
   <ion-grid fixed>
     <ion-row>
-      <ion-col size="12" *ngIf="option === 'p1'">
-        <p>Content of P1</p>
+      <ion-col class="ion-align-self-center" size-md="6" size-xs="12">
+        <ion-item color="secondary">
+          <ion-label>Toggle</ion-label>
+          <ion-toggle slot="end" name="firstOption" checked="{{settingStorage.firstOption}}" (ionChange)="validateOptions($event, 'firstOption')"></ion-toggle>
+        </ion-item>
       </ion-col>
-      <ion-col size="12" *ngIf="option === 'p2'">
-        <p>Content of P2</p>
+      <ion-col align-self-center size-md="12">
+
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <!-- <form [formGroup]="settingForm" (ngSubmit)="validateOptions()">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div padding>
+            <ion-item color="primary">
+              <ion-label>Toggle</ion-label>
+              <ion-toggle slot="end" formControlName="test01" name="test01"></ion-toggle>
+            </ion-item>
+          </div>
+          <div padding>
+            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Validate</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form> -->
+  
+
 </ion-content>

@@ -1,3 +1,5 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,12 +11,34 @@ export class ListSettingsComponent implements OnInit {
 
   option: any =  '1';
 
-  constructor() { }
+  settingForm = new FormGroup({
+    test01: new FormControl('',
+    [
+      Validators.required
+    ]),
+  });
+
+  settingStorage: object = {
+    firstOption: true
+  };
+
+  constructor(private router: Router, private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log(history);
-    this.option = history.state.data['option'];
-    console.log(this.option);
+    this.activeRoute.params.subscribe(routeParams => {
+      console.log(history);
+      this.option = history.state.data['option'];
+      console.log(this.option);
+    });
+  }
+
+  goBack() {
+    this.router.navigate(['settings']);
+  }
+
+  validateOptions(event, name) {
+    console.log(event.detail.checked);
+    console.log(name);
   }
 
 }
