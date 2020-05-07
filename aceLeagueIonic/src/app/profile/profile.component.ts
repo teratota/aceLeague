@@ -31,7 +31,27 @@ export class ProfileComponent implements OnInit {
   userName;
   userBio;
 
-
+  slideOpts = {
+    initialSlide: 0,
+    freeMode: false,
+    slidesPerView: 3,
+    effect: 'coverflow',
+    pagination: '',
+    breakpoints: {
+      1366: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 2.5,
+      },
+      991: {
+        slidesPerView: 1.5,
+      },
+      420: {
+        slidesPerView: 1,
+      }
+    }
+  };
 
 
   constructor(
