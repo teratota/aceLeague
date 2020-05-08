@@ -24,5 +24,13 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "paths": {
+    "ngx-tiny-slider": [
+      "dist/ngx-tiny-slider"
+    ],
+    "ngx-tiny-slider/*": [
+      "dist/ngx-tiny-slider/*"
+    ]
+  }
 }

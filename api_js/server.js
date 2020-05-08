@@ -16,13 +16,16 @@ const io = require('socket.io')(http);
 
 server.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-
 // Body Parser configuration
-server.use(bodyParser.urlencoded({ extended: true }));
-server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }));
+server.use(bodyParser.json({limit: '100mb'}));
+
+server.use(express.json({limit: '100mb'}));
+server.use(express.urlencoded({limit: '100mb'}));
 
 // Configure routes
 server.get('/', function (req, res) {
@@ -100,6 +103,6 @@ io.on('connection', socket => {
           console.log(`Socket ${socket.id} has connected`);
 });
 // Launch server
-server.listen(8080, function() {
-    console.log('Server api');
+server.listen(4444, function() {
+    console.log('Server en écoute :)');
 });

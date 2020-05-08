@@ -24,11 +24,12 @@ import { ListChatMessageComponent } from './components/list-chat-message/list-ch
 // import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
 import { SendChatMessageComponent } from './components/send-chat-message/send-chat-message.component';
 import { RouterModule } from '@angular/router';
+import {NgxTinySliderModule} from 'ngx-tiny-slider';
 
 @NgModule({
   // declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
   declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
-  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, RouterModule],
-  exports: [TranslateModule, WebviewDirective, FormsModule]
+  imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, RouterModule, NgxTinySliderModule],
+  exports: [TranslateModule, WebviewDirective, FormsModule, NgxTinySliderModule]
 })
 export class SharedModule {}

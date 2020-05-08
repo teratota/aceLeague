@@ -19,6 +19,12 @@ import { AppComponent } from './app.component';
 import { HomeModule } from './shared/components/home/home.module';
 import { RouterModule } from '@angular/router';
 
+// Bootstrap
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+// TinySlider 
+import {NgxTinySliderModule} from 'ngx-tiny-slider';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,6 +49,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     HomeModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    NgbModule,
+    NgxTinySliderModule,
     BrowserModule,
     FormsModule,
     SocketIoModule.forRoot(config),
@@ -54,6 +62,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
       }
     })
   ],
+  exports: [
+    NgxTinySliderModule
+  ],
+  providers: [],
   providers: [
     chatMessage
   ],

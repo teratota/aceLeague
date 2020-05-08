@@ -1,61 +1,106 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule, ViewChildren, ViewChild, QueryList, ElementRef} from '@angular/core';
+import { UserService } from '../../service/user.service';
+import { PublicationService } from './../../service/publication.service';
+import { FriendService } from './../../service/friend.service';
+import {NgxTinySliderSettingsInterface, NgxTinySliderModule} from 'ngx-tiny-slider';
+import { NgxTinySliderComponent } from 'ngx-tiny-slider/lib/ngx-tiny-slider.component';
+import { SecurityService } from '../../service/security.service';
+
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: [
+    './profile.component.scss',
+    './../../../app.component.scss'
+  ]
 })
-export class ProfileComponent implements OnInit {
 
-  json: string;
-  jsonParsed: string;
 
-  name: string;
-  certified: boolean;
-  profilePicture: string;
-  description: string;
+export class ProfileComponent implements OnInit{
+
+  //Tiny Slider
+  @ViewChildren('slideList') slideList: QueryList<any>;
+  @ViewChild('ngxSlider', {static: false}) private ngxSlider: ElementRef<NgxTinySliderComponent>;
+
+  tinySliderConfig: NgxTinySliderSettingsInterface;
+
+  cards = [
+    {
+      img: 'https://images.unsplash.com/photo-1543248939-ff40856f65d4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=933&q=80'
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1558171813-4c088753af8f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80'
+    }
+  ]
+
+  //Publications
+  publication: any;
+  
+  // Friends
   friends: any;
-  friendsNumber: number;
+  friendsNumber: any;
+
+  // Infos
+  user: any;
+  userPicture;
+  userName;
+  userBio;
   
-  clubs: any;
-  clubsNumber: number;
 
-  constructor() { 
-    this.json = '{"name":"myNameIs","profilePicture":"/picture/id/profile.png","certified":1,"pseudo":"UserName","description":"i\'m a user of AceLeague","friends":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]},"clubs":{"id1":["name1","desc1","url1"],"id2":["name2","desc2","url2"]}}';
+  constructor(private UserService: UserService, private PublicationService: PublicationService, private FriendService: FriendService, private securityService:SecurityService) { }
 
-    this.jsonParsed = JSON.parse(this.json)
-    
-    this.name = this.jsonParsed['name']
-
-    this.certified = this.jsonParsed['certified']
-    
-    this.profilePicture = this.jsonParsed['profilePicture']
-    
-    this.description = this.jsonParsed['description']
-
-    this.friends = this.jsonParsed['friends']
-    let friends = this.friends
-    this.friends = Object.keys(friends).map(function(personNamedIndex){
-      let person = friends[personNamedIndex];
-      console.log(person);
-      return person;
-    });
-    this.friendsNumber = Object.keys(friends).length
-    
-    this.clubs = this.jsonParsed['friends']
-    let clubs = this.clubs
-    this.clubs = Object.keys(clubs).map(function(personNamedIndex){
-      let club = clubs[personNamedIndex];
-      console.log(club);
-      return club;
-    });
-    this.clubsNumber = Object.keys(clubs).length
-    
-  }
-
+  
   ngOnInit() {
+    this.getDataProfile()  
+    this.tinySliderConfig = {
+      waiteForDom: true,
+      arrowKeys: true,
+      autoWidth: true,
+      gutter: 35,
+      mouseDrag: true,
+      touch: true,
+      controls: false,
+      nav: false,
+      loop: false,
+      rewind:true,
+      // @ts-ignore
+      center: true
+    };
+  }
+
+  ngAfterViewInit() {
+    // @ts-ignore
+    this.slideList.changes.subscribe(() =>  this.ngxSlider.domReady.next());
+    if (this.cards != null) {
+      // @ts-ignore
+      this.ngxSlider.domReady.next();
+    }
   }
 
   
+  getDataProfile() {
+    let token = 1;
+    //let token = this.securityService.getToken();
+
+    this.UserService.getInfosUser(token).subscribe(response => {
+      this.user = response[0];
+      console.log(this.user);
+      return this.user;
+    });
+    
+    this.PublicationService.getPublications(token).subscribe(response => {
+      this.publication = response;
+      console.log(this.publication);
+      return this.publication;
+    });
+    
+    this.FriendService.getFriendList(token).subscribe(response => {
+      this.friends = response;
+      console.log(this.friends);
+      this.friendsNumber = Object.keys(this.friends).length;
+      return this.friends;
+    });
+  }
 
 }
