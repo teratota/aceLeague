@@ -7,7 +7,6 @@ var proCtrl    = require('./routes/proCtrl');
 var groupeCtrl    = require('./routes/groupeCtrl');
 var publicationCtrl    = require('./routes/publicationCtrl');
 var friendCtrl    = require('./routes/friendCtrl');
-//var chatCtrl    = require('./routes/chatCtrl');
 
 
 // Router
@@ -45,10 +44,6 @@ exports.router = (function() {
 
   // Groupe
   apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);
-
-  // Chat
-  //apiRouter.route('/chat').get(chatCtrl.chatPost);
-
 
   return apiRouter;
 })();

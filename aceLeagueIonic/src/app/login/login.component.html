@@ -15,6 +15,13 @@
       <ion-button type="submit">Login</ion-button>
   </form>
   <a (click)="register()">Inscription</a>
+
+  <form [formGroup]="chatForm" (ngSubmit)="joinChat()">
+    <ion-item>
+    <ion-input  type="text" formControlName="name" name="email" id="" placeholder="name"></ion-input>
+    <ion-input  type="text" formControlName="room" name="email" id="" placeholder="name"></ion-input>
+    </ion-item>
+      <ion-button type="submit">join</ion-button>
+  </form>
+
 </ion-content>
-
-
