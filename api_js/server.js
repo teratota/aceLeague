@@ -4,6 +4,7 @@ var bodyParser  = require('body-parser');
 var apiRouter   = require('./apiRouter').router;
 let http = require('http').Server(express);
 let io = require('socket.io')(http);
+var jwtUtils  = require('./utils/jwt.utils');
 
 // Instantiate server
 var server = express();
@@ -38,23 +39,44 @@ io.on('connection', (socket) => {
   
     socket.on('join', function(room){
       console.log(socket)
-      socket.join(room);  
+      var headerAuth  = room.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        socket.join(room.nom);  
+      }
     });
   
     
     socket.on('disconnect', function(){
-      io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'left'});   
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'left'});   
+      }
     });
   
     socket.on('set-nickname', (nickname) => {
       socket.nickname = nickname.nickname;
       socket.room = nickname.room;
-      socket.join(nickname.room); 
-      io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'joined'});    
+      socket.token = nickname.token;
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        socket.join(nickname.room); 
+        io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'joined'});  
+      } 
     });
     
     socket.on('add-message', (message) => {
-      io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});    
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});   
+      } 
     });
   });
 var port = process.env.PORT || 3001;

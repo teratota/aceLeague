@@ -1,3 +1,12 @@
-<p>
-  list-communication works!
-</p>
+<ion-content>
+  <br>
+  <br>
+  <br>
+<ion-button color="primary" (click)="addCom()" expand="block" fill="outline" shape="round"><ion-icon name="add-outline"></ion-icon></ion-button>
+</ion-content>
+<ion-list>
+  <ion-item *ngFor="let chats of chat">
+    <ion-label>{{chats.nom}}</ion-label>
+    <ion-button (click)="join(chats.nom)">Join</ion-button>
+  </ion-item>
+</ion-list>

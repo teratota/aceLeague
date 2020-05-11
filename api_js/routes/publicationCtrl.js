@@ -62,7 +62,7 @@ module.exports = {
     sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
       { bind: { ref_id_user: userId, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
-		console.log(req.body.file);
+		//console.log(req.body.file);
       fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
         if (err) return console.log(err);
         res.status(201).json('test');
