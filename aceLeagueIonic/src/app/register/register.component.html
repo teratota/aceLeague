@@ -1,0 +1,25 @@
+
+
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="checkData()">
+    <ion-item>
+      <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="email" formControlName="email" placeholder="Email"></ion-input>
+      <p *ngIf="password" style="color: red">Cette email est déja utlisé</p>
+    </ion-item>
+    <ion-item>
+      <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
+    </ion-item>  
+    <ion-item>
+      <ion-input type="password" formControlName="password" placeholder="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
+      <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
+    </ion-item>
+      <ion-button  class="btn btn-success" type="submit">Inscrire</ion-button>
+  </form>
+  <a (click)="login()">Connexion</a>
+</ion-content>

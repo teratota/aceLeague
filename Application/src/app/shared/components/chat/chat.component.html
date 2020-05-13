@@ -1,1 +1,22 @@
-<p>chat works!</p>
+<!-- <div *ngFor="let discussions of chatmessage">
+    <p>
+    {{ discussions.username }}
+    </p>
+    <p>
+    {{ discussions.message }}
+    </p>
+</div> -->
+
+<form [formGroup]="messageForm" (ngSubmit)="editMessage()">
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <input class="form-control" type="text" formControlName="message" #email name="message" id="" placeholder="Envoyer un message">
+            <input class="btn btn-outline-secondary" type="submit" value="GO !" id="">
+        </div>
+    </div>
+</form>
+
+
+<a class="navbar-brand" [routerLink]="['/listChatMessage']" >
+        liste disc
+</a>

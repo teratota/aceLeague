@@ -1,0 +1,15 @@
+<br>
+<br>
+<br>
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="connection()">
+    <ion-item>
+    <ion-input  type="email" formControlName="email" name="email" id="" placeholder="Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input  type="password" name="pass" formControlName="password" id="" placeholder="Password"></ion-input>
+    </ion-item>
+      <ion-button type="submit">Login</ion-button>
+  </form>
+  <a (click)="register()">Inscription</a>
+</ion-content>

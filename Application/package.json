@@ -97,5 +97,7 @@
     "font-awesome": "4.7.0",
     "ngx-tiny-slider": "1.0.0",
     "loadash": "1.0.0"
+    "ajax-request": "1.2.3",
+    "ngx-socket-io": "3.0.1"
   }
 }

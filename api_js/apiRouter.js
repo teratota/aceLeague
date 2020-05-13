@@ -7,6 +7,7 @@ var proCtrl    = require('./routes/proCtrl');
 var groupeCtrl    = require('./routes/groupeCtrl');
 var publicationCtrl    = require('./routes/publicationCtrl');
 var friendCtrl    = require('./routes/friendCtrl');
+var chatCtrl    = require('./routes/chatCtrl');
 
 
 // Router
@@ -20,13 +21,16 @@ exports.router = (function() {
   apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
   apiRouter.route('/users/test/').post(usersCtrl.test);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
+  apiRouter.route('/users/update').post(usersCtrl.updateUser);
+  
   
   // Friends
   apiRouter.route('/users/friend/').post(friendCtrl.getUserFriend);
-
+  
   // Publications
   apiRouter.route('/publication/me/').post(publicationCtrl.getUserPublication);
   apiRouter.route('/publication/upload/').post(publicationCtrl.uploadPubliction);
+  apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
 
   // Messages routes
   apiRouter.route('/messages/new/').post(messagesCtrl.createMessage);
@@ -41,6 +45,10 @@ exports.router = (function() {
 
   // Groupe
   apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);
+
+  //Chat
+  apiRouter.route('/chat/add').post(chatCtrl.addChat);
+  apiRouter.route('/chat/get').post(chatCtrl.getChat);
 
   return apiRouter;
 })();

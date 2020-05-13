@@ -151,8 +151,8 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
-    }
-	console.log(userId);
+    }else{
+      console.log(userId);
     sequelize.query('Select username, bio from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
@@ -164,6 +164,7 @@ module.exports = {
     }).catch(function(err) {
       res.status(500).json({ 'error': 'cannot fetch user' });
     });
+    }
   },
   updateUserProfile: function(req, res) {
     // Getting auth header
@@ -209,14 +210,21 @@ module.exports = {
       }
     });
   },
+  updateUser: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }
+  },
   getlist: function(req, res) {
     let nom = req.body.data;
     var headerAuth  = req.body.token;
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
-    }
-    sequelize.query('Select id, username From user WHERE username LIKE $nom',
+    }else{
+      sequelize.query('Select id, username From user WHERE username LIKE $nom',
       { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
       console.log(user)
@@ -228,5 +236,6 @@ module.exports = {
     }).catch(function(err) {      
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
+    }
   }
 }
