@@ -1,1 +1,5 @@
-<p>list-chat-message works!</p>
+<div class='sidenav'>
+	<span (click)='newMess()'>New Document</span>
+	<p [class.selected]='docId === currentDocId' (click)='loadMess(docId)' *ngFor='let docId of messages | async'>{{ docId }}</p>
+</div>
+

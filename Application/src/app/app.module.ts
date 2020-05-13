@@ -30,6 +30,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { chatMessage } from './shared/models/chat';
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+
 @NgModule({
   declarations: [
     ConnexionComponent,
@@ -47,6 +51,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppRoutingModule,
     NgbModule,
     NgxTinySliderModule,
+    BrowserModule,
+    FormsModule,
+    SocketIoModule.forRoot(config),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -59,6 +66,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NgxTinySliderModule
   ],
   providers: [],
+  providers: [
+    chatMessage
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

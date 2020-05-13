@@ -18,13 +18,16 @@ import { ListPublicationComponent } from './components/list-publication/list-pub
 import { NotificationComponent } from './components/notification/notification.component';
 import { ListNotificationComponent } from './components/list-notification/list-notification.component';
 import { ListCommunicationComponent } from './components/list-communication/list-communication.component';
+// import { ChatComponent } from './components/chat/chat.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
+// import { ListChatMessageComponent } from './components/list-chat-message/list-chat-message.component';
 import { SendChatMessageComponent } from './components/send-chat-message/send-chat-message.component';
 import { RouterModule } from '@angular/router';
 import {NgxTinySliderModule} from 'ngx-tiny-slider';
 
 @NgModule({
+  // declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
   declarations: [PageNotFoundComponent, WebviewDirective, AuthenticationComponent, LoginComponent, RegisterComponent, CvComponent, ProfileComponent, SettingsComponent, SearchComponent, PublicationComponent, ListPublicationComponent, NotificationComponent, ListNotificationComponent, ListCommunicationComponent, ChatComponent, ListChatMessageComponent, SendChatMessageComponent],
   imports: [CommonModule, TranslateModule, FormsModule, ReactiveFormsModule, RouterModule, NgxTinySliderModule],
   exports: [TranslateModule, WebviewDirective, FormsModule, NgxTinySliderModule]
