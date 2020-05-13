@@ -12,7 +12,7 @@ module.exports = {
     },
     JWT_SIGN_SECRET,
     {
-      expiresIn: '1h'
+      expiresIn: '172800000'
     })
   },
  /* parseAuthorization: function(authorization) {
@@ -21,6 +21,7 @@ module.exports = {
   getUserId: function(token) {
     var userId = -1;
    // var token = module.exports.parseAuthorization(authorization);
+
     if(token != null) {
       try {
         var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);

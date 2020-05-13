@@ -1,34 +1,92 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>AceLeague</ion-title>
-  </ion-toolbar>
-</ion-header>
 <ion-content>
-<div class="container">
-  <div class="row">
-    <div class="content col-md-8">
-      <div class="row infos-ctn">
-        <div class="infos col-md-3">
-          <div class="profilePic"
-            style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+  <ion-grid fixed>
+    <ion-row class="rowHeader">
+      <div class="headerProfil">
+        <div class="profilePic"
+          style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+        </div>
+
+        <div class="username">
+          <p class="name">{{ user.username }}</p>
+          <div class="description">
+            <p>
+              {{ user.bio }}
+            </p>
           </div>
         </div>
-        <div class="username col-md-9">
-        <p class="name">{{ user.username }}</p>
+
+        <div (click)="choiceAction()" class="settingsIcon">
+          <ion-icon name="settings-outline"></ion-icon>
         </div>
       </div>
-      <div class="row">
-        <div class=" col-md-12 descritpion"> {{ user.bio }}</div>
-      </div>
-      <div class="row">
-        <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
-        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
-      </div>
-      <div class="row friends-title section-bloc-title">
-        <p class="block-title col-md-12 bold">Amis</p>
-      </div>
+    </ion-row>
 
-    </div>
-  </div>
-</div> 
+    <ion-row class="rowFriends">
+      <ion-col size="6">
+        <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
+      </ion-col>
+      <ion-col size="6">
+        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <p class="friends-title section-bloc-title">Amis</p>
+        <ion-slides pager="true" [options]="slideOpts">
+          <ion-slide *ngFor="let friend of friends">
+            <ion-card>
+              <ion-card-header>
+                <div>
+                  <div class="profilePicFriends"
+                    style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+                  </div>
+                </div>
+                <div class="cardHeadContent">
+                  <ion-card-title class="cardContent">{{ friend.username }}</ion-card-title>
+                  <ion-card-subtitle class="cardContent"> {{ friend.bio }}</ion-card-subtitle>
+                </div>
+              </ion-card-header>
+            
+              <ion-card-content>
+                <ion-button color="secondary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                  Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <p class="friends-title section-bloc-title">Clubs</p>
+        <ion-slides pager="true" [options]="slideOpts">
+          <ion-slide *ngFor="let friend of friends">
+            <ion-card>
+              <ion-card-header>
+                <div>
+                  <div class="profilePicFriends"
+                    style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+                  </div>
+                </div>
+                <div class="cardHeadContent">
+                  <ion-card-title class="cardContent">{{ friend.username }}</ion-card-title>
+                  <ion-card-subtitle class="cardContent"> {{ friend.bio }}</ion-card-subtitle>
+                </div>
+              </ion-card-header>
+            
+              <ion-card-content>
+                <ion-button color="secondary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                  Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                </ion-button>
+              </ion-card-content>
+            </ion-card>
+          </ion-slide>
+        </ion-slides>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

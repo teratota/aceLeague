@@ -1,3 +1,59 @@
-<p>
-  news-feed works!
-</p>
+<ion-content>
+  <div *ngFor="let publication of publications">
+    <ion-card>
+      <ion-card-header>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="2">
+              <div class="profilePic" style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')"></div>
+            </ion-col>
+            <ion-col size="9">
+              <ion-card-title>{{ publication.username }}</ion-card-title>
+              <ion-card-subtitle>{{ publication.createdAt }}</ion-card-subtitle>
+            </ion-col>
+            <ion-col size="1">
+              <div class="button" (click)="moreOptions()">
+                <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+    
+      <ion-card-content>
+        {{ publication.description }}
+      </ion-card-content>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="12">
+            <div *ngIf="publication.image" class="publicationPic">
+              <img src="{{publication.image}}" alt="">
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <div class="button-bottom">
+        <ion-grid>
+          <ion-row>
+            <div class="button" (click)="publicationLike()">
+              <ion-col size="1">
+                <ion-icon name="heart-outline" size="large"></ion-icon>
+              </ion-col>
+            </div>
+            <div class="button" (click)="publicationReply()">
+              <ion-col size="1">
+                <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+              </ion-col>
+            </div>
+            <div class="button" (click)="sharing()">
+              <ion-col size="1">
+                <ion-icon name="share-social-outline" size="large"></ion-icon>
+              </ion-col>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ion-card>
+  </div>
+
+</ion-content>

@@ -35,20 +35,20 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
-    }
-    
-    sequelize.query('Select id, image, description From publication WHERE ref_id_user = $id',
+    }else{
+      sequelize.query('Select id, image, description From publication WHERE ref_id_user = $id',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
-    ).then(function(publication) {
-      PubObject = publication;
-      if (publication) {
-        res.status(201).json(publication);
-      } else {
-        res.status(404).json({ 'error': 'publications not found' });
-      }
-    }).catch(function(err) {
-      res.status(500).json({ 'error': 'cannot fetch publications' });
-    })
+      ).then(function(publication) {
+        PubObject = publication;
+        if (publication) {
+          res.status(201).json(publication);
+        } else {
+          res.status(404).json({ 'error': 'publications not found' });
+        }
+      }).catch(function(err) {
+        res.status(500).json({ 'error': 'cannot fetch publications' });
+      })
+    }
   },
   uploadPubliction: function(req, res){
     var headerAuth  = req.body.token;
@@ -56,13 +56,13 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }
-    let userId = 15;
+    //let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r+".png";
+    let nameFile = r;
     sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
       { bind: { ref_id_user: userId, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
-		console.log(req.body.file);
+		//console.log(req.body.file);
       fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
         if (err) return console.log(err);
         res.status(201).json('test');
@@ -71,6 +71,72 @@ module.exports = {
       console.log(err)
       res.status(500).json({ 'error': 'cannot fetch publications' });
     })
-  }
+  },
+  getAllPublications: function(req, res) {   
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    asyncLib.waterfall([
+      function(done) {
+        sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1',
+        { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(friendFound) {
+          done(null, friendFound);
+        })
+        .catch(function(err) {
+          console.log(err)
+          return res.status(500).json({ 'error': 'unable to find friends' });
+        });
+      },
+      function(friendFound, done) {
+        let friendList = "";
+
+        for (let i = 0; i < friendFound.length; i++) {
+          if (i == 0) {
+            friendList += friendFound[i].ref_id_user_friend;
+          }
+          else
+            friendList += "," + friendFound[i].ref_id_user_friend;
+        }
+
+        friendList = '(\'' + friendList + '\')'
+        
+        
+        sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user IN '+ friendList,
+        { type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(publicationList) {
+          var stringified = JSON.stringify(publicationList);
+
+          for (let i = 0; i < publicationList.length; i++) {
+            
+              if (publicationList[i].image != null) {
+                //async
+                /*
+                fs.readFile('../files/publication/'+publicationList[i].image, {encoding: 'utf8'}, function (err, data) {
+                    if (err) throw err;
+                    console.log(data);
+                });
+                */
+                let file = fs.readFileSync ('./files/publication/' + publicationList[i].image,  'utf8' );
+                publicationList[i].image = file
+              }
+
+            }
+          done(friendList, publicationList);
+        })
+        .catch(function(err) {
+          console.log(err)
+          return res.status(500).json({ 'error': 'unable to find friends' });
+        });
+      }
+    ],function(friendList, publicationList) {
+      if (publicationList) {
+        return res.status(201).json(publicationList);
+      } else {
+        return res.status(500).json({ 'error': 'cannot fetch publication' });
+      }
+    });
+  },
 
 }

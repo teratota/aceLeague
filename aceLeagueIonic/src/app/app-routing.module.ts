@@ -1,3 +1,4 @@
+import { ListSettingsComponent } from './list-settings/list-settings.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -14,6 +15,8 @@ import { SearchComponent } from './search/search.component';
 import { SendChatMessageComponent } from './send-chat-message/send-chat-message.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { EditCommunicationComponent } from './edit-communication/edit-communication.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
@@ -29,12 +32,13 @@ const routes: Routes = [
   { path : 'search', component : SearchComponent},
   { path : 'sendChatMessage', component : SendChatMessageComponent},
   { path : 'settings', component : SettingsComponent},
-  { path : 'newsfeed', component : NewsFeedComponent}
+  { path : 'newsfeed', component : NewsFeedComponent},
+  { path : 'edit', component : EditProfileComponent},
+  { path : 'listSetting', component : ListSettingsComponent},
+  { path : 'editCommunication', component : EditCommunicationComponent}
 ];
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
-  ],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

@@ -21,4 +21,9 @@ export class PublicationService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"publication/upload/",{file: file, form: form, token: token});
   }
+
+  getAllPublications() {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/all-publication", {token: token})
+  }
 }

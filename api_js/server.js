@@ -2,6 +2,9 @@
 var express     = require('express');
 var bodyParser  = require('body-parser');
 var apiRouter   = require('./apiRouter').router;
+let http = require('http').Server(express);
+let io = require('socket.io')(http);
+var jwtUtils  = require('./utils/jwt.utils');
 
 // Instantiate server
 var server = express();
@@ -26,6 +29,61 @@ server.get('/', function (req, res) {
 });
 
 server.use('/api/', apiRouter);
+
+io.on('connection', (socket) => {
+
+    socket.on('createRoom', function(){
+      console.log(socket)
+      socket.join(socket.room);  
+    });
+  
+    socket.on('join', function(room){
+      console.log(socket)
+      var headerAuth  = room.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        socket.join(room.nom);  
+      }
+    });
+  
+    
+    socket.on('disconnect', function(){
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'left'});   
+      }
+    });
+  
+    socket.on('set-nickname', (nickname) => {
+      socket.nickname = nickname.nickname;
+      socket.room = nickname.room;
+      socket.token = nickname.token;
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        socket.join(nickname.room); 
+        io.sockets.in(socket.room).emit('users-changed', {user: socket.nickname, event: 'joined'});  
+      } 
+    });
+    
+    socket.on('add-message', (message) => {
+      var headerAuth  = socket.token;
+      var userId      = jwtUtils.getUserId(headerAuth);
+	    console.log(userId)
+      if(userId>0){
+        io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});   
+      } 
+    });
+  });
+var port = process.env.PORT || 3001;
+
+http.listen(port, function(){
+     console.log('listening in http://localhost:' + port);
+});
 
 // Launch server
 server.listen(4444, function() {
