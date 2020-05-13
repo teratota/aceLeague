@@ -36,10 +36,19 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      sequelize.query('Select id, image, description From publication WHERE ref_id_user = $id',
+      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;
+        console.log(publication);
+        for (let i = 0; i < publication.length; i++) {
+            
+          if (publication[i].image != null) {
+            let file = fs.readFileSync ('./files/publication/' + publication[i].image,  'utf8' );
+            publication[i].image = file
+          }
+
+        }
         if (publication) {
           res.status(201).json(publication);
         } else {
