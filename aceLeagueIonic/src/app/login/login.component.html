@@ -1,15 +1,27 @@
-<br>
-<br>
-<br>
 <ion-content>
-  <form [formGroup]="loginForm" (ngSubmit)="connection()">
-    <ion-item>
-    <ion-input  type="email" formControlName="email" name="email" id="" placeholder="Email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input  type="password" name="pass" formControlName="password" id="" placeholder="Password"></ion-input>
-    </ion-item>
-      <ion-button type="submit">Login</ion-button>
-  </form>
-  <a (click)="register()">Inscription</a>
+  <div class="background">
+    <div class="back"></div>
+  </div>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" class="card-login">
+        <div class="content">
+          <p class="title">Connexion</p>
+          <form [formGroup]="loginForm" (ngSubmit)="connection()">
+            <ion-item>
+              <ion-input  type="email" formControlName="email" name="email" id="email" placeholder="Email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input  type="password" name="pass" formControlName="password" id="" placeholder="Password"></ion-input>
+            </ion-item>
+              <ion-button type="submit" color="tertiary">Login</ion-button>
+          </form>
+          <p class="inscription">
+            Vous n'avez pas encore de compte ? <br/>
+            <a (click)="register()">Inscription</a>
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

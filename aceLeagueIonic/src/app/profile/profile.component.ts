@@ -15,6 +15,10 @@ import { ModalController } from '@ionic/angular';
 })
 export class ProfileComponent implements OnInit {
 
+  // Header & NavBar
+  displayHeader = false;
+  displayNavbar = true;
+
   // Publications
   publication: object;
 
