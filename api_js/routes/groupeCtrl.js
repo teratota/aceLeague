@@ -69,7 +69,7 @@ module.exports = {
     }else{
       var newUser = sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
       { bind: { 
-        $userId = userId,
+        $userId: userId,
         id: req.body.groupe,
         nom: req.body.form.nom,
         private: req.body.form.private,
