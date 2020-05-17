@@ -22,8 +22,33 @@ export class PublicationService {
     return this.http.post(this.configUrl+"publication/upload/",{file: file, form: form, token: token});
   }
 
+  uploadPublicationPro(file,form){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/upload/pro/",{file: file, form: form, token: token});
+  }
+
+  uploadPlublicationGroupe(file,form){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/upload/groupe",{file: file, form: form, token: token});
+  }
+
   getAllPublications() {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"publication/all-publication", {token: token})
+  }
+
+  getUserPublications(id) {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/user", {token: token, user: id})
+  }
+
+  getProPublication(id) {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/pro", {token: token, pro: id})
+  }
+
+  getGroupePublication(id) {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"publication/groupe", {token: token, groupe: id})
   }
 }

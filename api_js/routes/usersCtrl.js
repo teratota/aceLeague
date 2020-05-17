@@ -11,8 +11,14 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,20}$/;
 
 // Routes
 module.exports = {
-  test: function(req, res){
-    return res.status(201).json("connection etablie");
+  testConnection: function(req, res){
+    var headerAuth  = req.body.token;
+    var userId = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      res.status(201).json(true);
+    }
   },
   register: function(req, res) {
     

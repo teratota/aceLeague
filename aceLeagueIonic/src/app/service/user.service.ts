@@ -10,7 +10,7 @@ export class UserService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = 'http://10.0.0.21:4444/api/';
 
   connection(data) {
     console.log("connection");

@@ -19,9 +19,9 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }
     let nom = req.body.data;
-    sequelize.query('Select id, nom From groupe WHERE nom LIKE $nom',
+    sequelize.query('Select id, nom From groupe WHERE nom LIKE $nom and private = 0',
       { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
-    ).then(function(friend) {
+    ).then(function(groupe) {
       console.log(groupe)
       if (groupe) {
         res.status(201).json(groupe);
@@ -32,5 +32,164 @@ module.exports = {
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   },
-  
+  addGroupe: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      let r = Math.random().toString(36).substring(7);
+      let nameFile = r;
+      var newUser = sequelize.query('INSERT INTO groupe (ref_id_user,nom,private,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$private,$description,$image,NOW(),NOW())',
+      { bind: { 
+        ref_id_user: userId,
+        nom: req.body.form.nom,
+        private: req.body.form.private,
+        description: req.body.form.description,
+        image: nameFile
+       }, type: sequelize.QueryTypes.INSERT }
+      )
+      .then(function(newUser) {
+        fs.writeFile('./files/groupe/'+r, req.body.file, function (err) {
+          if (err) return console.log(err);
+          res.status(201).json(true);
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+    }
+  },
+  updateGroupe: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      var newUser = sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
+      { bind: { 
+        $userId = userId,
+        id: req.body.groupe,
+        nom: req.body.form.nom,
+        private: req.body.form.private,
+        description: req.body.form.description,
+       }, type: sequelize.QueryTypes.UPDATE }
+      )
+      .then(function(newUser) {
+          res.status(201).json(true);
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+    }
+  },
+  updateGroupeImage: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      var newUser = sequelize.query('Select image from groupe where id = $id',
+      { bind: { 
+        $id: req.body.groupe,
+        
+       }, type: sequelize.QueryTypes.SELECT }
+      )
+      .then(function(imagegroupe) {
+        fs.writeFile('./files/groupe/'+imagegroupe.image, req.body.file, function (err) {
+          if (err) return console.log(err);
+          res.status(201).json(true);
+        });
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+    }
+  },
+  getGroupe: function(req, res) {
+    var headerAuth  = req.body.token;
+  var userId      = jwtUtils.getUserId(headerAuth);
+  if(userId<0){
+    res.status(404).json({ 'error': 'wrong token' });
+  }else{
+    sequelize.query('Select * From groupe WHERE id = $id',
+      { bind: { id: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      console.log(groupe)
+      if (groupe.image != null) { 
+        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
+        groupe.image = file
+      }
+      if (groupe) {
+        res.status(201).json(groupe);
+      } else {
+        res.status(404).json({ 'error': 'friend not found' });
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  }
+  },
+  getMyGroupe: function(req, res) {
+    var headerAuth  = req.body.token;
+  var userId      = jwtUtils.getUserId(headerAuth);
+  if(userId<0){
+    res.status(404).json({ 'error': 'wrong token' });
+  }else{
+    sequelize.query('Select * From groupe WHERE ref_id_user = $id',
+      { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      console.log(groupe)
+      if (groupe.image != null) { 
+        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
+        groupe.image = file
+      }
+      if (groupe) {
+        res.status(201).json(groupe);
+      } else {
+        res.status(404).json({ 'error': 'friend not found' });
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  }
+  },
+
+  deleteGroupe: function(req, res) {
+    sequelize.query('Delete from groupe where id = $id and ref_id_user = $userId',
+    { bind: { userId:userId, id: req.body.id }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      if (groupe) {
+          res.status(201).json(true);
+      } else {
+          res.status(404).json({ 'error': 'groupe not found' });
+      }
+    }).catch(function(err) {      
+        res.status(500).json({ 'error': 'cannot delete groupe' });
+    })
+  },
+
+  checkGroupeAuthor: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }
+    let nom = req.body.data;
+    sequelize.query('Select COUNT(*) From groupe where ref_id_user = $userId and id = $idGroupe',
+      { bind: { userId: userId, idGroupe: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      console.log(groupe)
+      if (groupe['COUNT(*)'] == 1) {
+        res.status(201).json(true);
+      } else {
+        res.status(404).json(false);
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  }
 }
