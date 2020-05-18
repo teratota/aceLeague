@@ -1,0 +1,38 @@
+<ion-content>
+  <div class="background">
+    <div class="back"></div>
+  </div>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" class="card-register">
+        <div class="content">
+          <p class="title">Inscription</p>
+          <form [formGroup]="registerForm" (ngSubmit)="checkData()">
+            <ion-item>
+              <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="email" formControlName="email" placeholder="Email"></ion-input>
+              <p *ngIf="password" style="color: red">Cette email est déja utlisé</p>
+            </ion-item>
+            <ion-item>
+              <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" formControlName="password" placeholder="password"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
+              <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
+            </ion-item>
+            <ion-button type="submit" color="tertiary">Inscrire</ion-button>
+          </form>
+          <p class="connexion">
+            Vous avez déjà un compte ? <br />
+            <a (click)="login()">Connexion</a>
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
