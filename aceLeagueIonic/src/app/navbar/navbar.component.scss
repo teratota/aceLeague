@@ -4,3 +4,8 @@ ion-tab-button{
 ion-icon{
     color: white;
 }
+
+ion-tabs {
+    top: 55px;
+    height: calc(100% - 55px);
+}
