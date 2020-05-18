@@ -19,14 +19,17 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
-    'type': {
-      type: DataTypes.INTEGER(11),
+    'nom': {
+      type: DataTypes.STRING(255),
       allowNull: false,
-      comment: "null",
-      references: {
-        model: 'type',
-        key: 'id'
-      }
+      defaultValue: '0',
+      comment: "null"
+    },
+    'type': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue: '0',
+      comment: "null"
     },
     'description': {
       type: DataTypes.TEXT,
@@ -35,9 +38,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     'image': {
       type: DataTypes.STRING(50),
+      allowNull: true,
+      comment: "null"
+    },
+    'createdAt': {
+      type: DataTypes.DATE,
       allowNull: false,
       comment: "null"
-    }
+    },
+    'updatedAt': {
+      type: DataTypes.DATE,
+      allowNull: false,
+      comment: "null"
+    },
   }, {
     tableName: 'pro'
   });

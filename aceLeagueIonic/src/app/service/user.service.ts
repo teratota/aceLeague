@@ -9,7 +9,6 @@ import { SecurityService } from './security.service';
 export class UserService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
-
   configUrl = 'http://localhost:4444/api/';
 
   connection(data) {
