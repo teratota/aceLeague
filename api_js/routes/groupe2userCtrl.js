@@ -19,7 +19,7 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }
     let nom = req.body.data;
-    sequelize.query('Select groupe.id, groupe.nom From groupe2user Inner Join groupe On groupe2user.ref_id_user = groupe.id WHERE groupe2user.ref_id_user = $userId',
+    sequelize.query('Select groupe.id, groupe.nom From groupe2user Inner Join groupe On groupe2user.ref_id_groupe = groupe.id WHERE groupe2user.ref_id_user = $userId',
       { bind: { userId: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)

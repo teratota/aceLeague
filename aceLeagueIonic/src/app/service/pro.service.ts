@@ -14,4 +14,24 @@ export class ProService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/getlist",{data: value, token: token});
   }
+  getListMe(){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/getlist/me",{token: token});
+  }
+  deletePro(pro){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/delete",{pro: pro,token: token});
+  }
+  updatePro(pro){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/update",{pro: pro,token: token});
+  }
+  updateProImage(pro,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/update",{pro: pro,file: file,token: token});
+  }
+  getInfoPro(pro){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/get",{pro: pro,token: token});
+  }
 }

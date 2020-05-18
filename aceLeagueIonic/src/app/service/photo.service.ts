@@ -20,6 +20,7 @@ export class PhotoService {
   constructor( private sanitizer: DomSanitizer,public platform: Platform) { }
 
   public async addNewToGallery() {
+    this.photos=[]
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,

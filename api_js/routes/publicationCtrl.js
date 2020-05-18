@@ -39,7 +39,7 @@ module.exports = {
     }else{
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id',
+      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;
