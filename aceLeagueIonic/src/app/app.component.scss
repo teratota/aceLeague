@@ -163,6 +163,10 @@
     font-weight: normal;
 }
 
-::ng-deep p,::ng-deep a {
+::ng-deep p,::ng-deep a, ::ng-deep span {
     font-family: 'Montserrat';
+}
+
+::ng-deep ion-content {
+    top: 55px;
 }
