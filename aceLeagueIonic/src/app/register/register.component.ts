@@ -14,6 +14,11 @@ export class RegisterComponent implements OnInit {
   config: any;
   token: any;
 
+  firstView : boolean = true ;
+  secondView : boolean = false;
+  thirdView : boolean = false;
+  sportView : boolean = false;
+
   registerForm = new FormGroup({
     username:new FormControl('',[
       Validators.required,
@@ -37,7 +42,16 @@ export class RegisterComponent implements OnInit {
       Validators.required,
       Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
     ]),
-                                                                                 
+    question:new FormControl('',[
+      Validators.required
+    ]),
+    sport:new FormControl('',[
+    ]),
+    level:new FormControl('',[
+    ]),
+    sportDescription:new FormControl('',[
+      Validators.required
+    ]),                                                                            
   });
 
   password:boolean;
@@ -80,4 +94,40 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  next()
+  {
+    this.firstView = false ;
+    this.secondView = true;
+    this.thirdView = false;
+  }
+
+  nextTwo()
+  {
+    this.firstView = false ;
+    this.secondView = false;
+    this.thirdView = true;
+  }
+
+  last()
+  {
+    this.firstView = true ;
+    this.secondView = false;
+    this.thirdView = false;
+  }
+
+  lastTwo()
+  {
+    this.firstView = false ;
+    this.secondView = true;
+    this.thirdView = false;
+  }
+
+  changeSport(data) 
+  {
+    if(data == "oui"){
+      this.sportView  = true;
+    }else if(data == "non"){
+      this.sportView  = false;
+    }
+  }
 }
