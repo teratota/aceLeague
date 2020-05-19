@@ -102,14 +102,21 @@ module.exports = {
     }
     //let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r;
+    let nameFile = null
+    if(req.body.file != ''){
+      nameFile = r;
+    }
     sequelize.query('INSERT INTO publication (ref_id_user,image,description, createdAt) Values ($ref_id_user, $image, $description, NOW())',
       { bind: { ref_id_user: userId, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
+      if(req.body.file != ''){
       fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
         if (err) return console.log(err);
         res.status(201).json('test');
       });
+    }else{
+      res.status(201).json('test');
+    }
     }).catch(function(err) {
       res.status(500).json({ 'error': 'cannot fetch publications' });
     })
@@ -140,7 +147,7 @@ module.exports = {
             friendList += "," + friendFound[i].ref_id_user_friend;
         }
 
-        friendList = '(\'' + friendList + '\')'
+        friendList = '(' + friendList + ')'
         
         
         sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user IN '+ friendList,
@@ -163,7 +170,7 @@ module.exports = {
               }
 
             }
-            publicationList = '(\'' + publicationList + '\')'
+            publicationList = '(' + publicationList + ')'
           done(null ,publication, publicationList);
         })
         .catch(function(err) {
@@ -266,13 +273,20 @@ module.exports = {
     }
     //let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r;
+    let nameFile = null
+    if(req.body.file != ''){
+      nameFile = r;
+    }
     sequelize.query('INSERT INTO publication (ref_id_pro,image,description, createdAt) Values ($ref_id_pro, $image, $description, NOW())',
       { bind: { ref_id_pro: req.body.form.pro, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
-      fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
+      if(req.body.file != ''){
+        fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
+          res.status(201).json('test');
+        });
+      }else{
         res.status(201).json('test');
-      });
+      }
     }).catch(function(err) {
       res.status(500).json({ 'error': 'cannot fetch publications' });
     })
@@ -285,14 +299,21 @@ module.exports = {
     }
     //let userId = 15;
     let r = Math.random().toString(36).substring(7);
-    let nameFile = r;
+    let nameFile = null
+    if(req.body.file != ''){
+      nameFile = r;
+    }
     sequelize.query('INSERT INTO publication (ref_id_user,ref_id_groupe,image,description, createdAt) Values ($ref_id_user, $ref_id_groupe, $image, $description, NOW())',
       { bind: { ref_id_user: userId, ref_id_groupe: req.body.form.groupe, image: nameFile, description: req.body.form.description }, type: sequelize.QueryTypes.INSERT }
     ).then(function(publication) {
+      if(req.body.file != ''){
       fs.writeFile('./files/publication/'+r, req.body.file, function (err) {
         if (err) return console.log(err);
         res.status(201).json('test');
       });
+      }else{
+        res.status(201).json('test');
+      }
     }).catch(function(err) {
       console.log(err)
       res.status(500).json({ 'error': 'cannot fetch publications' });

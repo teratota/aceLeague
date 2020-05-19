@@ -63,7 +63,36 @@
             <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
             </div>
             <div *ngIf="thirdView">
-              <p>ici photo de profil</p>
+              <ion-fab>
+                <div *ngIf='isPC'>
+                  <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
+                </div>
+                <div *ngIf='isMobile'>
+                  <ion-fab-button (click)="photo()">
+                    <ion-icon name="camera"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </ion-fab>
+
+              <div *ngIf='isImagePc'>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="6">
+                      <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+              
+              <div *ngIf='isImageMobile'>
+                <ion-grid>
+                  <ion-row>
+                  <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+                    <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
+                  </ion-col>
+                  </ion-row>
+                </ion-grid> 
+              </div>
               <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
               <ion-button type="submit" color="tertiary">Inscrire</ion-button>
             </div>
