@@ -8,6 +8,7 @@
         <div class="content">
           <p class="title">Inscription</p>
           <form [formGroup]="registerForm" (ngSubmit)="checkData()">
+            <div *ngIf="firstView">
             <ion-item>
               <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
             </ion-item>
@@ -25,7 +26,76 @@
               <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
               <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
             </ion-item>
-            <ion-button type="submit" color="tertiary">Inscrire</ion-button>
+            <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+            </div>
+            <div *ngIf="secondView">
+            <ion-item>
+              <ion-label>Pratiquez-vous un sport ?</ion-label>
+            </ion-item>
+            <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
+              <ion-item>
+                <ion-label>Oui</ion-label>
+                <ion-radio slot="start" value="oui"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>Non</ion-label>
+                <ion-radio slot="start" value="non"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+              <!-- <ion-input type="radio" formControlName="question" value='oui' (ionChange)='changeSport($event.target.value)'></ion-input><span>Oui</span>
+              <ion-input type="radio" formControlName="question" value='non' (ionChange)='changeSport($event.target.value)'></ion-input><span>Non</span> -->
+            <div *ngIf="sportView">
+            <ion-item>
+              <ion-input type="texte" formControlName="sport" placeholder="Votre sport"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider" >
+                <ion-select-option value ='Amateur'>Amateur</ion-select-option>
+                <ion-select-option value ='Semi-Professionnel'>Semi-Professionnel</ion-select-option>
+                <ion-select-option value ='Professionnel'>Professionnel</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
+            </ion-item>
+          </div>
+            <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
+            <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
+            </div>
+            <div *ngIf="thirdView">
+              <ion-fab>
+                <div *ngIf='isPC'>
+                  <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
+                </div>
+                <div *ngIf='isMobile'>
+                  <ion-fab-button (click)="photo()">
+                    <ion-icon name="camera"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </ion-fab>
+
+              <div *ngIf='isImagePc'>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="6">
+                      <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+              
+              <div *ngIf='isImageMobile'>
+                <ion-grid>
+                  <ion-row>
+                  <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+                    <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
+                  </ion-col>
+                  </ion-row>
+                </ion-grid> 
+              </div>
+              <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
+              <ion-button type="submit" color="tertiary">Inscrire</ion-button>
+            </div>
           </form>
           <p class="connexion">
             Vous avez déjà un compte ? <br />

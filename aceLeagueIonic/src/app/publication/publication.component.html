@@ -4,18 +4,11 @@
     <ion-item>
     <ion-textarea  type="text" formControlName="description" name="sellingPlace" id="" placeholder="Description"></ion-textarea>
     </ion-item> 
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-fab>
-            <ion-fab-button (click)="photo()">
-            <ion-icon name="camera"></ion-icon>
-            </ion-fab-button>
-          </ion-fab>
-        </ion-col>
-        <ion-col size="10">
-          <ion-button expand="block" vertical="bottom" horizontal="right" class="btn btn-primary" type="submit" id="">Envoyer</ion-button>
-        </ion-col>
+        <ion-item *ngIf="groupeActivated">
+          <ion-select formControlName="groupe" multiple="false" cancelText="Annuler" okText="Valider" placeholder='Choisir un Groupe'>
+            <ion-select-option *ngFor="let groupes of groupe" value="{{ groupes.id }}">{{ groupes.nom }}</ion-select-option>
+          </ion-select>
+        </ion-item>
         <ion-item>
           <ion-select formControlName="param" (ionChange)="getList($event.target.value)" multiple="false" cancelText="Annuler" okText="Valider" >
             <ion-select-option value ='Moi'>Moi</ion-select-option>
@@ -28,15 +21,26 @@
             <ion-select-option *ngFor="let pros of pro" value="{{ pros.id }}">{{ pros.nom }}</ion-select-option>
           </ion-select>
       </ion-item>
-        <ion-item *ngIf="groupeActivated">
-          <ion-select formControlName="groupe" multiple="false" cancelText="Annuler" okText="Valider" placeholder='Choisir un Groupe'>
-            <ion-select-option *ngFor="let groupes of groupe" value="{{ groupes.id }}">{{ groupes.nom }}</ion-select-option>
-          </ion-select>
-        </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-fab>
+            <div *ngIf='isPC'>
+              <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
+            </div>
+            <div *ngIf='isMobile'>
+              <ion-fab-button (click)="photo()">
+                <ion-icon name="camera"></ion-icon>
+              </ion-fab-button>
+            </div>
+          </ion-fab>
+        </ion-col>
+        <ion-col size="10">
+          <ion-button expand="block" vertical="bottom" horizontal="right" class="btn btn-primary" type="submit" id="">Envoyer</ion-button>
+        </ion-col>
       </ion-row>
     </ion-grid>
 </form>
-
   <!-- <ion-slides #mySlider [options]="mySlideOptions">
           <ion-slide *ngFor="let photo of photoService.photos; index as position">
             <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
@@ -47,6 +51,17 @@
        <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
          </ion-slide>
   </ion-slides> -->
+<div *ngIf='isImagePc'>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div *ngIf='isImageMobile'>
   <ion-grid>
     <ion-row>
     <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
@@ -54,6 +69,7 @@
     </ion-col>
     </ion-row>
   </ion-grid> 
+</div>
 
 
 </ion-content>
