@@ -32,17 +32,13 @@ export class PhotoService {
       quality: 50
     });
 
-    console.log(capturedPhoto);
-    console.log(file);
-    
-
     this.image = this.sanitizer.bypassSecurityTrustResourceUrl(capturedPhoto && (capturedPhoto.webPath));
     this.blob = await fetch(capturedPhoto.webPath).then(r => r.blob());
     console.log(this.blob)
 
-    this.base = await this.readAsBase64(file);
+    this.base = await this.readAsBase64(capturedPhoto);
 
-    const savedImageFile = await this.savePicture(file);
+    const savedImageFile = await this.savePicture(capturedPhoto);
     this.photos.unshift(savedImageFile);
 
     Storage.set({
