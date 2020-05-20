@@ -137,6 +137,17 @@ module.exports = {
         });
       },
       function(friendFound, done) {
+        sequelize.query('Select ref_id_pro From abonnement WHERE ref_id_user = $id',
+        { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(proFound) {
+          done(null, friendFound,proFound);
+        })
+        .catch(function(err) {
+          return res.status(500).json({ 'error': 'unable to find friends' });
+        });
+      },
+      function(friendFound,proFound, done) {
         let friendList = "";
 
         for (let i = 0; i < friendFound.length; i++) {
@@ -148,9 +159,21 @@ module.exports = {
         }
 
         friendList = '(' + friendList + ')'
+
+        let proList = "";
+
+        for (let i = 0; i < proFound.length; i++) {
+          if (i == 0) {
+            proList += proFound[i].ref_id_pro;
+          }
+          else
+          proList += "," + proFound[i].ref_id_pro;
+        }
+
+        proList = '(' + proList + ')'
         
         
-        sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user IN '+ friendList,
+        sequelize.query('Select pro.nom ,user.username, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC',
         { type: sequelize.QueryTypes.SELECT }
         )
         .then(function(publication) {
@@ -174,6 +197,7 @@ module.exports = {
           done(null ,publication, publicationList);
         })
         .catch(function(err) {
+          console.log(err)
           return res.status(500).json({ 'error': 'unable to find friends' });
         });
       },
@@ -214,7 +238,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id',
+      sequelize.query('Select pro.nom, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id',
       { bind: { id: req.body.pro }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;
@@ -243,7 +267,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $userid and publication.ref_id_groupe = $id',
+      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id',
       { bind: { userid:userId, id:  req.body.groupe }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;

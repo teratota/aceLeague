@@ -61,4 +61,8 @@ export class GroupeService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe2user/delete",{groupe:groupe,token: token});
   }
+  groupe2userNumberUser(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/number/user",{groupe:groupe,token: token});
+  }
 }

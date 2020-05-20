@@ -57,6 +57,10 @@ exports.router = (function() {
   apiRouter.route('/pro/update').post(proCtrl.updatePro);
   apiRouter.route('/pro/update/image').post(proCtrl.updateProImage);
   apiRouter.route('/pro/get').post(proCtrl.getPro);
+  apiRouter.route('/pro/number/abonnement').post(proCtrl.getNumberAbonnement);
+  apiRouter.route('/pro/number/abonnement/me').post(proCtrl.getNumberAbonnementUser);
+  apiRouter.route('/pro/add/abonnement').post(proCtrl.addAbonnement);
+  apiRouter.route('/pro/check/abonnement').post(proCtrl.checkAbonnement);
 
   // Groupe
   apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);
@@ -74,6 +78,7 @@ exports.router = (function() {
   apiRouter.route('/groupe2user/add').post(groupe2userCtrl.addUser2Groupe)
   apiRouter.route('/groupe2user/check').post(groupe2userCtrl.checkGroupe2User)
   apiRouter.route('/groupe2user/delete').post(groupe2userCtrl.deleteGroupe2user)
+  apiRouter.route('/groupe2user/number/user').post(groupe2userCtrl.groupe2userNumberUser)
 
   //Chat
   apiRouter.route('/chat/add').post(chatCtrl.addChat);

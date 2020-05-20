@@ -167,4 +167,86 @@ module.exports = {
               res.status(500).json({ 'error': 'cannot delete pro' });
           })
         },
+        getNumberAbonnement: function(req, res) {
+          var headerAuth  = req.body.token;
+          var userId      = jwtUtils.getUserId(headerAuth);
+          if(userId<0){
+            res.status(404).json({ 'error': 'wrong token' });
+          }else{
+            sequelize.query('Select COUNT(*) From abonnement WHERE ref_id_pro = $id',
+              { bind: { id: req.body.pro }, type: sequelize.QueryTypes.SELECT }
+            ).then(function(pro) {
+              console.log(pro)
+              if (pro) {
+                res.status(201).json(pro);
+              } else {
+                res.status(404).json({ 'error': 'friend not found' });
+              }
+            }).catch(function(err) {      
+              res.status(500).json({ 'error': 'cannot fetch friends' });
+            })
+          }
+        },
+        getNumberAbonnementUser: function(req, res) {
+          var headerAuth  = req.body.token;
+          var userId      = jwtUtils.getUserId(headerAuth);
+          if(userId<0){
+            res.status(404).json({ 'error': 'wrong token' });
+          }else{
+            sequelize.query('Select COUNT(*) From abonnement WHERE ref_id_user = $id',
+              { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+            ).then(function(pro) {
+              console.log(pro)
+              if (pro) {
+                res.status(201).json(pro);
+              } else {
+                res.status(404).json({ 'error': 'friend not found' });
+              }
+            }).catch(function(err) {      
+              res.status(500).json({ 'error': 'cannot fetch friends' });
+            })
+          }
+        },
+        addAbonnement: function(req, res){
+          var headerAuth  = req.body.token;
+          var userId      = jwtUtils.getUserId(headerAuth);
+          if(userId<0){
+            res.status(404).json({ 'error': 'wrong token' });
+          }else{
+            sequelize.query('INSERT INTO abonnement (ref_id_user,ref_id_pro) VALUES ($ref_id_user,$ref_id_pro)',
+            { bind: { 
+              ref_id_user: userId,
+              ref_id_pro: req.body.pro
+             }, type: sequelize.QueryTypes.INSERT }
+            )
+            .then(function(pro) {
+                res.status(201).json(true);
+            })
+            .catch(function(err) {
+              console.log(err);
+              return res.status(500).json({ 'error': 'cannot add user' });
+            });
+          }
+        },
+        checkAbonnement: function(req, res) {
+          var headerAuth  = req.body.token;
+          var userId      = jwtUtils.getUserId(headerAuth);
+          if(userId<0){
+            res.status(404).json({ 'error': 'wrong token' });
+          }
+          let nom = req.body.data;
+          sequelize.query('Select COUNT(*) From abonnement where ref_id_user = $userId and ref_id_pro = $idpro',
+            { bind: { userId: userId, idpro: req.body.pro }, type: sequelize.QueryTypes.SELECT }
+          ).then(function(pro) {
+            console.log(pro)
+            if (pro[0]['COUNT(*)'] == 1) {
+              res.status(201).json(true);
+            } else {
+              res.status(404).json(false);
+            }
+          }).catch(function(err) {      
+            res.status(500).json({ 'error': 'cannot fetch friends' });
+          })
+        },
+        
 }

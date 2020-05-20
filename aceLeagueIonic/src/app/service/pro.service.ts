@@ -34,4 +34,24 @@ export class ProService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/get",{pro: pro,token: token});
   }
+  getNumberAbonnement(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/number/abonnement",{pro: pro,token: token});
+  }
+  getNumberAbonnementUser()
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/number/abonnement/me",{token: token});
+  }
+  abonnementUserCheck(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/check/abonnement",{pro: pro,token: token});
+  }
+  abonnementUserAdd(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/add/abonnement",{pro: pro,token: token});
+  }
 }

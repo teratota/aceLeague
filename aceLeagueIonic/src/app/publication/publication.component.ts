@@ -128,13 +128,13 @@ export class PublicationComponent implements OnInit {
       this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         console.log(this.publication);
-     //   this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+        this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
       });
     }else if(this.publicationForm.value.param == "Groupe"){
       this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         console.log(this.publication);
-     //   this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+        this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
       });
     }  
     }
@@ -194,13 +194,13 @@ export class PublicationComponent implements OnInit {
                         this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           console.log(this.publication);
-                       //   this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+                          this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
                         });
                       }else if(this.publicationForm.value.param == "Groupe"){
                         this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           console.log(this.publication);
-                       //   this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+                          this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
                         });
                       }  
                   }
@@ -219,13 +219,13 @@ export class PublicationComponent implements OnInit {
           this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             console.log(this.publication);
-         //   this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+            this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
           });
         }else if(this.publicationForm.value.param == "Groupe"){
           this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             console.log(this.publication);
-         //   this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+            this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
           });
         }  
       }

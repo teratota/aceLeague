@@ -6,15 +6,15 @@
 
 <p>User</p>
 <div *ngFor="let user of users">
-  <ion-item>{{ user.username }}</ion-item>
+  <ion-item><ion-label><span>{{ user.username }}</span></ion-label><ion-button (click)='goToUser(user.id)'>Voir Plus</ion-button></ion-item>
 </div>
 <p>Groupe</p>
 <div *ngFor="let groupe of groupes">
-  <ion-item>{{ pro.nom }}</ion-item>
+  <ion-item><ion-label><span>{{ groupe.nom }}</span></ion-label><ion-button (click)='goToGroupe(groupe.id)'>Voir Plus</ion-button></ion-item>
 </div>
 <p>Pro</p>
 <div *ngFor="let pro of pros">
-  <ion-item>{{ pro.nom }}</ion-item>
+  <ion-item><ion-label><span>{{ pro.nom }}</span></ion-label><ion-button (click)='goToPro(pro.id)'>Voir Plus</ion-button></ion-item>
 </div>
 </ion-content>
 

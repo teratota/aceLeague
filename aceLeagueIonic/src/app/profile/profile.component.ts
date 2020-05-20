@@ -6,6 +6,7 @@ import { UserService } from 'src/app/service/user.service';
 import { PublicationService } from 'src/app/service/publication.service';
 import { FriendService } from 'src/app/service/friend.service';
 import { ModalController } from '@ionic/angular';
+import { ProService } from '../service/pro.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   friends: object;
   friendsNumber: number = 0;
 
+  abonnement: number;
   // Infos
   user: object = {
     username: 'toto',
@@ -65,7 +67,8 @@ export class ProfileComponent implements OnInit {
     public modalController: ModalController,
     public actionSheetController: ActionSheetController,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private ProService: ProService
     ) { }
 
 
@@ -97,6 +100,12 @@ export class ProfileComponent implements OnInit {
       console.log(this.friends);
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
+    });
+
+    this.ProService.getNumberAbonnementUser().subscribe(response => {
+      this.abonnement = response[0]['COUNT(*)'];
+      console.log(this.abonnement);
+      return this.abonnement;
     });
   }
 
