@@ -36,6 +36,30 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "null"
     },
+    'image': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null",
+      unique: true
+    },
+    'sport': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null",
+      unique: true
+    },
+    'level': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null",
+      unique: true
+    },
+    'sportDescription': {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      comment: "null",
+      unique: true
+    },
     'createdAt': {
       type: DataTypes.DATE,
       allowNull: false,

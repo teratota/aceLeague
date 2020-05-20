@@ -13,25 +13,36 @@ export class PhotoService {
   public photos: Photo[] = [];
   private PHOTO_STORAGE = 'photos';
 
+  public base2 : any;
+
   public image: any;
   public blob: any;
   public base:any;
 
   constructor( private sanitizer: DomSanitizer,public platform: Platform) { }
 
-  public async addNewToGallery() {
+
+
+  public async addNewToGallery(file = null) {
+    
+    this.photos=[]
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
-      quality: 100
+      quality: 50
     });
+
+    console.log(capturedPhoto);
+    console.log(file);
+    
 
     this.image = this.sanitizer.bypassSecurityTrustResourceUrl(capturedPhoto && (capturedPhoto.webPath));
     this.blob = await fetch(capturedPhoto.webPath).then(r => r.blob());
+    console.log(this.blob)
 
-    this.base = await this.readAsBase64(capturedPhoto);
+    this.base = await this.readAsBase64(file);
 
-    const savedImageFile = await this.savePicture(capturedPhoto);
+    const savedImageFile = await this.savePicture(file);
     this.photos.unshift(savedImageFile);
 
     Storage.set({
@@ -47,12 +58,25 @@ export class PhotoService {
 
   }
 
+  saveuploadfile(file){
+    var reader = new FileReader();
+   reader.readAsDataURL(file);
+   reader.onload = function () {
+     console.log(reader.result);
+   };
+   reader.onerror = function (error) {
+     console.log('Error: ', error);
+   };
+  }
+
   private async savePicture(cameraPhoto: CameraPhoto) {
     const base64Data = await this.readAsBase64(cameraPhoto);
+    
 
     let url = "./"
     console.log(this.platform.platforms())
     let platform = this.platform.platforms()
+    
     if(platform[0]=="electron"){
       const fileName = new Date().getTime() + '.jpeg';
         const savedFile = await Filesystem.writeFile({

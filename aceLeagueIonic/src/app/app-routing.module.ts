@@ -16,6 +16,7 @@ import { SendChatMessageComponent } from './send-chat-message/send-chat-message.
 import { SettingsComponent } from './settings/settings.component';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { EditCommunicationComponent } from './edit-communication/edit-communication.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
@@ -33,7 +34,8 @@ const routes: Routes = [
   { path : 'settings', component : SettingsComponent},
   { path : 'newsfeed', component : NewsFeedComponent},
   { path : 'edit', component : EditProfileComponent},
-  { path : 'listSetting', component : ListSettingsComponent}
+  { path : 'listSetting', component : ListSettingsComponent},
+  { path : 'editCommunication', component : EditCommunicationComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

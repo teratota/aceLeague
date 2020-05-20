@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-notification',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListNotificationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router : Router) { }
 
   ngOnInit() {}
+  getListChat(){
+    this.router.navigate(['listCommunication']);
+  }
+  getListNotif(){
+    this.router.navigate(['/register']);
+  }
 
 }

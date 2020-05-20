@@ -1,15 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>AceLeague</ion-title>
-  </ion-toolbar>
-</ion-header>
 <ion-content>
   <ion-grid fixed>
     <ion-row class="rowHeader">
       <div class="headerProfil">
-        <div class="profilePic"
-          style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
-        </div>
+        <!-- <div class="profilePic"
+          style="background-image:url('{{user.image}}')">
+        </div> -->
+        <img src='{{user.image}}'>
 
         <div class="username">
           <p class="name">{{ user.username }}</p>
@@ -28,14 +24,14 @@
 
     <ion-row class="rowFriends">
       <ion-col size="6">
-        <div class=" col-md-6 details-friends"> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</div>
+        <div class=" col-md-6 details-friends"><p> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</p></div>
       </ion-col>
       <ion-col size="6">
-        <div class=" col-md-6 details-clubs"> <span class="emph primary-color">???</span> Abonnement</div>
+        <div class=" col-md-6 details-clubs"><p><span class="emph primary-color">???</span> Abonnement</p></div>
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row class="row-friends">
       <ion-col size="12">
         <p class="friends-title section-bloc-title">Amis</p>
         <ion-slides pager="true" [options]="slideOpts">
@@ -48,13 +44,13 @@
                   </div>
                 </div>
                 <div class="cardHeadContent">
-                  <ion-card-title class="cardContent">{{ friend.username }}</ion-card-title>
-                  <ion-card-subtitle class="cardContent"> {{ friend.bio }}</ion-card-subtitle>
+                  <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
+                  <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
                 </div>
               </ion-card-header>
-            
+
               <ion-card-content>
-                <ion-button color="secondary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                <ion-button color="dark" (click)="onClick()" expand="block" fill="outline" shape="round">
                   Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                 </ion-button>
               </ion-card-content>
@@ -77,14 +73,16 @@
                   </div>
                 </div>
                 <div class="cardHeadContent">
-                  <ion-card-title class="cardContent">{{ friend.username }}</ion-card-title>
-                  <ion-card-subtitle class="cardContent"> {{ friend.bio }}</ion-card-subtitle>
+                  <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
+                  <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
                 </div>
               </ion-card-header>
-            
+
               <ion-card-content>
-                <ion-button color="secondary" (click)="onClick()" expand="block" fill="outline" shape="round">
-                  Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                <ion-button color="dark" (click)="onClick()" expand="block" fill="outline" shape="round">
+                  <span>
+                    Profil
+                  </span> <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                 </ion-button>
               </ion-card-content>
             </ion-card>
@@ -93,5 +91,71 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <div *ngFor="let publications of publication">
+          <ion-card class="publicationCard">
+            <ion-card-header>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="2">
+                    <div class="profilePic"
+                      style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+                    </div>
+                  </ion-col>
+                  <ion-col size="9">
+                    <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
+                    <ion-card-subtitle><span>{{ publications.createdAt }}</span></ion-card-subtitle>
+                  </ion-col>
+                  <ion-col size="1">
+                    <div class="button" (click)="moreOptions()">
+                      <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-header>
+      
+            <ion-card-content>
+              <p>{{ publications.description }}</p>
+            </ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <div *ngIf="publications.image != 'undefined'" class="publicationPic">
+                    <img src="{{publications.image}}" alt="">
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div class="button-bottom">
+              <ion-grid>
+                <ion-row>
+                  <div class="button" (click)="publicationLike()">
+                    <ion-col size="1">
+                      <ion-icon name="heart-outline" size="large"></ion-icon>
+                    </ion-col>
+                  </div>
+                  <div class="button" (click)="publicationReply()">
+                    <ion-col size="1">
+                      <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                    </ion-col>
+                  </div>
+                  <div class="button" (click)="sharing()">
+                    <ion-col size="1">
+                      <ion-icon name="share-social-outline" size="large"></ion-icon>
+                    </ion-col>
+                  </div>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-card>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
 
 </ion-content>

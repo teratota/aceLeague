@@ -27,6 +27,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ListSettingsComponent } from './list-settings/list-settings.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { EditCommunicationComponent } from './edit-communication/edit-communication.component';
+import { HeaderComponent } from './header/header.component';
+const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
   declarations: [
@@ -47,10 +51,12 @@ import { ListSettingsComponent } from './list-settings/list-settings.component';
     NewsFeedComponent,
     NavbarComponent,
     EditProfileComponent,
-    ListSettingsComponent
+    ListSettingsComponent,
+    EditCommunicationComponent,
+    HeaderComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],
   providers: [
     StatusBar,
     SplashScreen,

@@ -19,6 +19,24 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    'ref_id_groupe': {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      comment: "null",
+      references: {
+        model: 'groupe',
+        key: 'id'
+      }
+    },
+    'ref_id_pro': {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      comment: "null",
+      references: {
+        model: 'pro',
+        key: 'id'
+      }
+    },
     'image': {
       type: DataTypes.STRING(50),
       allowNull: true,

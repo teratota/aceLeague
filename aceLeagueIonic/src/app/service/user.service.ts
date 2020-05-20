@@ -9,7 +9,6 @@ import { SecurityService } from './security.service';
 export class UserService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
-
   configUrl = 'http://localhost:4444/api/';
 
   connection(data) {
@@ -22,9 +21,9 @@ export class UserService {
     return this.http.post(this.configUrl+"users/me/", {token: token});
   }
 
-  newUser(data): any {
+  newUser(data,file): any {
     console.log("newUser");
-    return this.http.post(this.configUrl+"users/register/", data);
+    return this.http.post(this.configUrl+"users/register/", {form:data, file:file});
   }
 
   testConnection() {

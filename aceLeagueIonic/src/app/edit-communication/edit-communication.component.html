@@ -1,0 +1,8 @@
+<form [formGroup]="chatForm" (ngSubmit)="joinChat()">
+  <ion-item>
+  <ion-select formControlName="friend" multiple="true" cancelText="Annuler" okText="Valider" >
+    <ion-select-option *ngFor="let friend of friends" value="{{ friend.ref_id_user_friend }}">{{ friend.username }}</ion-select-option>
+  </ion-select>
+  </ion-item>
+    <ion-button type="submit">join</ion-button>
+</form>
