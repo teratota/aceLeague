@@ -10,8 +10,55 @@ export class GroupeService {
   constructor(private http: HttpClient, private securityService: SecurityService) { }
   getlist(value)
   {
-    console.log("connection");
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe/getlist",{data: value, token: token});
+  }
+  deleteGroupe(groupe)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/delete",{groupe: groupe, token: token});
+  }
+  getGroupeInfo(groupe)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/get",{groupe: groupe, token: token});
+  }
+  getMyGroupe()
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/me",{ token: token});
+  }
+  groupeCheckAuthor(groupe)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/check/author",{groupe:groupe, token: token});
+  }
+  addGroupe(form,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/add",{form:form,file:file, token: token});
+  }
+  updateGroupe(groupe,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/update",{groupe:groupe,file:file, token: token});
+  }
+  updateGroupeImage(groupe,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/update/image",{groupe:groupe,file:file, token: token});
+  }
+  groupe2UserGetList(){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/getlist",{token: token});
+  }
+  groupe2UserAdd(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/add",{groupe:groupe,token: token});
+  }
+  groupe2UserCheck(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/check",{groupe:groupe,token: token});
+  }
+  groupe2userDelete(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/delete",{groupe:groupe,token: token});
   }
 }

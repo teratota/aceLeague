@@ -4,23 +4,33 @@ var jwtUtils  = require('../utils/jwt.utils');
 var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
+const fs = require('fs');
 
 // Constants
-const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const EMAIL_REGEX     = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/;
 const PASSWORD_REGEX  = /^(?=.*\d).{4,20}$/;
 
 // Routes
 module.exports = {
-  test: function(req, res){
-    return res.status(201).json("connection etablie");
+  testConnection: function(req, res){
+    var headerAuth  = req.body.token;
+    var userId = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      res.status(201).json(true);
+    }
   },
   register: function(req, res) {
     
     // Params
-    var email    = req.body.email;
-    var username = req.body.username;
-    var password = req.body.password;
-    var bio      = req.body.bio;
+    var email    = req.body.form.email;
+    var username = req.body.form.username;
+    var password = req.body.form.password;
+    var bio      = req.body.form.bio;
+    var level    = req.body.form.level;
+    var sport    = req.body.form.sport;
+    var sportDescription    = req.body.form.sportDescription;
 
     if (email == null || username == null || password == null) {
       return res.status(400).json({ 'error': 'missing parameters' });
@@ -37,7 +47,7 @@ module.exports = {
     if (!PASSWORD_REGEX.test(password)) {
       return res.status(400).json({ 'error': 'password invalid (must length 4 - 8 and include 1 number at least)' });
     }
-
+    
     asyncLib.waterfall([
       function(done) {
         sequelize.query('Select email From user WHERE email = $email',
@@ -62,17 +72,33 @@ module.exports = {
         }
       },
       function(userFound, bcryptedPassword, done) {
-        var newUser = sequelize.query('INSERT INTO user (email,username,password,bio,isAdmin,createdAt,updatedAt) VALUES ($email,$username,$password,$bio,$isAdmin,NOW(),NOW())',
+        let r = Math.random().toString(36).substring(7);
+        let nameFile = null
+        if(req.body.file != ''){
+          nameFile = r;
+        }
+        console.log(nameFile);
+        var newUser = sequelize.query('INSERT INTO user (email,username,password,bio,image,level,sport,sportDescription,isAdmin,createdAt,updatedAt) VALUES ($email,$username,$password,$bio,$image,$level,$sport,$sportDescription,$isAdmin,NOW(),NOW())',
         { bind: { 
           email: email,
           username: username,
           password: bcryptedPassword,
           bio: bio,
+          image: nameFile,
+          level: level,
+          sport: sport,
+          sportDescription: sportDescription,
           isAdmin: 0
          }, type: sequelize.QueryTypes.INSERT }
         )
         .then(function(newUser) {
-          done(newUser);
+          if(req.body.file != ''){
+            fs.writeFile('./files/user/'+r, req.body.file, function (err) {
+              done(newUser);
+            });
+          }else{
+            done(newUser);
+          }
         })
         .catch(function(err) {
           console.log(err);
@@ -80,11 +106,22 @@ module.exports = {
         });
       }
     ], function(newUser) {
-      if (newUser) {
-        return res.status(201).json('test');
-      } else {
-        return res.status(500).json({ 'error': 'cannot add user' });
-      }
+      sequelize.query('Select id From user WHERE username = $username',
+        { bind: { username: username }, type: sequelize.QueryTypes.SELECT }
+        )
+        .then(function(newUser) {
+          if (newUser) {
+            return res.status(201).json({
+              'token': jwtUtils.generateTokenForUser(newUser)
+            });
+          } else {
+            return res.status(500).json({ 'error': 'cannot add user' });
+          }
+        })
+        .catch(function(err) {
+          console.log(err)
+          return res.status(500).json({ 'error': 'unable to verify user' });
+        });
     });
   },
   login: function(req, res) {
@@ -153,9 +190,16 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }else{
       console.log(userId);
-    sequelize.query('Select username, bio from user where id = $id limit 1',
+    sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
+      for (let i = 0; i < user.length; i++) {
+            
+        if (user[i].image != null) {
+          let file = fs.readFileSync ('./files/user/' + user[i].image,  'utf8' );
+          user[i].image = file
+        }
+      }
       if (user) {
         res.status(201).json(user);
       } else {
