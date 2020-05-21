@@ -72,6 +72,11 @@ export class GroupeComponent implements OnInit {
       if(response == true){
         this.isJoin = true;
         this.isNotJoin =false;
+        this.GroupeService.groupe2userNumberUser(this.groupeId).subscribe(response => {
+          this.abonnement = response[0]['COUNT(*)'];
+          console.log(this.abonnement);
+          return this.abonnement;
+        });
       }
     });
   }

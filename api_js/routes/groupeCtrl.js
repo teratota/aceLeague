@@ -4,6 +4,7 @@ var jwtUtils  = require('../utils/jwt.utils');
 var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
+const fs = require('fs');
 
 // Constants
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -39,7 +40,9 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }else{
       let r = Math.random().toString(36).substring(7);
-      let nameFile = r;
+      if(req.body.file != ''){
+        nameFile = r;
+      }
       var newUser = sequelize.query('INSERT INTO groupe (ref_id_user,nom,private,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$private,$description,$image,NOW(),NOW())',
       { bind: { 
         ref_id_user: userId,
@@ -50,10 +53,13 @@ module.exports = {
        }, type: sequelize.QueryTypes.INSERT }
       )
       .then(function(newUser) {
-        fs.writeFile('./files/groupe/'+r, req.body.file, function (err) {
-          if (err) return console.log(err);
-          res.status(201).json(true);
-        });
+        if(req.body.file != ''){
+          fs.writeFile('./files/groupe/'+r, req.body.file, function (err) {
+            res.status(201).json('test');
+          });
+        }else{
+          res.status(201).json('test');
+        }
       })
       .catch(function(err) {
         console.log(err);
@@ -119,9 +125,9 @@ module.exports = {
       { bind: { id: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)
-      if (groupe.image != null) { 
-        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
-        groupe.image = file
+      if (groupe[0].image != null) { 
+        let file = fs.readFileSync ('./files/groupe/' + groupe[0].image,  'utf8' );
+        groupe[0].image = file
       }
       if (groupe) {
         res.status(201).json(groupe);
