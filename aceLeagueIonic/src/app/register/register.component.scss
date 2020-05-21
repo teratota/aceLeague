@@ -19,7 +19,7 @@ ion-row {
 
 .background {
     display: none;
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     background-image: url(../../assets/pictures/background.svg);
@@ -82,6 +82,11 @@ ion-button {
 
 .connexion { 
     text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100% - 55px);
 }
 
 .connexion a {

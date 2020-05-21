@@ -147,5 +147,4 @@ export class ProfileComponent implements OnInit {
     });
     await actionSheet.present();
   }
-
 }

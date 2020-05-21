@@ -1,6 +1,7 @@
+import { PublicationComponent } from './../publication/publication.component';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,10 @@ export class NavbarComponent implements OnInit {
   // Displaying
   displayNavbar: boolean = true;
 
-  constructor(private router:Router, public platform: Platform) { }
+  // Modal
+  currentModal = null;
+
+  constructor(private router:Router, public platform: Platform, public modalController: ModalController) { }
 
   ngOnInit() {
     let platform = this.platform.platforms();
@@ -27,13 +31,24 @@ export class NavbarComponent implements OnInit {
   profil(){
     this.router.navigate(['profile'])
   }
-  publication(){
-    this.router.navigate(['publication'])
+  async publication(){
+    const modal = await this.modalController.create({
+      component: PublicationComponent
+    });
+    await modal.present();
+    this.currentModal = modal;
   }
   search(){
     this.router.navigate(['search'])
   }
   home(){
     this.router.navigate(['newsfeed'])
+  }
+
+  // Dimiss modal
+  dismissModal() {
+    if (this.currentModal) {
+      this.currentModal.dismiss().then(() => { this.currentModal = null; });
+    }
   }
 }

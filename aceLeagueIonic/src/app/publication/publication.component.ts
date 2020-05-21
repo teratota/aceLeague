@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicationService } from 'src/app/service/publication.service';
 import { PhotoService } from 'src/app/service/photo.service';
-import { ActionSheetController, Platform} from '@ionic/angular';
+import { ActionSheetController, Platform, ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
 import { GroupeService } from '../service/groupe.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -61,7 +61,17 @@ export class PublicationComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private PublicationService: PublicationService,
+    private photoService: PhotoService,
+    public actionSheetController: ActionSheetController,
+    private ProService : ProService,
+    private GroupeService : GroupeService,
+    public platform: Platform,
+    private activeRoute: ActivatedRoute,
+    private modalCtrl: ModalController
+    ) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
@@ -298,4 +308,9 @@ export class PublicationComponent implements OnInit {
     });
     await actionSheet.present();
   }
+
+  public async closeModal() {
+    await this.modalCtrl.dismiss();
+  }
+
 }
