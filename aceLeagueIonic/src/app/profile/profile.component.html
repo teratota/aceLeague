@@ -24,10 +24,14 @@
 
     <ion-row class="rowFriends">
       <ion-col size="6">
-        <div class=" col-md-6 details-friends"><p> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</p></div>
+        <div class=" col-md-6 details-friends">
+          <p> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</p>
+        </div>
       </ion-col>
       <ion-col size="6">
-        <div class=" col-md-6 details-clubs"><p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p></div>
+        <div class=" col-md-6 details-clubs">
+          <p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p>
+        </div>
       </ion-col>
     </ion-row>
 
@@ -50,7 +54,7 @@
               </ion-card-header>
 
               <ion-card-content>
-                <ion-button color="dark" (click)="onClick()" expand="block" fill="outline" shape="round">
+                <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
                   Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                 </ion-button>
               </ion-card-content>
@@ -79,10 +83,11 @@
               </ion-card-header>
 
               <ion-card-content>
-                <ion-button color="dark" (click)="onClick()" expand="block" fill="outline" shape="round">
+                <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
                   <span>
                     Profil
-                  </span> <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                  </span>
+                  <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                 </ion-button>
               </ion-card-content>
             </ion-card>
@@ -98,26 +103,17 @@
         <div *ngFor="let publications of publication">
           <ion-card class="publicationCard">
             <ion-card-header>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="2">
-                    <div class="profilePic"
-                      style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
-                    </div>
-                  </ion-col>
-                  <ion-col size="9">
-                    <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
-                    <ion-card-subtitle><span>{{ publications.createdAt }}</span></ion-card-subtitle>
-                  </ion-col>
-                  <ion-col size="1">
-                    <div class="button" (click)="moreOptions()">
-                      <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+              <div class="profilePic"
+                style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
+              </div>
+              <div class="headerCard">
+                <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
+                <ion-card-subtitle><span>{{ publications.createdAt }}</span></ion-card-subtitle>
+              </div>
+              <div class="button options" (click)="moreOptions()">
+                <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
+              </div>
             </ion-card-header>
-      
             <ion-card-content>
               <p>{{ publications.description }}</p>
             </ion-card-content>
@@ -164,6 +160,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  
+
 
 </ion-content>

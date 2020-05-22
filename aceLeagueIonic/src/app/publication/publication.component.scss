@@ -81,6 +81,20 @@ ion-slide img {
 }
 
 // Img
-.imgPreview {
+ion-img.imgPreview {
   max-height: 200px;
+  height: 200px;
+}
+
+::ng-deep ion-radio-group ion-item,
+::ng-deep ion-select-popover .list-md {
+  --background: #003542;
+  background: #003542;
+  --color: #fffff;
+  --border-color: transparent;
+}
+
+::ng-deep ion-radio{
+  --color: #fff;
+
 }

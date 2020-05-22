@@ -44,6 +44,7 @@ ion-row {
     background-color: #003542;
     padding: 30px 50px;
     position: relative;
+    margin-bottom: 55px;
 }
 
 .card-register:after {
@@ -87,6 +88,7 @@ ion-button {
     flex-direction: column;
     justify-content: center;
     height: calc(100% - 55px);
+    color: white;
 }
 
 .connexion a {
@@ -121,6 +123,8 @@ ion-button {
         width: unset;
         height: unset;
         min-width: 390px;
+        margin-top: auto;
+        margin-bottom: auto;
     }
 
     .card-register {

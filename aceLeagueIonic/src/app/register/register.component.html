@@ -26,7 +26,7 @@
               <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
               <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
             </ion-item>
-            <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+            <ion-button (click)="next()">Suivant</ion-button>
             </div>
             <div *ngIf="secondView">
             <ion-item>
@@ -59,8 +59,8 @@
               <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
             </ion-item>
           </div>
-            <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
-            <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
+            <ion-button (click)="last()">Précédent</ion-button>
+            <ion-button (click)="nextTwo()">Suivant</ion-button>
             </div>
             <div *ngIf="thirdView">
               <ion-fab>
@@ -93,8 +93,8 @@
                   </ion-row>
                 </ion-grid> 
               </div>
-              <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
-              <ion-button type="submit" color="tertiary">Inscrire</ion-button>
+              <ion-button (click)="lastTwo()">Précédent</ion-button>
+              <ion-button type="submit">Inscrire</ion-button>
             </div>
           </form>
           <p class="connexion">

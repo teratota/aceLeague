@@ -59,8 +59,16 @@
         </ion-row>
 
         <ion-row *ngIf='isMobile'>
+          <div *ngIf='isImageMobile'>
+              <ion-row>
+                <ion-col size="12" *ngFor="let photo of photoService.photos; index as position">
+                  <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
+                    (click)="showActionSheet(photo, position)"></ion-img>
+                </ion-col>
+              </ion-row>
+          </div>
           <ion-col size="2">
-            <div *ngIf='isMobile'>
+            <div>
               <ion-button (click)="photo()">
                 <ion-icon name="camera"></ion-icon>
               </ion-button>
@@ -72,23 +80,7 @@
               Envoyer</ion-button>
           </ion-col>
         </ion-row>
-
       </ion-grid>
     </div>
   </form>
-
-
-
-  <div *ngIf='isImageMobile'>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-          <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
-            (click)="showActionSheet(photo, position)"></ion-img>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-
 </ion-content>

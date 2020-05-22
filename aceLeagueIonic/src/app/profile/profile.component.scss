@@ -78,6 +78,17 @@ ion-title{
     background-repeat: no-repeat;
 }
 
+// Publications
+/// Header
+.headerCard {
+    padding-left: 20px;
+}
+
+// Options
+.options {
+    margin-left: auto;
+}
+
 // Cards
 ion-card{
     width: 100%;
@@ -102,6 +113,7 @@ ion-card-header{
 
 .publicationCard {
     margin: auto;
+    margin-bottom: 10px;
 }
 
 .publicationPic {
@@ -138,4 +150,9 @@ ion-card-content {
 .eof {
     padding: 0 0 55px;
     text-align: center;
+}
+
+// Button Social 
+.button-bottom .button {
+    color: white;
 }
