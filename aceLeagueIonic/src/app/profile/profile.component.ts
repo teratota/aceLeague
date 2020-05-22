@@ -37,6 +37,9 @@ export class ProfileComponent implements OnInit {
   userName;
   userBio;
 
+  userId: number = null;
+  isOtherUser: boolean = false;
+
   slideOpts = {
     initialSlide: 0,
     freeMode: false,
@@ -74,6 +77,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
+      this.userId = history.state.data;
+      if(this.userId != null){
+        this.isOtherUser = true;
+      }else{
+        this.isOtherUser = false;
+      }
       this.getDataProfile();
     });
   }
@@ -83,26 +92,26 @@ export class ProfileComponent implements OnInit {
   getDataProfile() {
 
 
-    this.UserService.getInfosUser().subscribe(response => {
+    this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = response[0];
-      console.log(this.user);
+      console.log(this.user,this.userId);
       return this.user;
     });
 
-    this.PublicationService.getPublications().subscribe(response => {
+    this.PublicationService.getPublications(this.userId).subscribe(response => {
       this.publication = response;
-      console.log(this.publication);
+      console.log(this.publication,this.userId);
       return this.publication;
     });
 
-    this.FriendService.getFriendList().subscribe(response => {
+    this.FriendService.getFriendList(this.userId).subscribe(response => {
       this.friends = response;
       console.log(this.friends);
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
     });
 
-    this.ProService.getNumberAbonnementUser().subscribe(response => {
+    this.ProService.getNumberAbonnementUser(this.userId).subscribe(response => {
       this.abonnement = response[0]['COUNT(*)'];
       console.log(this.abonnement);
       return this.abonnement;

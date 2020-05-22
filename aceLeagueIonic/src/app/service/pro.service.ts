@@ -43,10 +43,10 @@ export class ProService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/number/abonnement",{pro: pro,token: token});
   }
-  getNumberAbonnementUser()
+  getNumberAbonnementUser(user)
   {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"pro/number/abonnement/me",{token: token});
+    return this.http.post(this.configUrl+"pro/number/abonnement/me",{user:user,token: token});
   }
   abonnementUserCheck(pro)
   {
