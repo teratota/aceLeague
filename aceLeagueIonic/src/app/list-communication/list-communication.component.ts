@@ -19,6 +19,7 @@ export class ListCommunicationComponent implements OnInit {
     username: null,
     bio: null
   };
+  userId: number = null;
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.getData();
@@ -31,7 +32,7 @@ export class ListCommunicationComponent implements OnInit {
       console.log(response);
       return this.chat;
     });
-    this.UserService.getInfosUser().subscribe(response => {
+    this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = response[0];
       console.log(this.user);
       return this.user;

@@ -11,8 +11,8 @@ export class FriendService {
 
   configUrl = 'http://localhost:4444/api/';
 
-  getFriendList() {
+  getFriendList(user) {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/friend/",{token: token});
+    return this.http.post(this.configUrl+"users/friend/",{user:user, token: token});
   }
 }

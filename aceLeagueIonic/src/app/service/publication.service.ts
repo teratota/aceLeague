@@ -12,9 +12,9 @@ export class PublicationService {
 
   configUrl = 'http://localhost:4444/api/';
 
-  getPublications() {
+  getPublications(user) {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"publication/me/",{token: token});
+    return this.http.post(this.configUrl+"publication/me/",{user:user,token: token});
   }
 
   uploadPublication(file,form){
