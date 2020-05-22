@@ -4,6 +4,8 @@ import { ModalController, ActionSheetController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { getLocaleDateFormat } from '@angular/common';
 import { ProService } from '../service/pro.service';
+import { EditProComponent } from '../edit-pro/edit-pro.component';
+import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 
 @Component({
   selector: 'app-pro',
@@ -31,9 +33,11 @@ export class ProComponent implements OnInit {
     publication:object;
     abonnement:number;
     proId:number;
+    isAuthor: boolean = false;
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
+      this.isAuthor = false;
       this.proId = history.state.data;
       this.getData();
     });
@@ -66,6 +70,23 @@ export class ProComponent implements OnInit {
         this.isNotJoin = false;
       }
     });
+
+    this.ProService.abonnementUserCheck(this.proId).subscribe(response => {
+      if(response == true){
+        console.log(response)
+        this.isJoin = true;
+        this.isNotJoin = false;
+      }
+    });
+
+    this.ProService.checkProAuthor(this.proId).subscribe(response => {
+      if(response == true){
+        this.isAuthor = true;
+      }else{
+        this.isAuthor = false;
+      }
+      return this.isAuthor;
+    });
   }
 
   joinPro(){
@@ -80,6 +101,56 @@ export class ProComponent implements OnInit {
         });
       }
     });
+  }
+
+  async editingPro() {
+    const modal = await this.modalController.create({
+      component: EditProComponent,
+      componentProps: {
+        'data': this.proId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async editingProImage() {
+    const modal = await this.modalController.create({
+      component: UploadPictureComponent,
+      componentProps: {
+        'param': 'pro',
+        'data': this.proId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async choiceAction() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Modification',
+      buttons: [{
+        text: 'Modifié profil du Pro',
+        icon: 'create-outline',
+        handler: () => {
+          this.editingPro();
+        }
+      }, {
+        text: "Modifié l'image de profil du Pro",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingProImage();
+        }
+      }
+    ]
+    });
+    await actionSheet.present();
+  }
+
+  dismissModal() {
+    if (this.modalController) {
+      this.modalController.dismiss().then(() => { this.modalController = null; });
+    }
   }
 
 }

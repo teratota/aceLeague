@@ -73,9 +73,10 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      var newUser = sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
+      console.log(req.body.form);
+      sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
       { bind: { 
-        $userId: userId,
+        userId: userId,
         id: req.body.groupe,
         nom: req.body.form.nom,
         private: req.body.form.private,
@@ -97,21 +98,53 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      var newUser = sequelize.query('Select image from groupe where id = $id',
-      { bind: { 
-        $id: req.body.groupe,
-        
-       }, type: sequelize.QueryTypes.SELECT }
-      )
-      .then(function(imagegroupe) {
-        fs.writeFile('./files/groupe/'+imagegroupe.image, req.body.file, function (err) {
-          if (err) return console.log(err);
-          res.status(201).json(true);
-        });
-      })
-      .catch(function(err) {
-        console.log(err);
-        return res.status(500).json({ 'error': 'cannot add user' });
+      asyncLib.waterfall([
+        function(done) {
+          var newUser = sequelize.query('Select image from groupe where id = $id',
+          { bind: { 
+            id: req.body.groupe,
+          }, type: sequelize.QueryTypes.SELECT }
+          )
+          .then(function(imagegroupe) {
+            if(imagegroupe[0].image != null){
+              fs.writeFile('./files/groupe/'+imagegroupe[0].image, req.body.file, function (err) {
+                if (err) return console.log(err);
+                res.status(201).json(true);
+              });
+            }else{
+              let r = Math.random().toString(36).substring(7);
+              done(null,r)
+            }  
+          })
+          .catch(function(err) {
+            console.log(err);
+            return res.status(500).json({ 'error': 'cannot add user' });
+          });
+        },
+        function(namefile, done) {
+          sequelize.query('Update groupe set image = $image where id = $id',
+          { bind: { 
+            id: req.body.groupe,
+            image: namefile,
+          }, type: sequelize.QueryTypes.UPDATE }
+          )
+          .then(function(groupe) {
+            fs.writeFile('./files/groupe/'+namefile, req.body.file, function (err) {
+              if (err) return console.log(err);
+              done(true)
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+            return res.status(500).json({ 'error': 'cannot add user' });
+          });
+        },
+      ], function(groupe) {
+        if (groupe) {
+          return res.status(201).json(groupe);
+        } else {
+          return res.status(500).json({ 'error': 'cannot update user profile' });
+        }
       });
     }
   },
@@ -189,7 +222,7 @@ module.exports = {
       { bind: { userId: userId, idGroupe: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)
-      if (groupe['COUNT(*)'] == 1) {
+      if (groupe[0]['COUNT(*)'] == 1) {
         res.status(201).json(true);
       } else {
         res.status(404).json(false);

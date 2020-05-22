@@ -261,6 +261,62 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }
   },
+  updateUserImage: function(req, res) {
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      asyncLib.waterfall([
+        function(done) {
+         sequelize.query('Select image from user where id = $id',
+          { bind: { 
+            id: userId,
+          }, type: sequelize.QueryTypes.SELECT }
+          )
+          .then(function(imageuser) {
+            if(imageuser[0].image != null){
+              fs.writeFile('./files/groupe/'+imageuser[0].image, req.body.file, function (err) {
+                if (err) return console.log(err);
+                res.status(201).json(true);
+              });
+            }else{
+              let r = Math.random().toString(36).substring(7);
+              done(null,r)
+            }  
+          })
+          .catch(function(err) {
+            console.log(err);
+            return res.status(500).json({ 'error': 'cannot add user' });
+          });
+        },
+        function(namefile, done) {
+          sequelize.query('Update user set image = $image where id = $id',
+          { bind: { 
+            id: userId,
+            image: namefile,
+          }, type: sequelize.QueryTypes.UPDATE }
+          )
+          .then(function(user) {
+            fs.writeFile('./files/user/'+namefile, req.body.file, function (err) {
+              if (err) return console.log(err);
+              done(true)
+            });
+          })
+          .catch(function(err) {
+            console.log(err);
+            return res.status(500).json({ 'error': 'cannot add user' });
+          });
+        },
+      ], function(user) {
+        if (user) {
+          return res.status(201).json(user);
+        } else {
+          return res.status(500).json({ 'error': 'cannot update user profile' });
+        }
+      });
+    }
+  },
   getlist: function(req, res) {
     let nom = req.body.data;
     var headerAuth  = req.body.token;

@@ -15,7 +15,11 @@
             </p>
           </div>
         </div>
-
+        <div *ngIf="isAuthor">
+        <div (click)="choiceAction()" class="settingsIcon">
+          <ion-icon name="settings-outline"></ion-icon>
+        </div>
+      </div>
       </div>
     </ion-row>
 

@@ -228,6 +228,7 @@ export class RegisterComponent implements OnInit {
     this.fiveView = false;
   }
   lastFour(){
+    console.log("last four")
     if(this.sportView == true){
       this.firstView = false ;
       this.secondView = false;

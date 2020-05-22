@@ -1,4 +1,5 @@
 <ion-content>
+  <div *ngIf="addView">
   <p class="title">Inscription Groupe</p>
   <form [formGroup]="groupeForm" (ngSubmit)="checkData()">
     <div *ngIf="firstView">
@@ -51,4 +52,22 @@
       <ion-button type="submit" color="tertiary" [disabled]="!groupeForm.valid">Créer</ion-button>
     </div>
   </form>
+  </div>
+  <div *ngIf="editView">
+  <form [formGroup]="groupeFormEdit" (ngSubmit)="checkDataEdit()">
+    <ion-item>
+      <ion-input type="text" formControlName="nom" placeholder="Non du groupe"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select formControlName="private" multiple="false" interface="popover" placeholder='Public ou Privé'>
+        <ion-select-option value = 0 >Public</ion-select-option>
+        <ion-select-option value = 1 >Privé</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+    </ion-item>
+    <ion-button type="submit" color="tertiary" [disabled]="!groupeFormEdit.valid">Créer</ion-button>
+  </form>
+  </div>
 </ion-content>

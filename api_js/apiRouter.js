@@ -23,6 +23,7 @@ exports.router = (function() {
   apiRouter.route('/users/test/').post(usersCtrl.testConnection);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
   apiRouter.route('/users/update').post(usersCtrl.updateUser);
+  apiRouter.route('/users/update/image').post(usersCtrl.updateUserImage);
   
   
   // Friends
@@ -61,6 +62,8 @@ exports.router = (function() {
   apiRouter.route('/pro/number/abonnement/me').post(proCtrl.getNumberAbonnementUser);
   apiRouter.route('/pro/add/abonnement').post(proCtrl.addAbonnement);
   apiRouter.route('/pro/check/abonnement').post(proCtrl.checkAbonnement);
+  apiRouter.route('/pro/check/author').post(proCtrl.checkProAuthor);
+  
 
   // Groupe
   apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);

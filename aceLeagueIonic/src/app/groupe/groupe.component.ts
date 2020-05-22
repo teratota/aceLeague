@@ -4,6 +4,8 @@ import { ModalController, ActionSheetController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../service/groupe.service';
+import { EditGroupeComponent } from '../edit-groupe/edit-groupe.component';
+import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 
 @Component({
   selector: 'app-groupe',
@@ -30,9 +32,11 @@ export class GroupeComponent implements OnInit {
     publication:object;
     abonnement:number;
     groupeId:number;
+    isAuthor: boolean = false;
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
+      this.isAuthor = false;
       this.groupeId = history.state.data;
       this.getData();
     });
@@ -64,6 +68,15 @@ export class GroupeComponent implements OnInit {
         this.isNotJoin =false;
       }
     });
+
+    this.GroupeService.groupeCheckAuthor(this.groupeId).subscribe(response => {
+      if(response == true){
+        this.isAuthor = true;
+      }else{
+        this.isAuthor = false;
+      }
+      return this.isAuthor;
+    });
     
   }
 
@@ -79,6 +92,50 @@ export class GroupeComponent implements OnInit {
         });
       }
     });
+  }
+
+  async editingPro() {
+    const modal = await this.modalController.create({
+      component: EditGroupeComponent,
+      componentProps: {
+        'data': this.groupeId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async editingProImage() {
+    const modal = await this.modalController.create({
+      component: UploadPictureComponent,
+      componentProps: {
+        'param': 'groupe',
+        'data': this.groupeId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async choiceAction() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Modification',
+      buttons: [{
+        text: 'Modifié profil du Groupe',
+        icon: 'create-outline',
+        handler: () => {
+          this.editingPro();
+        }
+      }, {
+        text: "Modifié l'image de profil du Groupe",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingProImage();
+        }
+      }
+    ]
+    });
+    await actionSheet.present();
   }
 
 }

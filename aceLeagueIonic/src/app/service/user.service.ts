@@ -40,5 +40,9 @@ export class UserService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"users/update", {data: value, token: token});
   }
+  updateUserImage(file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"users/update/image",{file: file,token: token});
+  }
 
 }
