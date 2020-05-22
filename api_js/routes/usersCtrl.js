@@ -189,6 +189,9 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
+      if(req.body.user != null){
+        userId = req.body.user
+      }
       console.log(userId);
     sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
@@ -259,6 +262,24 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
+    }else{
+    sequelize.query('Update user set username = $username,bio = $bio, sport = $sport ,level = $level,sportDescription= $sportDescription, updatedAt = NOW() where id = $id',
+    { bind: { 
+      id :userId,
+      username: req.body.data.username,
+      sport: req.body.data.sport,
+      bio: req.body.data.bio,
+      level: req.body.data.level,
+      sportDescription: req.body.data.sportDescription,
+    }, type: sequelize.QueryTypes.UPDATE }
+    )
+    .then(function(updateUser) {
+      res.status(201).json(true);
+    })
+    .catch(function(err) {
+      console.log(err);
+      return res.status(500).json({ 'error': 'cannot add user' });
+    });
     }
   },
   updateUserImage: function(req, res) {
@@ -276,7 +297,7 @@ module.exports = {
           )
           .then(function(imageuser) {
             if(imageuser[0].image != null){
-              fs.writeFile('./files/groupe/'+imageuser[0].image, req.body.file, function (err) {
+              fs.writeFile('./files/user/'+imageuser[0].image, req.body.file, function (err) {
                 if (err) return console.log(err);
                 res.status(201).json(true);
               });

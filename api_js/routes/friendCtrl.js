@@ -19,6 +19,9 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
+      if(req.body.user != null){
+        userId = req.body.user
+      }
     sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {

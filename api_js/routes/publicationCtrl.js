@@ -37,6 +37,9 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
+      if(req.body.user != null){
+        userId = req.body.user
+      }
       asyncLib.waterfall([
       function(done) {
       sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null',

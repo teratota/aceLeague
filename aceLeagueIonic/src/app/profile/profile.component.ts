@@ -7,6 +7,7 @@ import { PublicationService } from 'src/app/service/publication.service';
 import { FriendService } from 'src/app/service/friend.service';
 import { ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
+import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class ProfileComponent implements OnInit {
   // Friends
   friends: object;
   friendsNumber: number = 0;
+  isNotFriend:boolean = true
+  isFriendCours:boolean = false
+  isFriend:boolean = false
 
   abonnement: number;
   // Infos
@@ -78,11 +82,14 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
+      console.log(this.userId)
       if(this.userId != null){
-        this.isOtherUser = true;
-      }else{
         this.isOtherUser = false;
+        this.checkFriend()
+      }else{
+        this.isOtherUser = true;
       }
+      console.log(this.userId)
       this.getDataProfile();
     });
   }
@@ -118,11 +125,30 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  checkFriend(){
+
+  }
+
+  addFriend(){
+
+  }
+
   async editing() {
     const modal = await this.modalController.create({
       component: EditProfileComponent,
       componentProps: {
         'user': this.user,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async editingUserImage() {
+    const modal = await this.modalController.create({
+      component: UploadPictureComponent,
+      componentProps: {
+        'param': 'user',
         'profilPic': 'noOneForMoment',
       }
     });
@@ -137,6 +163,13 @@ export class ProfileComponent implements OnInit {
         icon: 'create-outline',
         handler: () => {
           this.editing();
+        }
+      },
+      {
+        text: "Modifié l'image profil",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingUserImage();
         }
       }, {
         text: 'Paramètres',

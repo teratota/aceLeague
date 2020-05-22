@@ -15,12 +15,14 @@
             </p>
           </div>
         </div>
-
+        <div *ngIf="isOtherUser">
         <div (click)="choiceAction()" class="settingsIcon">
           <ion-icon name="settings-outline"></ion-icon>
-        </div>
       </div>
+    </div>
+  </div>
     </ion-row>
+ 
 
     <ion-row class="rowFriends">
       <ion-col size="6">
@@ -29,6 +31,21 @@
       <ion-col size="6">
         <div class=" col-md-6 details-clubs"><p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p></div>
       </ion-col>
+      <!-- <div *ngIf='isNotFriend'> -->
+        <ion-col size="6"(click)='addFriend()'>
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demandée en amie</p></div>
+        </ion-col>
+      <!-- </div> -->
+      <!-- <div *ngIf='isFriendCours'> -->
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demandée en amie</p></div>
+        </ion-col>
+      <!-- </div> -->
+      <!-- <div *ngIf='isFriend'> -->
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color"><ion-icon name="checkmark-outline"></ion-icon></span> Amie</p></div>
+        </ion-col>
+      <!-- </div> -->
     </ion-row>
 
     <ion-row class="row-friends">

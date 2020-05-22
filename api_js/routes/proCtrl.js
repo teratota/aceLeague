@@ -234,6 +234,9 @@ module.exports = {
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
+            if(req.body.user != null){
+              userId = req.body.user
+            }
             sequelize.query('Select COUNT(*) From abonnement WHERE ref_id_user = $id',
               { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
             ).then(function(pro) {

@@ -6,6 +6,19 @@
     <ion-item>
       <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
     </ion-item>  
-      <ion-button  class="btn btn-success" type="submit">Modifier</ion-button>
+    <ion-item>
+      <ion-textarea formControlName="sport" placeholder="Sport"></ion-textarea>
+    </ion-item>  
+    <ion-item>
+      <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider" >
+        <ion-select-option value ='Amateur'>Amateur</ion-select-option>
+        <ion-select-option value ='Semi-Professionnel'>Semi-Professionnel</ion-select-option>
+        <ion-select-option value ='Professionnel'>Professionnel</ion-select-option>
+      </ion-select>
+    </ion-item>  
+    <ion-item>
+      <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
+    </ion-item>
+      <ion-button  class="btn btn-success" type="submit" [disabled]="!profileForm.valid">Modifier</ion-button>
   </form>
 
