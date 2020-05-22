@@ -33,7 +33,7 @@ export class GroupeService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe/check/author",{groupe:groupe, token: token});
   }
-  addGroupe(form,file){
+  newGroupe(form,file){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe/add",{form:form,file:file, token: token});
   }

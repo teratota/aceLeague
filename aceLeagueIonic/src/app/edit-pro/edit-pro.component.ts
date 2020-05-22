@@ -6,63 +6,42 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
 import { ActionSheetController, Platform } from '@ionic/angular';
 import * as _ from 'lodash';
+import { ProService } from '../service/pro.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: 'app-edit-pro',
+  templateUrl: './edit-pro.component.html',
+  styleUrls: ['./edit-pro.component.scss'],
 })
-export class RegisterComponent implements OnInit {
+export class EditProComponent implements OnInit {
 
   config: any;
   token: any;
 
   firstView : boolean = true ;
   secondView : boolean = false;
-  thirdView : boolean = false;
-  foorView : boolean = false;
-  fiveView : boolean = false;
-  sportView : boolean = false;
 
   isPC : boolean = false
   isMobile : boolean = false
   isImagePc :boolean = false
   isImageMobile :boolean = false
 
-  registerForm = new FormGroup({
-    username:new FormControl('',[
+  proForm = new FormGroup({
+    nom:new FormControl('',[
       Validators.required,
-      Validators.maxLength(50),
+      Validators.maxLength(255),
       Validators.minLength(1)
     ]),
-    bio:new FormControl('',[
-      Validators.required
-    ]),
-    email:new FormControl('',[
+    type:new FormControl('',[
       Validators.required,
-      Validators.email,
-      Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      Validators.minLength(1)
     ]),
-    password:new FormControl('',[
+    description:new FormControl('',[
       Validators.required,
-      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-    ]),
-    password2:new FormControl('',[
-      Validators.required,
-      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-    ]),
-    question:new FormControl('',[
-      Validators.required
-    ]),
-    sport:new FormControl('',[
-    ]),
-    level:new FormControl('',[
+      Validators.minLength(1)
     ]),
     image:new FormControl('',[
-    ]),
-    sportDescription:new FormControl('',[
-      Validators.required
-    ]),                                                                            
+    ]),                                                                          
   });
 
   password:boolean;
@@ -83,7 +62,7 @@ export class RegisterComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private UserService: UserService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
+  constructor(private ValidationService: ValidationService, private ProService: ProService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
     this.confirmation = true;
   }
   
@@ -100,17 +79,11 @@ export class RegisterComponent implements OnInit {
         this.isMobile  = true;
         this.isImageMobile = true;
       }
-      this.registerForm.setValue({
-        username: '',
-        bio:'',
-        email:'',
-        password:'',
-        password2:'',
-        question:'',
-        sport:'',
-        level:'',
+      this.proForm.setValue({
+        nom: '',
+        type:'',
+        description:'',
         image:'',
-        sportDescription:''
       })
     });
   }
@@ -124,39 +97,18 @@ export class RegisterComponent implements OnInit {
       console.log('tgdsshbjhb')
     console.log(this.photoService.blob)
     console.log(this.photoService.base)
-    var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
-    if(mail=false){
-      this.mail = true;
-    }else{
-      this.mail = false;
-      var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password,this.registerForm.value.password2);
-    if(result == false){
-      this.password=true;
-    }else{
-      this.password=false;
-      var user = JSON.stringify(this.registerForm.value)
-      this.UserService.newUser(this.registerForm.value,this.photoService.base).subscribe(response => {
-        this.config = response;
-        localStorage.setItem('token',this.config.token);
+      this.ProService.newPro(this.proForm.value,this.photoService.base).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
-        this.thirdView = false;
-        this.foorView = false;
-        this.fiveView = false;
         this.router.navigate(['/profile']);
         return this.config;
       });
-    }
-    }
     }
   }
 
   login(){
     this.firstView = true ;
     this.secondView = false;
-    this.thirdView = false;
-    this.foorView = false;
-    this.fiveView = false;
     this.router.navigate(['/']);
   }
 
@@ -164,92 +116,12 @@ export class RegisterComponent implements OnInit {
   {
     this.firstView = false ;
     this.secondView = true;
-    this.thirdView = false;
-    this.foorView = false;
-    this.fiveView = false;
-  }
-
-  nextTwo()
-  {
-    this.firstView = false ;
-    this.secondView = false;
-    this.thirdView = true;
-    this.foorView = false;
-    this.fiveView = false;
-  }
-  nextThree()
-  {
-    if(this.sportView == true){
-      this.firstView = false ;
-      this.secondView = false;
-      this.thirdView = false;
-      this.foorView = true;
-      this.fiveView = false;
-    }else{
-      this.firstView = false ;
-      this.secondView = false;
-      this.thirdView = false;
-      this.foorView = false;
-      this.fiveView = true;
-    }
-  }
-  nextFour()
-  {
-    this.firstView = false ;
-    this.secondView = false;
-    this.thirdView = false;
-    this.foorView = false;
-    this.fiveView = true;
   }
 
   last()
   {
     this.firstView = true ;
     this.secondView = false;
-    this.thirdView = false;
-    this.foorView = false;
-    this.fiveView = false;
-  }
-
-  lastTwo()
-  {
-    this.firstView = false ;
-    this.secondView = true;
-    this.thirdView = false;
-    this.foorView = false;
-    this.fiveView = false;
-  }
-  lastThree()
-  {
-    this.firstView = false ;
-    this.secondView = false;
-    this.thirdView = true;
-    this.foorView = false;
-    this.fiveView = false;
-  }
-  lastFour(){
-    if(this.sportView == true){
-      this.firstView = false ;
-      this.secondView = false;
-      this.thirdView = false;
-      this.foorView = true;
-      this.fiveView = false;
-    }else{
-      this.firstView = false ;
-      this.secondView = false;
-      this.thirdView = true;
-      this.foorView = false;
-      this.fiveView = false;
-    }
-  }
-
-  changeSport(data) 
-  {
-    if(data == "oui"){
-      this.sportView  = true;
-    }else if(data == "non"){
-      this.sportView  = false;
-    }
   }
 
   onChange(file: File) {
@@ -276,7 +148,7 @@ export class RegisterComponent implements OnInit {
   }
 
   sendForElectron(){
-    console.log(this.registerForm.value);
+    console.log(this.proForm.value);
       this.imageError = null;
       if (this.file) {
           // Size Filter Bytes
@@ -320,30 +192,12 @@ export class RegisterComponent implements OnInit {
                       this.cardImageBase64 = imgBase64Path;
                       this.isImageSaved = true;
                     ///////////////////////////////////////////
-                    var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
-                      if(mail=false){
-                        this.mail = true;
-                      }else{
-                        this.mail = false;
-                        var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password,this.registerForm.value.password2);
-                      if(result == false){
-                        this.password=true;
-                      }else{
-                        this.password=false;
-                        var user = JSON.stringify(this.registerForm.value)
-                        this.UserService.newUser(this.registerForm.value,this.cardImageBase64).subscribe(response => {
-                          this.config = response;
-                          localStorage.setItem('token',this.config.token);
+                        this.ProService.newPro(this.proForm.value,this.cardImageBase64).subscribe(response => {
                           this.firstView = true ;
                           this.secondView = false;
-                          this.thirdView = false;
-                          this.foorView = false;
-                          this.fiveView = false;
                           this.router.navigate(['/profile']);
                           return this.config;
                         });
-                      }
-                      }
                   }
               };
           };
@@ -351,30 +205,12 @@ export class RegisterComponent implements OnInit {
           reader.readAsDataURL(this.file);
       }else{
         //////////////////////////////////////////////////////
-        var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
-        if(mail=false){
-          this.mail = true;
-        }else{
-          this.mail = false;
-          var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password,this.registerForm.value.password2);
-        if(result == false){
-          this.password=true;
-        }else{
-          this.password=false;
-          var user = JSON.stringify(this.registerForm.value)
-          this.UserService.newUser(this.registerForm.value,this.cardImageBase64).subscribe(response => {
-            this.config = response;
-            localStorage.setItem('token',this.config.token);
+          this.ProService.newPro(this.proForm.value,this.cardImageBase64).subscribe(response => {
             this.firstView = true ;
             this.secondView = false;
-            this.thirdView = false;
-            this.foorView = false;
-            this.fiveView = false;
             this.router.navigate(['/profile']);
             return this.config;
           });
-        }
-        }
       }
   }
 
@@ -388,7 +224,7 @@ export class RegisterComponent implements OnInit {
         handler: () => {
           this.isImagePc = false;
           this.file = null;
-          this.registerForm.patchValue({
+          this.proForm.patchValue({
             image:''
           })
         }

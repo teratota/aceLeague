@@ -18,6 +18,10 @@ export class ProService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/getlist/me",{token: token});
   }
+  newPro(form,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/add",{form: form,file:file,token: token});
+  }
   deletePro(pro){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/delete",{pro: pro,token: token});

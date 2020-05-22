@@ -17,9 +17,6 @@
               <p *ngIf="password" style="color: red">Cette email est déja utlisé</p>
             </ion-item>
             <ion-item>
-              <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
-            </ion-item>
-            <ion-item>
               <ion-input type="password" formControlName="password" placeholder="password"></ion-input>
             </ion-item>
             <ion-item>
@@ -29,22 +26,32 @@
             <ion-button (click)="next()">Suivant</ion-button>
             </div>
             <div *ngIf="secondView">
-            <ion-item>
-              <ion-label>Pratiquez-vous un sport ?</ion-label>
-            </ion-item>
-            <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
               <ion-item>
-                <ion-label>Oui</ion-label>
-                <ion-radio slot="start" value="oui"></ion-radio>
+                <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
               </ion-item>
+              <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
+              <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
+            </div>
+            <div *ngIf="thirdView">
               <ion-item>
-                <ion-label>Non</ion-label>
-                <ion-radio slot="start" value="non"></ion-radio>
+                <ion-label>Pratiquez-vous un sport ?</ion-label>
               </ion-item>
-            </ion-radio-group>
+              <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
+                <ion-item>
+                  <ion-label>Oui</ion-label>
+                  <ion-radio slot="start" value="oui"></ion-radio>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Non</ion-label>
+                  <ion-radio slot="start" value="non"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+              <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
+              <ion-button color="tertiary" (click)="nextThree()">Suivant</ion-button>
+            </div>
               <!-- <ion-input type="radio" formControlName="question" value='oui' (ionChange)='changeSport($event.target.value)'></ion-input><span>Oui</span>
               <ion-input type="radio" formControlName="question" value='non' (ionChange)='changeSport($event.target.value)'></ion-input><span>Non</span> -->
-            <div *ngIf="sportView">
+            <div *ngIf="foorView">
             <ion-item>
               <ion-input type="texte" formControlName="sport" placeholder="Votre sport"></ion-input>
             </ion-item>
@@ -58,11 +65,10 @@
             <ion-item>
               <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
             </ion-item>
+            <ion-button color="tertiary" (click)="lastThree()">Précédent</ion-button>
+            <ion-button color="tertiary" (click)="nextFour()">Suivant</ion-button>
           </div>
-            <ion-button (click)="last()">Précédent</ion-button>
-            <ion-button (click)="nextTwo()">Suivant</ion-button>
-            </div>
-            <div *ngIf="thirdView">
+            <div *ngIf="fiveView">
               <ion-fab>
                 <div *ngIf='isPC'>
                   <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
@@ -93,8 +99,8 @@
                   </ion-row>
                 </ion-grid> 
               </div>
-              <ion-button (click)="lastTwo()">Précédent</ion-button>
-              <ion-button type="submit">Inscrire</ion-button>
+              <ion-button color="tertiary" (click)="lastFour()">Précédent</ion-button>
+              <ion-button type="submit" color="tertiary">Inscrire</ion-button>
             </div>
           </form>
           <p class="connexion">
