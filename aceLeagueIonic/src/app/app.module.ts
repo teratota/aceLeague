@@ -30,6 +30,11 @@ import { ListSettingsComponent } from './list-settings/list-settings.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { EditCommunicationComponent } from './edit-communication/edit-communication.component';
 import { HeaderComponent } from './header/header.component';
+import { ProComponent } from './pro/pro.component';
+import { GroupeComponent } from './groupe/groupe.component';
+import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
+import { EditProComponent } from './edit-pro/edit-pro.component';
+import { UploadPictureComponent } from './upload-picture/upload-picture.component';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -53,7 +58,12 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     EditProfileComponent,
     ListSettingsComponent,
     EditCommunicationComponent,
-    HeaderComponent
+    HeaderComponent,
+    ProComponent,
+    GroupeComponent,
+    EditGroupeComponent,
+    EditProComponent,
+    UploadPictureComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],

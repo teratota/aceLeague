@@ -18,20 +18,49 @@ export class ProService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/getlist/me",{token: token});
   }
+  newPro(form,file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/add",{form: form,file:file,token: token});
+  }
   deletePro(pro){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/delete",{pro: pro,token: token});
   }
-  updatePro(pro){
+  updatePro(form,pro){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"pro/update",{pro: pro,token: token});
+    return this.http.post(this.configUrl+"pro/update",{form: form,pro:pro,token: token});
   }
   updateProImage(pro,file){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"pro/update",{pro: pro,file: file,token: token});
+    return this.http.post(this.configUrl+"pro/update/image",{pro: pro,file: file,token: token});
   }
   getInfoPro(pro){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"pro/get",{pro: pro,token: token});
+  }
+  getNumberAbonnement(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/number/abonnement",{pro: pro,token: token});
+  }
+  getNumberAbonnementUser()
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/number/abonnement/me",{token: token});
+  }
+  abonnementUserCheck(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/check/abonnement",{pro: pro,token: token});
+  }
+  abonnementUserAdd(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/add/abonnement",{pro: pro,token: token});
+  }
+  checkProAuthor(pro)
+  {
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"pro/check/author",{pro: pro,token: token});
   }
 }

@@ -8,7 +8,12 @@
               <div class="profilePic" style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')"></div>
             </ion-col>
             <ion-col size="9">
-              <ion-card-title>{{ publication.username }}</ion-card-title>
+              <div *ngIf='publication.username != null'>
+                <ion-card-title>{{ publication.username }}</ion-card-title>
+              </div>
+              <div *ngIf='publication.username == null'>
+                <ion-card-title>{{ publication.nom }}</ion-card-title>
+              </div>
               <ion-card-subtitle>{{ publication.createdAt }}</ion-card-subtitle>
             </ion-col>
             <ion-col size="1">

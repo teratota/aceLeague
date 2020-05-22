@@ -20,6 +20,8 @@ export class RegisterComponent implements OnInit {
   firstView : boolean = true ;
   secondView : boolean = false;
   thirdView : boolean = false;
+  foorView : boolean = false;
+  fiveView : boolean = false;
   sportView : boolean = false;
 
   isPC : boolean = false
@@ -139,6 +141,8 @@ export class RegisterComponent implements OnInit {
         this.firstView = true ;
         this.secondView = false;
         this.thirdView = false;
+        this.foorView = false;
+        this.fiveView = false;
         this.router.navigate(['/profile']);
         return this.config;
       });
@@ -151,6 +155,8 @@ export class RegisterComponent implements OnInit {
     this.firstView = true ;
     this.secondView = false;
     this.thirdView = false;
+    this.foorView = false;
+    this.fiveView = false;
     this.router.navigate(['/']);
   }
 
@@ -159,6 +165,8 @@ export class RegisterComponent implements OnInit {
     this.firstView = false ;
     this.secondView = true;
     this.thirdView = false;
+    this.foorView = false;
+    this.fiveView = false;
   }
 
   nextTwo()
@@ -166,6 +174,32 @@ export class RegisterComponent implements OnInit {
     this.firstView = false ;
     this.secondView = false;
     this.thirdView = true;
+    this.foorView = false;
+    this.fiveView = false;
+  }
+  nextThree()
+  {
+    if(this.sportView == true){
+      this.firstView = false ;
+      this.secondView = false;
+      this.thirdView = false;
+      this.foorView = true;
+      this.fiveView = false;
+    }else{
+      this.firstView = false ;
+      this.secondView = false;
+      this.thirdView = false;
+      this.foorView = false;
+      this.fiveView = true;
+    }
+  }
+  nextFour()
+  {
+    this.firstView = false ;
+    this.secondView = false;
+    this.thirdView = false;
+    this.foorView = false;
+    this.fiveView = true;
   }
 
   last()
@@ -173,6 +207,8 @@ export class RegisterComponent implements OnInit {
     this.firstView = true ;
     this.secondView = false;
     this.thirdView = false;
+    this.foorView = false;
+    this.fiveView = false;
   }
 
   lastTwo()
@@ -180,6 +216,32 @@ export class RegisterComponent implements OnInit {
     this.firstView = false ;
     this.secondView = true;
     this.thirdView = false;
+    this.foorView = false;
+    this.fiveView = false;
+  }
+  lastThree()
+  {
+    this.firstView = false ;
+    this.secondView = false;
+    this.thirdView = true;
+    this.foorView = false;
+    this.fiveView = false;
+  }
+  lastFour(){
+    console.log("last four")
+    if(this.sportView == true){
+      this.firstView = false ;
+      this.secondView = false;
+      this.thirdView = false;
+      this.foorView = true;
+      this.fiveView = false;
+    }else{
+      this.firstView = false ;
+      this.secondView = false;
+      this.thirdView = true;
+      this.foorView = false;
+      this.fiveView = false;
+    }
   }
 
   changeSport(data) 
@@ -276,6 +338,8 @@ export class RegisterComponent implements OnInit {
                           this.firstView = true ;
                           this.secondView = false;
                           this.thirdView = false;
+                          this.foorView = false;
+                          this.fiveView = false;
                           this.router.navigate(['/profile']);
                           return this.config;
                         });
@@ -305,6 +369,8 @@ export class RegisterComponent implements OnInit {
             this.firstView = true ;
             this.secondView = false;
             this.thirdView = false;
+            this.foorView = false;
+            this.fiveView = false;
             this.router.navigate(['/profile']);
             return this.config;
           });

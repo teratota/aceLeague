@@ -17,6 +17,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { EditCommunicationComponent } from './edit-communication/edit-communication.component';
+import { ProComponent } from './pro/pro.component';
+import { GroupeComponent } from './groupe/groupe.component';
+import { EditProComponent } from './edit-pro/edit-pro.component';
+import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
+import { UploadPictureComponent } from './upload-picture/upload-picture.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
@@ -35,7 +40,12 @@ const routes: Routes = [
   { path : 'newsfeed', component : NewsFeedComponent},
   { path : 'edit', component : EditProfileComponent},
   { path : 'listSetting', component : ListSettingsComponent},
-  { path : 'editCommunication', component : EditCommunicationComponent}
+  { path : 'editCommunication', component : EditCommunicationComponent},
+  { path : 'pro', component : ProComponent},
+  { path : 'groupe', component : GroupeComponent},
+  { path : 'editPro', component : EditProComponent},
+  { path : 'editGroupe', component : EditGroupeComponent},
+  { path : 'uploadPicture', component : UploadPictureComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

@@ -33,13 +33,13 @@ export class GroupeService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe/check/author",{groupe:groupe, token: token});
   }
-  addGroupe(form,file){
+  newGroupe(form,file){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe/add",{form:form,file:file, token: token});
   }
-  updateGroupe(groupe,file){
+  updateGroupe(form,groupe){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"groupe/update",{groupe:groupe,file:file, token: token});
+    return this.http.post(this.configUrl+"groupe/update",{groupe:groupe,form:form, token: token});
   }
   updateGroupeImage(groupe,file){
     let token = this.securityService.getToken();
@@ -60,5 +60,9 @@ export class GroupeService {
   groupe2userDelete(groupe){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe2user/delete",{groupe:groupe,token: token});
+  }
+  groupe2userNumberUser(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/number/user",{groupe:groupe,token: token});
   }
 }
