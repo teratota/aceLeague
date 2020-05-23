@@ -23,9 +23,9 @@ export class FriendService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"/users/listvalidatefriend/",{token: token});
   }
-  ValidateFriend(){
+  ValidateFriend(validate,id){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/validatefriend/",{token: token});
+    return this.http.post(this.configUrl+"users/validatefriend/",{vlidate:validate,id:id,token: token});
   }
   checkFriend(user){
     let token = this.securityService.getToken();
