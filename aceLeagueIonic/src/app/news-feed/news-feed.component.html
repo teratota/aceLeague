@@ -40,10 +40,19 @@
       <div class="button-bottom">
         <ion-grid>
           <ion-row>
-            <div class="button" (click)="publicationLike()">
-              <ion-col size="1">
-                <ion-icon name="heart-outline" size="large"></ion-icon>
-              </ion-col>
+            <div *ngIf="publication.like == false">
+              <div class="button" (click)="publicationLike(publication.id)">
+                <ion-col size="1">
+                  <ion-icon name="heart-outline" size="large"></ion-icon>
+                </ion-col>
+              </div>
+            </div>
+              <div *ngIf="publication.like == true">
+                <div class="button" (click)="publicationDislike(publication.id)">
+                  <ion-col size="1">
+                    <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                  </ion-col>
+                </div>
             </div>
             <div class="button" (click)="publicationReply()">
               <ion-col size="1">

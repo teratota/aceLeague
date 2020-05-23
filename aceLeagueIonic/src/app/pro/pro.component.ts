@@ -153,4 +153,23 @@ export class ProComponent implements OnInit {
     }
   }
 
+  publicationDislike(id){
+    this.PublicationService.dislikePublication(id).subscribe(response => {
+      this.PublicationService.getProPublication(this.proId).subscribe(response => {
+      this.publication = response;
+      console.log(this.publication);
+      return this.publication;
+    });
+    });
+  }
+
+  publicationLike(id){
+    this.PublicationService.likePublication(id).subscribe(response => {
+      this.PublicationService.getProPublication(this.proId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication);
+        return this.publication;
+      });
+    });
+  }
 }

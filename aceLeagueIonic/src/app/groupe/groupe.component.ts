@@ -138,4 +138,24 @@ export class GroupeComponent implements OnInit {
     await actionSheet.present();
   }
 
+  publicationDislike(id){
+    this.PublicationService.dislikePublication(id).subscribe(response => {
+      this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication);
+        return this.publication;
+      });
+    });
+  }
+
+  publicationLike(id){
+    this.PublicationService.likePublication(id).subscribe(response => {
+      this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication);
+        return this.publication;
+      });
+    });
+  }
+
 }

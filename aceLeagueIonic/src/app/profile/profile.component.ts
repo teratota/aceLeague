@@ -85,7 +85,7 @@ export class ProfileComponent implements OnInit {
       console.log(this.userId)
       if(this.userId != null){
         this.isOtherUser = false;
-        this.checkFriend()
+      //  this.checkFriend()
       }else{
         this.isOtherUser = true;
       }
@@ -125,13 +125,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  checkFriend(){
-
-  }
-
-  addFriend(){
-
-  }
 
   async editing() {
     const modal = await this.modalController.create({
@@ -188,6 +181,26 @@ export class ProfileComponent implements OnInit {
     ]
     });
     await actionSheet.present();
+  }
+
+  publicationDislike(id){
+    this.PublicationService.dislikePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication,this.userId);
+        return this.publication;
+      });
+    });
+  }
+
+  publicationLike(id){
+    this.PublicationService.likePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication,this.userId);
+        return this.publication;
+      });
+    });
   }
 
 }

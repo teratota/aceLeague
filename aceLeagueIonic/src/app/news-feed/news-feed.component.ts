@@ -32,14 +32,24 @@ export class NewsFeedComponent implements OnInit {
     });
   }
 
-  publicationLike() {
-    console.log('Like');
-    
+  publicationDislike(id){
+    this.PublicationService.dislikePublication(id).subscribe(response => {
+      this.PublicationService.getAllPublications().subscribe(response => {
+        this.publications = response;
+        console.log(this.publications);
+        return this.publications;
+      });
+    });
   }
 
-  publicationReply() {
-    console.log('reply');
-    
+  publicationLike(id){
+    this.PublicationService.likePublication(id).subscribe(response => {
+      this.PublicationService.getAllPublications().subscribe(response => {
+        this.publications = response;
+        console.log(this.publications);
+        return this.publications;
+      });
+    });
   }
 
   sharing() {

@@ -51,4 +51,12 @@ export class PublicationService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"publication/groupe", {token: token, groupe: id})
   }
+  likePublication(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"like/publication", {token: token, publication: id})
+  }
+  dislikePublication(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"dislike/publication", {token: token, publication: id})
+  }
 }
