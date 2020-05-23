@@ -53,6 +53,7 @@ module.exports = {
             console.log()
             for (let i = 0; i < publication.length; i++) {
               console.log(like)
+              publication[i].like = true
               if(like.length != 0){
                 for(let x = 0; x < like.length; x++){
                   if(like[x].ref_id_publication == publication[i].id){
@@ -65,11 +66,31 @@ module.exports = {
                 publication[i].like = false
               }
             }
-            done(publication)
+            done(null,publication,publicationList)
           }).catch(function(err) {
             res.status(500).json({ 'error': 'cannot fetch publications' });
           })
-        }
+        },
+        function(publication, publicationList, done) {
+          sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
+              { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+              ).then(function(like) {
+                console.log()
+                for (let i = 0; i < publication.length; i++) {
+                  publication[i].likeMax = 0;
+                  if(like.length != 0){
+                    for(let x = 0; x < like.length; x++){
+                      if(like[x].ref_id_publication == publication[i].id){
+                        publication[i].likeMax ++
+                      }
+                    }
+                  }
+                }
+                done(publication)
+              }).catch(function(err) {
+                res.status(500).json({ 'error': 'cannot fetch publications' });
+              })
+            }
       ],
     function(publication) {
       if (publication) {
@@ -207,11 +228,31 @@ module.exports = {
                 }
               }
               
-              done(publication)
+              done(null,publication,publicationList)
             }).catch(function(err) {
               res.status(500).json({ 'error': 'cannot fetch publications' });
             })
-          }
+          },
+          function(publication, publicationList, done) {
+            sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
+                { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+                ).then(function(like) {
+                  console.log()
+                  for (let i = 0; i < publication.length; i++) {
+                    publication[i].likeMax = 0;
+                    if(like.length != 0){
+                      for(let x = 0; x < like.length; x++){
+                        if(like[x].ref_id_publication == publication[i].id){
+                          publication[i].likeMax ++
+                        }
+                      }
+                    }
+                  }
+                  done(publication)
+                }).catch(function(err) {
+                  res.status(500).json({ 'error': 'cannot fetch publications' });
+                })
+              }
     ],function(publication) {
       if (publication) {
         return res.status(201).json(publication);
@@ -273,12 +314,31 @@ module.exports = {
                 publication[i].like = false
               }
             }
-            done(publication)
+            done(null,publication,publicationList)
           }).catch(function(err) {
-            console.log(err)
             res.status(500).json({ 'error': 'cannot fetch publications' });
           })
-        }
+        },
+        function(publication, publicationList, done) {
+          sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
+              { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+              ).then(function(like) {
+                console.log()
+                for (let i = 0; i < publication.length; i++) {
+                  publication[i].likeMax = 0;
+                  if(like.length != 0){
+                    for(let x = 0; x < like.length; x++){
+                      if(like[x].ref_id_publication == publication[i].id){
+                        publication[i].likeMax ++
+                      }
+                    }
+                  }
+                }
+                done(publication)
+              }).catch(function(err) {
+                res.status(500).json({ 'error': 'cannot fetch publications' });
+              })
+            }
       ],function(publication) {
         if (publication) {
           return res.status(201).json(publication);
@@ -340,11 +400,31 @@ module.exports = {
                 publication[i].like = false
               }
             }
-            done(publication)
+            done(null,publication,publicationList)
           }).catch(function(err) {
             res.status(500).json({ 'error': 'cannot fetch publications' });
           })
-        }
+        },
+        function(publication, publicationList, done) {
+          sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
+              { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+              ).then(function(like) {
+                console.log()
+                for (let i = 0; i < publication.length; i++) {
+                  publication[i].likeMax = 0;
+                  if(like.length != 0){
+                    for(let x = 0; x < like.length; x++){
+                      if(like[x].ref_id_publication == publication[i].id){
+                        publication[i].likeMax ++
+                      }
+                    }
+                  }
+                }
+                done(publication)
+              }).catch(function(err) {
+                res.status(500).json({ 'error': 'cannot fetch publications' });
+              })
+            }
       ],function(publication) {
         if (publication) {
           return res.status(201).json(publication);
