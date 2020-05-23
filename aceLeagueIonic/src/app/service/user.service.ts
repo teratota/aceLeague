@@ -16,9 +16,9 @@ export class UserService {
     return this.http.post(this.configUrl+"users/login", data);
   }
 
-  getInfosUser() {
+  getInfosUser(user) {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"users/me/", {token: token});
+    return this.http.post(this.configUrl+"users/me/", {user:user,token: token});
   }
 
   newUser(data,file): any {
@@ -39,6 +39,10 @@ export class UserService {
   userUpdate(value){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"users/update", {data: value, token: token});
+  }
+  updateUserImage(file){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"users/update/image",{file: file,token: token});
   }
 
 }

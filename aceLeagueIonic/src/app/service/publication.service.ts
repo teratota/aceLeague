@@ -12,9 +12,9 @@ export class PublicationService {
 
   configUrl = 'http://localhost:4444/api/';
 
-  getPublications() {
+  getPublications(user) {
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"publication/me/",{token: token});
+    return this.http.post(this.configUrl+"publication/me/",{user:user,token: token});
   }
 
   uploadPublication(file,form){
@@ -50,5 +50,21 @@ export class PublicationService {
   getGroupePublication(id) {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"publication/groupe", {token: token, groupe: id})
+  }
+  likePublication(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"like/publication", {token: token, publication: id})
+  }
+  dislikePublication(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"dislike/publication", {token: token, publication: id})
+  }
+  getCommentaire(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"commentaire", {token: token, publication: id})
+  }
+  addCommentaire(id,data){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"commentaire", {token: token, publication: id, form:data})
   }
 }

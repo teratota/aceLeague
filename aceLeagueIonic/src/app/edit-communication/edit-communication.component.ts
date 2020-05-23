@@ -17,13 +17,13 @@ export class EditCommunicationComponent implements OnInit {
       Validators.required
     ])
   });
-
+  user:number = null;
   friends : object;
 
   constructor( private router : Router, private socket: Socket,  private FriendService: FriendService, private chatService: ChatService) { }
 
   ngOnInit() {
-    this.FriendService.getFriendList().subscribe(response => {
+    this.FriendService.getFriendList(this.user).subscribe(response => {
       this.friends = response;
       console.log(this.friends);
       return this.friends;

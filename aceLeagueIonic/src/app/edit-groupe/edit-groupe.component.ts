@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ValidationService } from 'src/app/service/validation.service';
 import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,13 +18,19 @@ export class EditGroupeComponent implements OnInit {
   config: any;
   token: any;
 
+  @Input() data: number;
+
   firstView : boolean = true ;
   secondView : boolean = false;
+  addView : boolean = true;
+  editView: boolean = false;
 
   isPC : boolean = false
   isMobile : boolean = false
   isImagePc :boolean = false
   isImageMobile :boolean = false
+
+  groupeEdit: any;
 
   groupeForm = new FormGroup({
     nom:new FormControl('',[
@@ -41,6 +47,21 @@ export class EditGroupeComponent implements OnInit {
     ]),
     image:new FormControl('',[
     ]),                                                                          
+  });
+
+  groupeFormEdit = new FormGroup({
+    nom:new FormControl('',[
+      Validators.required,
+      Validators.maxLength(255),
+      Validators.minLength(1)
+    ]),
+    private:new FormControl('',[
+      Validators.required,
+    ]),
+    description:new FormControl('',[
+      Validators.required,
+      Validators.minLength(1)
+    ]),                                                                     
   });
 
   password:boolean;
@@ -78,12 +99,19 @@ export class EditGroupeComponent implements OnInit {
         this.isMobile  = true;
         this.isImageMobile = true;
       }
-      this.groupeForm.setValue({
-        nom: '',
-        private:0,
-        description:'',
-        image:'',
-      })
+      if(this.data == null){
+        this.groupeForm.setValue({
+          nom: '',
+          private:0,
+          description:'',
+          image:'',
+        })
+      }else{
+        console.log(this.data)
+        this.editView = true;
+        this.addView = false;
+        this.getData();
+      }
     });
   }
 
@@ -105,10 +133,28 @@ export class EditGroupeComponent implements OnInit {
     }
   }
 
-  login(){
-    this.firstView = true ;
-    this.secondView = false;
-    this.router.navigate(['/']);
+  checkDataEdit() {
+    console.log(this.platform.platforms())
+      this.GroupeService.updateGroupe(this.groupeFormEdit.value,this.data).subscribe(response => {
+        this.firstView = true ;
+        this.secondView = false;
+        this.addView = true;
+        this.editView = false;
+        this.router.navigate(['groupe'], {state: {data:this.data}});
+        return this.config;
+      });
+  }
+
+  getData() {
+    this.GroupeService.getGroupeInfo(this.data).subscribe(response => {
+      this.groupeEdit = response[0];
+      this.groupeFormEdit.patchValue({
+        nom: this.groupeEdit.nom,
+        private: this.groupeEdit.private,
+        description: this.groupeEdit.description,
+      })
+      return this.groupeEdit;
+    });
   }
 
   next()

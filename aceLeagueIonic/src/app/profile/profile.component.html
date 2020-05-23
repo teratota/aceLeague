@@ -15,12 +15,14 @@
             </p>
           </div>
         </div>
-
+        <div *ngIf="isOtherUser">
         <div (click)="choiceAction()" class="settingsIcon">
           <ion-icon name="settings-outline"></ion-icon>
-        </div>
       </div>
+    </div>
+  </div>
     </ion-row>
+ 
 
     <ion-row class="rowFriends">
       <ion-col size="6">
@@ -33,6 +35,21 @@
           <p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p>
         </div>
       </ion-col>
+      <div *ngIf='isNotFriend'>
+        <ion-col size="6"(click)='addFriend()'>
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demandée en amie</p></div>
+        </ion-col>
+      </div>
+      <div *ngIf='isFriendCours'>
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demande en cours</p></div>
+        </ion-col>
+      </div>
+      <div *ngIf='isFriend'>
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color"><ion-icon name="checkmark-outline"></ion-icon></span> Amie</p></div>
+        </ion-col>
+      </div>
     </ion-row>
 
     <ion-row class="row-friends">
@@ -129,21 +146,33 @@
             <div class="button-bottom">
               <ion-grid>
                 <ion-row>
-                  <div class="button" (click)="publicationLike()">
-                    <ion-col size="1">
-                      <ion-icon name="heart-outline" size="large"></ion-icon>
-                    </ion-col>
+                  <div *ngIf="publications.like == false">
+                    <div class="button" (click)="publicationLike(publications.id)">
+                      <ion-col size="1">
+                        <ion-icon name="heart-outline" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                    <div *ngIf="publications.like == true">
+                      <div class="button" (click)="publicationDislike(publications.id)">
+                        <ion-col size="1">
+                          <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                          <span>{{publications.likeMax}}</span>
+                        </ion-col>
+                      </div>
                   </div>
                   <div class="button" (click)="publicationReply()">
                     <ion-col size="1">
                       <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                      <span>{{publications.commentaireMax}}</span>
                     </ion-col>
                   </div>
-                  <div class="button" (click)="sharing()">
+                  <!-- <div class="button" (click)="sharing()">
                     <ion-col size="1">
                       <ion-icon name="share-social-outline" size="large"></ion-icon>
                     </ion-col>
-                  </div>
+                  </div> -->
                 </ion-row>
               </ion-grid>
             </div>

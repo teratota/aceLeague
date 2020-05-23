@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ValidationService } from 'src/app/service/validation.service';
 import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,8 +18,12 @@ export class EditProComponent implements OnInit {
   config: any;
   token: any;
 
+  @Input() data: number;
+
   firstView : boolean = true ;
   secondView : boolean = false;
+  addView : boolean = true;
+  editView: boolean = false;
 
   isPC : boolean = false
   isMobile : boolean = false
@@ -44,6 +48,22 @@ export class EditProComponent implements OnInit {
     ]),                                                                          
   });
 
+  proFormEdit = new FormGroup({
+    nom:new FormControl('',[
+      Validators.required,
+      Validators.maxLength(255),
+      Validators.minLength(1)
+    ]),
+    type:new FormControl('',[
+      Validators.required,
+      Validators.minLength(1)
+    ]),
+    description:new FormControl('',[
+      Validators.required,
+      Validators.minLength(1)
+    ]),                                                                    
+  });
+
   password:boolean;
   mail:boolean;
   confirmation: boolean;
@@ -53,6 +73,8 @@ export class EditProComponent implements OnInit {
   isImageSaved: boolean;
   cardImageBase64: string;
   previewImagePath: any
+
+  proEdit:any;
 
   publication : any;
 
@@ -79,12 +101,18 @@ export class EditProComponent implements OnInit {
         this.isMobile  = true;
         this.isImageMobile = true;
       }
-      this.proForm.setValue({
-        nom: '',
-        type:'',
-        description:'',
-        image:'',
-      })
+      if(this.data == null){
+        this.proForm.setValue({
+          nom: '',
+          type:'',
+          description:'',
+          image:'',
+        })
+      }else{
+        this.editView = true;
+        this.addView = false;
+        this.getData();
+      }
     });
   }
 
@@ -106,10 +134,28 @@ export class EditProComponent implements OnInit {
     }
   }
 
-  login(){
-    this.firstView = true ;
-    this.secondView = false;
-    this.router.navigate(['/']);
+  checkDataEdit() {
+    console.log(this.platform.platforms())
+      this.ProService.updatePro(this.proFormEdit.value,this.data).subscribe(response => {
+        this.firstView = true ;
+        this.secondView = false;
+        this.addView = true;
+        this.editView = false;
+        this.router.navigate(['/profile']);
+        return this.config;
+      });
+  }
+
+  getData() {
+    this.ProService.getInfoPro(this.data).subscribe(response => {
+      this.proEdit = response[0];
+      this.proFormEdit.patchValue({
+        nom: this.proEdit.nom,
+        type: this.proEdit.type,
+        description: this.proEdit.description,
+      })
+      return this.proEdit;
+    });
   }
 
   next()

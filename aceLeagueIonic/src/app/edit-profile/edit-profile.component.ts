@@ -27,6 +27,18 @@ export class EditProfileComponent implements OnInit {
     [
       Validators.required
     ]),
+    sport: new FormControl('',
+    [
+      Validators.required
+    ]),
+    level: new FormControl('',
+    [
+      Validators.required
+    ]),
+    sportDescription: new FormControl('',
+    [
+      Validators.required
+    ]),
   });
 
 
@@ -35,7 +47,7 @@ export class EditProfileComponent implements OnInit {
   ngOnInit() {
     console.log(this.user['username']);
     this.profileForm.setValue({
-      username: this.user['username'], bio: this.user['bio']
+      username: this.user['username'], bio: this.user['bio'], sport: this.user['sport'], level:this.user['level'], sportDescription:this.user['sportDescription']
     });
   }
 

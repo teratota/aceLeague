@@ -7,6 +7,7 @@ import { PublicationService } from 'src/app/service/publication.service';
 import { FriendService } from 'src/app/service/friend.service';
 import { ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
+import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 
 
 @Component({
@@ -26,6 +27,9 @@ export class ProfileComponent implements OnInit {
   // Friends
   friends: object;
   friendsNumber: number = 0;
+  isNotFriend:boolean = false
+  isFriendCours:boolean = false
+  isFriend:boolean = false
 
   abonnement: number;
   // Infos
@@ -36,6 +40,9 @@ export class ProfileComponent implements OnInit {
   userPicture;
   userName;
   userBio;
+
+  userId: number = null;
+  isOtherUser: boolean = false;
 
   slideOpts = {
     initialSlide: 0,
@@ -74,6 +81,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
+      this.userId = history.state.data;
+      console.log(this.userId)
+      if(this.userId != null){
+        this.isOtherUser = false;
+        this.checkFriend()
+      }else{
+        this.isNotFriend = false
+        this.isFriendCours = false
+        this.isFriend = false
+        this.isOtherUser = true;
+      }
+      console.log(this.userId)
       this.getDataProfile();
     });
   }
@@ -81,39 +100,49 @@ export class ProfileComponent implements OnInit {
 
 
   getDataProfile() {
-
-
-    this.UserService.getInfosUser().subscribe(response => {
+    this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = response[0];
-      console.log(this.user);
+      console.log(this.user,this.userId);
       return this.user;
     });
 
-    this.PublicationService.getPublications().subscribe(response => {
+    this.PublicationService.getPublications(this.userId).subscribe(response => {
       this.publication = response;
-      console.log(this.publication);
+      console.log(this.publication,this.userId);
       return this.publication;
     });
 
-    this.FriendService.getFriendList().subscribe(response => {
+    this.FriendService.getFriendList(this.userId).subscribe(response => {
       this.friends = response;
       console.log(this.friends);
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
     });
 
-    this.ProService.getNumberAbonnementUser().subscribe(response => {
+    this.ProService.getNumberAbonnementUser(this.userId).subscribe(response => {
       this.abonnement = response[0]['COUNT(*)'];
       console.log(this.abonnement);
       return this.abonnement;
     });
   }
 
+
   async editing() {
     const modal = await this.modalController.create({
       component: EditProfileComponent,
       componentProps: {
         'user': this.user,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
+
+  async editingUserImage() {
+    const modal = await this.modalController.create({
+      component: UploadPictureComponent,
+      componentProps: {
+        'param': 'user',
         'profilPic': 'noOneForMoment',
       }
     });
@@ -128,6 +157,13 @@ export class ProfileComponent implements OnInit {
         icon: 'create-outline',
         handler: () => {
           this.editing();
+        }
+      },
+      {
+        text: "Modifié l'image profil",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingUserImage();
         }
       }, {
         text: 'Paramètres',
@@ -147,4 +183,51 @@ export class ProfileComponent implements OnInit {
     });
     await actionSheet.present();
   }
+
+  publicationDislike(id){
+    this.PublicationService.dislikePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication,this.userId);
+        return this.publication;
+      });
+    });
+  }
+
+  publicationLike(id){
+    this.PublicationService.likePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = response;
+        console.log(this.publication,this.userId);
+        return this.publication;
+      });
+    });
+  }
+
+  checkFriend(){
+    this.isNotFriend = false
+    this.isFriendCours = false
+    this.isFriend = false
+      this.FriendService.checkFriend(this.userId).subscribe(response => {
+        if(response == true){
+          this.isNotFriend = false
+          this.isFriendCours = false
+          this.isFriend = true
+        }else if(response == 'cour'){
+          this.isNotFriend = false
+          this.isFriendCours = true
+          this.isFriend = false
+        }else if(response == false){
+          this.isNotFriend = true
+          this.isFriendCours = false
+          this.isFriend = false
+        }
+      });
+  }
+  addFriend(){
+    this.FriendService.addFriend(this.userId).subscribe(response => {
+      this.checkFriend()
+    });
+  }
+
 }
