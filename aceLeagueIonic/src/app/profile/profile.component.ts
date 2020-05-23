@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
   // Friends
   friends: object;
   friendsNumber: number = 0;
-  isNotFriend:boolean = true
+  isNotFriend:boolean = false
   isFriendCours:boolean = false
   isFriend:boolean = false
 
@@ -85,8 +85,11 @@ export class ProfileComponent implements OnInit {
       console.log(this.userId)
       if(this.userId != null){
         this.isOtherUser = false;
-      //  this.checkFriend()
+        this.checkFriend()
       }else{
+        this.isNotFriend = false
+        this.isFriendCours = false
+        this.isFriend = false
         this.isOtherUser = true;
       }
       console.log(this.userId)
@@ -97,8 +100,6 @@ export class ProfileComponent implements OnInit {
 
 
   getDataProfile() {
-
-
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = response[0];
       console.log(this.user,this.userId);
@@ -200,6 +201,32 @@ export class ProfileComponent implements OnInit {
         console.log(this.publication,this.userId);
         return this.publication;
       });
+    });
+  }
+
+  checkFriend(){
+    this.isNotFriend = false
+    this.isFriendCours = false
+    this.isFriend = false
+      this.FriendService.checkFriend(this.userId).subscribe(response => {
+        if(response == true){
+          this.isNotFriend = false
+          this.isFriendCours = false
+          this.isFriend = true
+        }else if(response == 'cour'){
+          this.isNotFriend = false
+          this.isFriendCours = true
+          this.isFriend = false
+        }else if(response == false){
+          this.isNotFriend = true
+          this.isFriendCours = false
+          this.isFriend = false
+        }
+      });
+  }
+  addFriend(){
+    this.FriendService.addFriend(this.userId).subscribe(response => {
+      this.checkFriend()
     });
   }
 

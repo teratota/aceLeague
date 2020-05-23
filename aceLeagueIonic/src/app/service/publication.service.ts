@@ -59,4 +59,12 @@ export class PublicationService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"dislike/publication", {token: token, publication: id})
   }
+  getCommentaire(id){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"commentaire", {token: token, publication: id})
+  }
+  addCommentaire(id,data){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"commentaire", {token: token, publication: id, form:data})
+  }
 }

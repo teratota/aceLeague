@@ -44,7 +44,7 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     sequelize.query('Insert into friend (ref_id_user_principal,ref_id_user_friend,validate) values ($idPrincipal,$idFriend,0) ',
-      { bind: { idPrincipal: userId , idFriend: req.body.friend}, type: sequelize.QueryTypes.SELECT }
+      { bind: { idPrincipal: userId , idFriend: req.body.user}, type: sequelize.QueryTypes.INSERT }
     ).then(function(friend) {
   console.log(friend)
     if (friend) {
@@ -52,7 +52,8 @@ module.exports = {
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
-  }).catch(function(err) {      
+  }).catch(function(err) {  
+      console.log(err)    
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   }
@@ -103,7 +104,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-    sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 0',
+    sequelize.query('Select user.username, user.bio, friend.id,friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 0',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
   console.log(friend)
@@ -116,6 +117,53 @@ module.exports = {
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   }
+  },
+  checkFriend: function(req, res){
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+	console.log(userId)
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+    asyncLib.waterfall([
+      function(done) {
+    sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 1 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 1',
+      { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(friend) {
+  console.log(friend)
+    if (friend[0]['COUNT(*)']==1) {
+        res.status(201).json(true);
+      } else {
+        done(null)
+      }
+  }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  },
+  function(done) {
+    sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 0 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 0',
+      { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(friend) {
+  console.log(friend)
+    if (friend[0]['COUNT(*)']==1) {
+        res.status(201).json('cour');
+      } else {
+        done(null)
+      }
+  }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  },
+  ], 
+  function(pro) {
+  if (pro == null) {
+    return res.status(201).json(false);
+  } else {
+    return res.status(500).json({ 'error': 'cannot update user profile' });
   }
-  
+});
 }
+}
+}
+
+

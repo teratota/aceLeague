@@ -31,6 +31,7 @@ exports.router = (function() {
   apiRouter.route('/users/newfriend/').post(friendCtrl.addNewUserFriend);
   apiRouter.route('/users/validatefriend/').post(friendCtrl.ValidateNewUserFriend);
   apiRouter.route('/users/listvalidatefriend/').post(friendCtrl.getListValidateNewUserFriend);
+  apiRouter.route('/users/friend/check/').post(friendCtrl.checkFriend);
 
   
   // Publications

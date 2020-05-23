@@ -86,6 +86,7 @@
                     <div class="button" (click)="publicationLike(publications.id)">
                       <ion-col size="1">
                         <ion-icon name="heart-outline" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
                       </ion-col>
                     </div>
                   </div>
@@ -93,19 +94,22 @@
                       <div class="button" (click)="publicationDislike(publications.id)">
                         <ion-col size="1">
                           <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                          <span>{{publications.likeMax}}</span>
                         </ion-col>
                       </div>
                   </div>
                   <div class="button" (click)="publicationReply()">
                     <ion-col size="1">
                       <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                      <span>{{publications.commentaireMax}}</span>
                     </ion-col>
                   </div>
-                  <div class="button" (click)="sharing()">
+
+                  <!-- <div class="button" (click)="sharing()">
                     <ion-col size="1">
                       <ion-icon name="share-social-outline" size="large"></ion-icon>
                     </ion-col>
-                  </div>
+                  </div> -->
                 </ion-row>
               </ion-grid>
             </div>
