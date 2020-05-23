@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { GroupeService } from '../service/groupe.service';
 import { EditGroupeComponent } from '../edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
+import { CommentaireComponent } from '../commentaire/commentaire.component';
 
 @Component({
   selector: 'app-groupe',
@@ -156,6 +157,18 @@ export class GroupeComponent implements OnInit {
         return this.publication;
       });
     });
+  }
+
+  async commentaireModal(id) {
+    console.log("sjjqhdqd")
+    const modal = await this.modalController.create({
+      component: CommentaireComponent,
+      componentProps: {
+        'param': id,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
   }
 
 }

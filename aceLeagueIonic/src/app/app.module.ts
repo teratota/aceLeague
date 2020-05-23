@@ -35,6 +35,7 @@ import { GroupeComponent } from './groupe/groupe.component';
 import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
 import { EditProComponent } from './edit-pro/edit-pro.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
+import { CommentaireComponent } from './commentaire/commentaire.component';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -63,7 +64,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     GroupeComponent,
     EditGroupeComponent,
     EditProComponent,
-    UploadPictureComponent
+    UploadPictureComponent,
+    CommentaireComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],

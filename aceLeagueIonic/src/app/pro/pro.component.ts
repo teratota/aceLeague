@@ -6,6 +6,7 @@ import { getLocaleDateFormat } from '@angular/common';
 import { ProService } from '../service/pro.service';
 import { EditProComponent } from '../edit-pro/edit-pro.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
+import { CommentaireComponent } from '../commentaire/commentaire.component';
 
 @Component({
   selector: 'app-pro',
@@ -171,5 +172,16 @@ export class ProComponent implements OnInit {
         return this.publication;
       });
     });
+  }
+
+  async commentaireModal(id) {
+    const modal = await this.modalController.create({
+      component: CommentaireComponent,
+      componentProps: {
+        'param': id,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
   }
 }

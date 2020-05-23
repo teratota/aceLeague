@@ -44,8 +44,8 @@ exports.router = (function() {
   apiRouter.route('/publication/groupe/').post(publicationCtrl.getGroupePublications);
 
   // Commentaire
-  apiRouter.route('/commentaire/new/').post(commentaireCtrl.addCommentaire);
-  apiRouter.route('/commentaire/').get(commentaireCtrl.listCommentaire);
+  apiRouter.route('/commentaire/add/').post(commentaireCtrl.addCommentaire);
+  apiRouter.route('/commentaire').post(commentaireCtrl.listCommentaire);
 
   // Likes
   apiRouter.route('/like/publication').post(likesCtrl.likePublication);
