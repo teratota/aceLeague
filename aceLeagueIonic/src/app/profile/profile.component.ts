@@ -1,13 +1,15 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditProfileComponent } from './../edit-profile/edit-profile.component';
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, PopoverController } from '@ionic/angular';
 import { UserService } from 'src/app/service/user.service';
 import { PublicationService } from 'src/app/service/publication.service';
 import { FriendService } from 'src/app/service/friend.service';
 import { ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
+import { RegisterComponent } from '../register/register.component';
+import { CommentaireComponent } from '../commentaire/commentaire.component';
 
 
 @Component({
@@ -75,7 +77,8 @@ export class ProfileComponent implements OnInit {
     public actionSheetController: ActionSheetController,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private ProService: ProService
+    private ProService: ProService,
+    public popoverController: PopoverController
     ) { }
 
 
@@ -230,4 +233,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  async commentaireModal(id) {
+    const modal = await this.modalController.create({
+      component: CommentaireComponent,
+      componentProps: {
+        'param': id,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    return await modal.present();
+  }
 }

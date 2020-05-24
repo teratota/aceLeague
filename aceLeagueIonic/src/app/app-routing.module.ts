@@ -22,6 +22,8 @@ import { GroupeComponent } from './groupe/groupe.component';
 import { EditProComponent } from './edit-pro/edit-pro.component';
 import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
+import { CommentaireComponent } from './commentaire/commentaire.component';
+import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
@@ -45,7 +47,9 @@ const routes: Routes = [
   { path : 'groupe', component : GroupeComponent},
   { path : 'editPro', component : EditProComponent},
   { path : 'editGroupe', component : EditGroupeComponent},
-  { path : 'uploadPicture', component : UploadPictureComponent}
+  { path : 'uploadPicture', component : UploadPictureComponent},
+  { path : 'commentaire', component : CommentaireComponent},
+  { path : 'listfriendnotvalidate', component : ListUnvalidateFriendComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

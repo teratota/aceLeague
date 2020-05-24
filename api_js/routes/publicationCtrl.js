@@ -176,6 +176,26 @@ module.exports = {
         .catch(function(err) {
           return res.status(500).json({ 'error': 'unable to find friends' });
         });
+      },function(friendFound,proFound,done) {
+        sequelize.query('Select user.username, user.bio, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1',
+          { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+        ).then(function(friendP) {
+       let x = friendFound.length;
+       if(friendP.lenght != 0){
+        for (let index = 0; index < friendP.length; index++) {
+          console.log(friendFound.lenght)
+          friendFound[friendFound.length] = {
+            ref_id_user_friend:friendP[index].ref_id_user_principal,
+            username:friendP[index].username,
+            bio:friendP[index].bio
+          }
+        }
+       } 
+       done(null, friendFound,proFound);
+      }).catch(function(err) {      
+          console.log(err)
+          res.status(500).json({ 'error': 'cannot fetch friends' });
+        })
       },
       function(friendFound,proFound, done) {
         let friendList = "";

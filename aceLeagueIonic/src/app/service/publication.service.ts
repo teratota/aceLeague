@@ -65,6 +65,6 @@ export class PublicationService {
   }
   addCommentaire(id,data){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"commentaire", {token: token, publication: id, form:data})
+    return this.http.post(this.configUrl+"commentaire/add", {token: token, publication: id, form:data})
   }
 }

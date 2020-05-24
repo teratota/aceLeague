@@ -2,6 +2,7 @@
 var models   = require('../models');
 var asyncLib = require('async');
 var jwtUtils = require('../utils/jwt.utils');
+const sequelize = require('../models/index')
 
 
 module.exports = {
@@ -21,7 +22,8 @@ module.exports = {
        } else {
          res.status(404).json({ 'error': 'commentaire not found' });
        }
-   }).catch(function(err) {      
+   }).catch(function(err) {    
+     console.log(err)  
        res.status(500).json({ 'error': 'cannot fetch commentaire' });
      })
    }
@@ -33,16 +35,17 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }
-    sequelize.query('Select commentaire.*, user.user from commentaire inner join user on commentaire.ref_id_user = user.id where commentaire.ref_id_publication = $id ',
+    sequelize.query('Select commentaire.*, user.username from commentaire inner join user on commentaire.ref_id_user = user.id where commentaire.ref_id_publication = $id ',
        { bind: { id: req.body.publication}, type: sequelize.QueryTypes.SELECT }
-    ).then(function(friend) {
-      console.log(groupe)
-      if (groupe) {
-        res.status(201).json(groupe);
+    ).then(function(commentaire) {
+      console.log(commentaire)
+      if (commentaire) {
+        res.status(201).json(commentaire);
       } else {
         res.status(404).json({ 'error': 'commentaire not found' });
       }
     }).catch(function(err) {      
+      console.log(err) 
       res.status(500).json({ 'error': 'cannot fetch commentaire' });
     })
   }

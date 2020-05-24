@@ -1,0 +1,9 @@
+<ion-content>
+  <div *ngFor="let friend of friends">
+    <ion-item>
+      <span>{{friend.username}} vous a demandé en ami</span>
+      <ion-button (click)="accepted(friend.id)">Valider</ion-button>
+      <ion-button (click)="refused(friend.id)">Refuser</ion-button>
+    </ion-item>
+  </div>
+</ion-content>
