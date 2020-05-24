@@ -56,14 +56,11 @@ module.exports = {
 
   deleteGroupe2user: function(req, res){
     sequelize.query('Delete from groupe2user where ref_id_user = $idUser and ref_id_groupe = $idGroupe',
-    { bind: { idUser:req.body.user, idGroupe: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+    { bind: { idUser:req.body.user, idGroupe: req.body.groupe }, type: sequelize.QueryTypes.DELETE }
     ).then(function(groupe) {
-      if (groupe) {
           res.status(201).json(true);
-      } else {
-          res.status(404).json({ 'error': 'groupe not found' });
-      }
     }).catch(function(err) {      
+        console.log(err);
         res.status(500).json({ 'error': 'cannot delete groupe' });
     })
   },
@@ -74,6 +71,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
+      if(req.body.user == null){
       sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
       { bind: { 
         ref_id_user: userId,
@@ -87,6 +85,21 @@ module.exports = {
         console.log(err);
         return res.status(500).json({ 'error': 'cannot add user' });
       });
+    }else{
+      sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
+      { bind: { 
+        ref_id_user: req.body.user,
+        ref_id_groupe: req.body.groupe
+       }, type: sequelize.QueryTypes.INSERT }
+      )
+      .then(function(groupe) {
+          res.status(201).json(true);
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+    }
     }
   },
   groupe2userNumberUser: function(req, res){
@@ -108,6 +121,98 @@ module.exports = {
               res.status(500).json({ 'error': 'cannot fetch groupe2user' });
             })
           }
+  },
+  getListUserInGroupe2User: function(req, res){
+    var headerAuth  = req.body.token;
+          var userId      = jwtUtils.getUserId(headerAuth);
+          if(userId<0){
+            res.status(404).json({ 'error': 'wrong token' });
+          }else{
+            sequelize.query('Select user.id, user.username From groupe2user Inner Join user On groupe2user.ref_id_user = user.id WHERE groupe2user.ref_id_groupe = $groupe and groupe2user.ref_id_user != $id ',
+              { bind: { groupe: req.body.groupe, id:userId }, type: sequelize.QueryTypes.SELECT }
+            ).then(function(groupe) {
+              console.log(groupe)
+              if (groupe) {
+                res.status(201).json(groupe);
+              } else {
+                res.status(404).json({ 'error': 'groupe2user to found' });
+              }
+            }).catch(function(err) {      
+              console.log(err)
+              res.status(500).json({ 'error': 'cannot fetch groupe2user' });
+            })
+          }
+  },
+  getListUserInGroupe2UserIsNot: function(req, res){
+    var headerAuth  = req.body.token;
+    var userId      = jwtUtils.getUserId(headerAuth);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
+      asyncLib.waterfall([
+        function(done) {
+          sequelize.query('Select user.id, user.username From groupe2user Inner Join user On groupe2user.ref_id_user = user.id WHERE groupe2user.ref_id_groupe = $groupe',
+              { bind: { groupe: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+            ).then(function(groupe) {
+              console.log(groupe)
+              done(null,groupe)
+            }).catch(function(err) {      
+              res.status(500).json({ 'error': 'cannot fetch groupe2user' });
+            })
+        },
+        function(groupe, done) {
+          let userList = '';
+          if(groupe.length != 0){
+            for (let i = 0; i < groupe.length; i++) {
+              if (i == 0) {
+                userList += groupe[i].id;
+              }
+              else
+              userList += "," + groupe[i].id;
+            }
+          }
+          userList = '(' + userList + ')'
+          sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1 and friend.ref_id_user_friend not in '+userList,
+      { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+        ).then(function(friend) {
+        console.log(friend)
+          done(null,friend,userList)
+        }).catch(function(err) {      
+          console.log(err)
+            res.status(500).json({ 'error': 'cannot fetch friends' });
+          })
+        },
+        function(friend,userList,done) {
+          sequelize.query('Select user.username, user.bio, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1 and friend.ref_id_user_principal not in '+userList,
+            { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+          ).then(function(friendP) {
+        let x = friend.length;
+        if(friendP.lenght != 0){
+          for (let index = 0; index < friendP.length; index++) {
+            console.log(friend.lenght)
+            friend[friend.length] = {
+              ref_id_user_friend:friendP[index].ref_id_user_principal,
+              username:friendP[index].username,
+              bio:friendP[index].bio
+            }
+          }
+        } 
+        done(friend) 
+        }).catch(function(err) {      
+            console.log(err)
+            res.status(500).json({ 'error': 'cannot fetch friends' });
+          })
+        },
+        ], 
+        function(friend) {
+        if (friend) {
+          return res.status(201).json(friend);
+        } else {
+          return res.status(500).json({ 'error': 'cannot update user profile' });
+        }
+  });
   }
+  },
+
   
 }

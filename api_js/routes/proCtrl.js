@@ -65,7 +65,7 @@ module.exports = {
             if(req.body.file != ''){
               nameFile = r;
             }
-            var newUser = sequelize.query('INSERT INTO pro (ref_id_user,nom,type,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$type,$description,$image,NOW(),NOW())',
+            sequelize.query('INSERT INTO pro (ref_id_user,nom,type,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$type,$description,$image,NOW(),NOW())',
             { bind: { 
               ref_id_user: userId,
               nom: req.body.form.nom,

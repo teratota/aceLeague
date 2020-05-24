@@ -43,6 +43,8 @@ module.exports = {
       if(req.body.file != ''){
         nameFile = r;
       }
+      asyncLib.waterfall([
+        function(done) {
       var newUser = sequelize.query('INSERT INTO groupe (ref_id_user,nom,private,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$private,$description,$image,NOW(),NOW())',
       { bind: { 
         ref_id_user: userId,
@@ -55,7 +57,7 @@ module.exports = {
       .then(function(newUser) {
         if(req.body.file != ''){
           fs.writeFile('./files/groupe/'+r, req.body.file, function (err) {
-            res.status(201).json('test');
+           done(null)
           });
         }else{
           res.status(201).json('test');
@@ -65,6 +67,47 @@ module.exports = {
         console.log(err);
         return res.status(500).json({ 'error': 'cannot add user' });
       });
+      },
+      function(done) {
+        sequelize.query('SELECT id from groupe where ref_id_user = $ref_id_user and nom = $nom and private = $private and description = $description  ',
+      { bind: { 
+        ref_id_user: userId,
+        nom: req.body.form.nom,
+        private: req.body.form.private,
+        description: req.body.form.description,
+       }, type: sequelize.QueryTypes.SELECT }
+      )
+      .then(function(groupe) {
+          done(null,groupe)
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+      },
+      function(groupe,done) {
+        console.log(groupe)
+        sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
+      { bind: { 
+        ref_id_user: userId,
+        ref_id_groupe: groupe[0].id
+       }, type: sequelize.QueryTypes.INSERT }
+      )
+      .then(function(groupe) {
+          res.status(201).json(true);
+      })
+      .catch(function(err) {
+        console.log(err);
+        return res.status(500).json({ 'error': 'cannot add user' });
+      });
+      },
+    ], function(groupe) {
+      if (groupe) {
+        return res.status(201).json(groupe);
+      } else {
+        return res.status(500).json({ 'error': 'cannot update user profile' });
+      }
+    });
     }
   },
   updateGroupe: function(req, res) {
@@ -196,7 +239,54 @@ module.exports = {
     })
   }
   },
-
+  getMyGroupePrive: function(req, res) {
+    var headerAuth  = req.body.token;
+  var userId      = jwtUtils.getUserId(headerAuth);
+  if(userId<0){
+    res.status(404).json({ 'error': 'wrong token' });
+  }else{
+    sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 1',
+      { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      console.log(groupe)
+      if (groupe.image != null) { 
+        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
+        groupe.image = file
+      }
+      if (groupe) {
+        res.status(201).json(groupe);
+      } else {
+        res.status(404).json({ 'error': 'friend not found' });
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  }
+  },
+  getMyGroupePublic: function(req, res) {
+    var headerAuth  = req.body.token;
+  var userId      = jwtUtils.getUserId(headerAuth);
+  if(userId<0){
+    res.status(404).json({ 'error': 'wrong token' });
+  }else{
+    sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 0',
+      { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+    ).then(function(groupe) {
+      console.log(groupe)
+      if (groupe.image != null) { 
+        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
+        groupe.image = file
+      }
+      if (groupe) {
+        res.status(201).json(groupe);
+      } else {
+        res.status(404).json({ 'error': 'friend not found' });
+      }
+    }).catch(function(err) {      
+      res.status(500).json({ 'error': 'cannot fetch friends' });
+    })
+  }
+  },
   deleteGroupe: function(req, res) {
     sequelize.query('Delete from groupe where id = $id and ref_id_user = $userId',
     { bind: { userId:userId, id: req.body.id }, type: sequelize.QueryTypes.SELECT }

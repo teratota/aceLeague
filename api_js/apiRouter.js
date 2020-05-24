@@ -75,7 +75,7 @@ exports.router = (function() {
   apiRouter.route('/groupe/add').post(groupeCtrl.addGroupe)
   apiRouter.route('/groupe/update/image').post(groupeCtrl.updateGroupeImage)
   apiRouter.route('/groupe/update').post(groupeCtrl.updateGroupe)
-
+  
 
   // Groupe2User
   apiRouter.route('/groupe2user/getlist').post(groupe2userCtrl.getListGroup2User);
@@ -83,6 +83,8 @@ exports.router = (function() {
   apiRouter.route('/groupe2user/check').post(groupe2userCtrl.checkGroupe2User)
   apiRouter.route('/groupe2user/delete').post(groupe2userCtrl.deleteGroupe2user)
   apiRouter.route('/groupe2user/number/user').post(groupe2userCtrl.groupe2userNumberUser)
+  apiRouter.route('/groupe2user/list/user').post(groupe2userCtrl.getListUserInGroupe2User)
+  apiRouter.route('/groupe2user/list/userfriend/isnot').post(groupe2userCtrl.getListUserInGroupe2UserIsNot)
 
   //Chat
   apiRouter.route('/chat/add').post(chatCtrl.addChat);

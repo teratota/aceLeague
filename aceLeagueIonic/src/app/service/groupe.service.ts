@@ -49,20 +49,28 @@ export class GroupeService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe2user/getlist",{token: token});
   }
-  groupe2UserAdd(groupe){
+  groupe2UserAdd(groupe,user=null){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"groupe2user/add",{groupe:groupe,token: token});
+    return this.http.post(this.configUrl+"groupe2user/add",{groupe:groupe,user:user,token: token});
   }
   groupe2UserCheck(groupe){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe2user/check",{groupe:groupe,token: token});
   }
-  groupe2userDelete(groupe){
+  groupe2userDelete(groupe,user){
     let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"groupe2user/delete",{groupe:groupe,token: token});
+    return this.http.post(this.configUrl+"groupe2user/delete",{groupe:groupe,user:user,token: token});
   }
   groupe2userNumberUser(groupe){
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"groupe2user/number/user",{groupe:groupe,token: token});
+  }
+  groupe2userListUser(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/list/user",{groupe:groupe,token: token});
+  }
+  groupe2userFriendListUserIsNot(groupe){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe2user/list/userfriend/isnot",{groupe:groupe,token: token});
   }
 }

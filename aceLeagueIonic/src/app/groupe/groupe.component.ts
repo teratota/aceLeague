@@ -7,6 +7,7 @@ import { GroupeService } from '../service/groupe.service';
 import { EditGroupeComponent } from '../edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
+import { EditUserGroupeComponent } from '../edit-user-groupe/edit-user-groupe.component';
 
 @Component({
   selector: 'app-groupe',
@@ -23,6 +24,9 @@ export class GroupeComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute
     ) { }
+
+    // Modal
+  currentModal = null;
 
     groupe:object = {
       nom:'',
@@ -95,7 +99,7 @@ export class GroupeComponent implements OnInit {
     });
   }
 
-  async editingPro() {
+  async editingGroupe() {
     const modal = await this.modalController.create({
       component: EditGroupeComponent,
       componentProps: {
@@ -103,10 +107,11 @@ export class GroupeComponent implements OnInit {
         'profilPic': 'noOneForMoment',
       }
     });
+    this.currentModal = modal;
     return await modal.present();
   }
 
-  async editingProImage() {
+  async editingGroupeImage() {
     const modal = await this.modalController.create({
       component: UploadPictureComponent,
       componentProps: {
@@ -115,7 +120,20 @@ export class GroupeComponent implements OnInit {
         'profilPic': 'noOneForMoment',
       }
     });
-    return await modal.present();
+    this.currentModal = modal;
+    await modal.present();
+  }
+
+  async editingUserGroupe() {
+    const modal = await this.modalController.create({
+      component: EditUserGroupeComponent,
+      componentProps: {
+        'data': this.groupeId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    this.currentModal = modal;
+    await modal.present();
   }
 
   async choiceAction() {
@@ -125,13 +143,20 @@ export class GroupeComponent implements OnInit {
         text: 'Modifié profil du Groupe',
         icon: 'create-outline',
         handler: () => {
-          this.editingPro();
+          this.editingGroupe();
         }
       }, {
         text: "Modifié l'image de profil du Groupe",
         icon: 'create-outline',
         handler: () => {
-          this.editingProImage();
+          this.editingGroupeImage();
+        }
+      },
+      {
+        text: "Gestion des Utilisateurs",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingUserGroupe();
         }
       }
     ]
@@ -166,9 +191,19 @@ export class GroupeComponent implements OnInit {
       componentProps: {
         'param': id,
         'profilPic': 'noOneForMoment',
-      }
+      },
     });
+    this.currentModal = modal;
     return await modal.present();
   }
 
+  dismissModal() {
+    if (this.currentModal) {
+      this.currentModal.dismiss().then(() => {
+        console.log('dissmiss')
+        this.getData()
+         this.currentModal = null; 
+        });
+    }
+  }
 }
