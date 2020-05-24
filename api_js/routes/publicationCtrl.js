@@ -48,28 +48,26 @@ module.exports = {
     },
     function(publication, publicationList, done) {
       sequelize.query('SELECT * from `like` where ref_id_user = $id and ref_id_publication in '+ publicationList,
-          { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
-          ).then(function(like) {
-            console.log()
-            for (let i = 0; i < publication.length; i++) {
-              console.log(like)
-              publication[i].like = true
-              if(like.length != 0){
-                for(let x = 0; x < like.length; x++){
-                  if(like[x].ref_id_publication == publication[i].id){
-                    publication[i].like = true
-                  }else if(publication[i].like != true){
-                    publication[i].like = false
+            { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
+            ).then(function(like) {
+              for (let i = 0; i < publication.length; i++) {
+                if(like.length != 0){
+                  for(let x = 0; x < like.length; x++){
+                    if(like[x].ref_id_publication == publication[i].id){
+                      publication[i].like = true
+                    }else if(publication[i].like != true){
+                      publication[i].like = false
+                    }
                   }
+                }else{
+                  publication[i].like = false
                 }
-              }else{
-                publication[i].like = false
               }
-            }
-            done(null,publication,publicationList)
-          }).catch(function(err) {
-            res.status(500).json({ 'error': 'cannot fetch publications' });
-          })
+              
+              done(null,publication,publicationList)
+            }).catch(function(err) {
+              res.status(500).json({ 'error': 'cannot fetch publications' });
+            })
         },
         function(publication, publicationList, done) {
           sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
