@@ -17,7 +17,6 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var OtherUser = cryptoUtils.decrypt(req.body.user);
-	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -29,7 +28,6 @@ module.exports = {
     sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
-  console.log(friend)
     done(null,friend)
   }).catch(function(err) {      
       res.status(500).json({ 'error': 'cannot fetch friends' });
@@ -42,7 +40,6 @@ module.exports = {
    let x = friend.length;
    if(friendP.lenght != 0){
     for (let index = 0; index < friendP.length; index++) {
-      console.log(friend.lenght)
       friend[friend.length] = {
         ref_id_user_friend:friendP[index].ref_id_user_principal,
         username:friendP[index].username,
@@ -71,21 +68,18 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var user = cryptoUtils.decrypt(req.body.user);
-	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     sequelize.query('Insert into friend (ref_id_user_principal,ref_id_user_friend,validate) values ($idPrincipal,$idFriend,0) ',
       { bind: { idPrincipal: userId , idFriend: user}, type: sequelize.QueryTypes.INSERT }
     ).then(function(friend) {
-  console.log(friend)
     if (friend) {
         res.status(201).json(true);
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
   }).catch(function(err) {  
-      console.log(err)    
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   }
@@ -96,7 +90,6 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var id = cryptoUtils.decrypt(req.body.id);
-	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -104,21 +97,18 @@ module.exports = {
         sequelize.query('Update friend set validate = 1 where id = $id ',
         { bind: { id: id }, type: sequelize.QueryTypes.UPDATE }
         ).then(function(friend) {
-          console.log(friend)
           if (friend) {
             res.status(201).json(true);
           } else {
             res.status(404).json({ 'error': 'friend not found' });
           }
         }).catch(function(err) {      
-            console.log(err)
             res.status(500).json({ 'error': 'cannot fetch friends' });
         })
     }else{
         sequelize.query('Delete from friend where id = $id',
         { bind: { id: id }, type: sequelize.QueryTypes.DELETE }
       ).then(function(friend) {
-        console.log(friend)
         if (friend) {
             res.status(201).json(true);
         } else {
@@ -136,14 +126,12 @@ module.exports = {
       //list pas valider
       var headerAuth  = JSON.parse(cryptoUtils.decrypt(req.body.token));
     var userId      = jwtUtils.getUserId(headerAuth);
-	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     sequelize.query('Select user.username, friend.id,friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 0',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
-  console.log(friend)
     if (friend) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(friend)));
       } else {
@@ -159,7 +147,6 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var user = cryptoUtils.decrypt(req.body.user);
-	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -168,7 +155,6 @@ module.exports = {
     sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 1 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 1',
       { bind: { id: userId, idFriend: user }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
-  console.log(friend)
     if (friend[0]['COUNT(*)']==1) {
         res.status(201).json(true);
       } else {
@@ -182,7 +168,6 @@ module.exports = {
     sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 0 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 0',
       { bind: { id: userId, idFriend: user }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
-  console.log(friend)
     if (friend[0]['COUNT(*)']==1) {
         res.status(201).json('cour');
       } else {

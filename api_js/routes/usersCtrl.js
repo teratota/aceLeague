@@ -70,7 +70,6 @@ module.exports = {
         });
       },
       function(userFound, done) {
-        console.log(userFound);
         if (userFound = "[]") {
           bcrypt.hash(password, 5, function( err, bcryptedPassword ) {
             done(null, userFound, bcryptedPassword);
@@ -87,7 +86,6 @@ module.exports = {
         if(file != ''){
           nameFile = r;
         }
-        console.log(nameFile);
         var newUser = sequelize.query('INSERT INTO user (email,username,password,bio,image,level,sport,sportDescription,isAdmin,createdAt,updatedAt) VALUES ($email,$username,$password,$bio,$image,$level,$sport,$sportDescription,$isAdmin,NOW(),NOW())',
         { bind: { 
           email: email,
@@ -137,11 +135,9 @@ module.exports = {
   },
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   login: function(req, res) {
-    console.log(req.body);
     // Params
     data = cryptoUtils.decrypt(req.body.data)
     data = JSON.parse(data)
-    console.log(data);
     var email    = data.email;
     var password = data.password;
     if (req.method == "OPTIONS")
@@ -154,7 +150,6 @@ module.exports = {
       console.log('erreur 404');
       return res.status(400).json({ 'error': 'missing parameters' });
     }
-    console.log('hello');
 
     asyncLib.waterfall([
       function(done) {
@@ -187,7 +182,6 @@ module.exports = {
       }
     ], function(userFound) {
       if (userFound) {
-		 console.log(userFound);
         return res.status(201).json({
           'token': jwtUtils.generateTokenForUser(userFound)
         });
@@ -208,11 +202,9 @@ module.exports = {
       if(otherUser!= ''){
         userId = otherUser
       }
-      console.log(userId);
     var user = sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
-      console.log('hello')
       for (let i = 0; i < user.length; i++) {
             
         if (user[i].image != null) {
@@ -321,14 +313,12 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     let data = JSON.parse(cryptoUtils.decrypt(req.body.data));
-    console.log(data)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
       sequelize.query('Select id, username From user WHERE username LIKE $nom',
       { bind: { nom: '%'+data+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
-      console.log(user)
       if (user) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(user)));
       } else {

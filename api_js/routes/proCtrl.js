@@ -25,7 +25,6 @@ module.exports = {
         sequelize.query('Select id, nom From pro WHERE nom LIKE $nom',
           { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
         ).then(function(pro) {
-          console.log(pro)
           if (pro) {
             res.status(201).json(cryptoUtils.encrypt(JSON.stringify(pro)));
           } else {
@@ -47,7 +46,6 @@ module.exports = {
           sequelize.query('Select id, nom From pro WHERE ref_id_user = $userId',
             { bind: { userId: userId }, type: sequelize.QueryTypes.SELECT }
           ).then(function(pro) {
-            console.log(pro)
             if (pro) {
               res.status(201).json(cryptoUtils.encrypt(JSON.stringify(pro)));
             } else {
@@ -194,7 +192,6 @@ module.exports = {
           sequelize.query('Select * From pro WHERE id = $id',
             { bind: { id: pro }, type: sequelize.QueryTypes.SELECT }
           ).then(function(pro) {
-            console.log(pro)
             if (pro[0].image != null) { 
               let file = fs.readFileSync ('./files/pro/' + pro[0].image,  'utf8' );
               pro[0].image = file
@@ -241,7 +238,6 @@ module.exports = {
             sequelize.query('Select COUNT(*) From abonnement WHERE ref_id_pro = $id',
               { bind: { id: pro }, type: sequelize.QueryTypes.SELECT }
             ).then(function(pro) {
-              console.log(pro)
               if (pro) {
                 res.status(201).json(cryptoUtils.encrypt(JSON.stringify(pro)));
               } else {
@@ -266,7 +262,6 @@ module.exports = {
             sequelize.query('Select COUNT(*) From abonnement WHERE ref_id_user = $id',
               { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
             ).then(function(pro) {
-              console.log(pro)
               if (pro) {
                 res.status(201).json(cryptoUtils.encrypt(JSON.stringify(pro)));
               } else {
@@ -295,7 +290,6 @@ module.exports = {
                 res.status(201).json(true);
             })
             .catch(function(err) {
-              console.log(err);
               return res.status(500).json({ 'error': 'cannot add user' });
             });
           }
@@ -312,7 +306,6 @@ module.exports = {
           sequelize.query('Select COUNT(*) From abonnement where ref_id_user = $userId and ref_id_pro = $idpro',
             { bind: { userId: userId, idpro: pro }, type: sequelize.QueryTypes.SELECT }
           ).then(function(pro) {
-            console.log(pro)
             if (pro[0]['COUNT(*)'] == 1) {
               res.status(201).json(true);
             } else {
@@ -334,7 +327,6 @@ module.exports = {
           sequelize.query('Select COUNT(*) From pro where ref_id_user = $userId and id = $idPro',
             { bind: { userId: userId, idPro: pro }, type: sequelize.QueryTypes.SELECT }
           ).then(function(groupe) {
-            console.log(groupe)
             if (groupe[0]['COUNT(*)'] == 1) {
               res.status(201).json(true);
             } else {

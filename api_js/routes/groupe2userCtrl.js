@@ -23,7 +23,6 @@ module.exports = {
     sequelize.query('Select groupe.id, groupe.nom From groupe2user Inner Join groupe On groupe2user.ref_id_groupe = groupe.id WHERE groupe2user.ref_id_user = $userId',
       { bind: { userId: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
@@ -45,7 +44,6 @@ module.exports = {
       sequelize.query('Select COUNT(*) From groupe2user where ref_id_user = $userId and ref_id_groupe = $idGroupe',
         { bind: { userId: userId, idGroupe: groupe }, type: sequelize.QueryTypes.SELECT }
       ).then(function(groupe) {
-        console.log(groupe)
         if (groupe[0]['COUNT(*)'] == 1) {
           res.status(201).json(true);
         } else {
@@ -70,7 +68,6 @@ module.exports = {
       ).then(function(groupe) {
             res.status(201).json(true);
       }).catch(function(err) {      
-          console.log(err);
           res.status(500).json({ 'error': 'cannot delete groupe' });
       })
     }
@@ -126,7 +123,6 @@ module.exports = {
             sequelize.query('Select COUNT(*) From groupe2user WHERE ref_id_groupe = $id',
               { bind: { id: groupe }, type: sequelize.QueryTypes.SELECT }
             ).then(function(groupe) {
-              console.log(groupe)
               if (groupe) {
                 res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
               } else {
@@ -148,7 +144,6 @@ module.exports = {
             sequelize.query('Select user.id, user.username From groupe2user Inner Join user On groupe2user.ref_id_user = user.id WHERE groupe2user.ref_id_groupe = $groupe and groupe2user.ref_id_user != $id ',
               { bind: { groupe: groupe, id:userId }, type: sequelize.QueryTypes.SELECT }
             ).then(function(groupe) {
-              console.log(groupe)
               if (groupe) {
                 res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
               } else {
@@ -174,7 +169,6 @@ module.exports = {
           sequelize.query('Select user.id, user.username From groupe2user Inner Join user On groupe2user.ref_id_user = user.id WHERE groupe2user.ref_id_groupe = $groupe',
               { bind: { groupe: groupe }, type: sequelize.QueryTypes.SELECT }
             ).then(function(groupe) {
-              console.log(groupe)
               done(null,groupe)
             }).catch(function(err) {      
               res.status(500).json({ 'error': 'cannot fetch groupe2user' });
@@ -195,7 +189,6 @@ module.exports = {
           sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1 and friend.ref_id_user_friend not in '+userList,
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
         ).then(function(friend) {
-        console.log(friend)
           done(null,friend,userList)
         }).catch(function(err) {      
           console.log(err)
@@ -209,7 +202,6 @@ module.exports = {
         let x = friend.length;
         if(friendP.lenght != 0){
           for (let index = 0; index < friendP.length; index++) {
-            console.log(friend.lenght)
             friend[friend.length] = {
               ref_id_user_friend:friendP[index].ref_id_user_principal,
               username:friendP[index].username,

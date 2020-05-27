@@ -12,7 +12,6 @@ export class UserService {
   configUrl = 'http://localhost:4444/api/';
 
   connection(data) {
-    console.log("connection");
     data = this.securityService.encode(JSON.stringify(data))
     return this.http.post(this.configUrl+"users/login", {data: data});
   }
@@ -24,7 +23,6 @@ export class UserService {
   }
 
   newUser(data,file): any {
-    console.log("newUser");
     data = this.securityService.encode(JSON.stringify(data))
     file = this.securityService.encode(JSON.stringify(file))
     return this.http.post(this.configUrl+"users/register/", {form:data, file:file});

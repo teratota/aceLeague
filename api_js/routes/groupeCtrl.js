@@ -25,7 +25,6 @@ module.exports = {
     sequelize.query('Select id, nom From groupe WHERE nom LIKE $nom and private = 0',
       { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
@@ -91,7 +90,6 @@ module.exports = {
       });
       },
       function(groupe,done) {
-        console.log(groupe)
         sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
       { bind: { 
         ref_id_user: userId,
@@ -124,7 +122,6 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      console.log(req.body.form);
       sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
       { bind: { 
         userId: userId,
@@ -138,7 +135,6 @@ module.exports = {
           res.status(201).json(true);
       })
       .catch(function(err) {
-        console.log(err);
         return res.status(500).json({ 'error': 'cannot add user' });
       });
     }
@@ -213,7 +209,6 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE id = $id',
       { bind: { id: groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe[0].image != null) { 
         let file = fs.readFileSync ('./files/groupe/' + groupe[0].image,  'utf8' );
         groupe[0].image = file
@@ -238,7 +233,6 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE ref_id_user = $id',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe.image != null) { 
         let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
         groupe.image = file
@@ -263,7 +257,6 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe.image != null) { 
         let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
         groupe.image = file
@@ -288,7 +281,6 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 0',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe.image != null) { 
         let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
         groupe.image = file
@@ -336,7 +328,6 @@ module.exports = {
     sequelize.query('Select COUNT(*) From groupe where ref_id_user = $userId and id = $idGroupe',
       { bind: { userId: userId, idGroupe: groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      console.log(groupe)
       if (groupe[0]['COUNT(*)'] == 1) {
         res.status(201).json(true);
       } else {
