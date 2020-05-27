@@ -73,7 +73,7 @@ module.exports = {
       },
       function(userFound, bcryptedPassword, done) {
         let r = Math.random().toString(36).substring(7);
-        let nameFile = null
+        let nameFile = 'fake'
         if(req.body.file != ''){
           nameFile = r;
         }

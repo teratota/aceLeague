@@ -1,3 +1,5 @@
+import { EditGroupeComponent } from './../edit-groupe/edit-groupe.component';
+import { EditProComponent } from './../edit-pro/edit-pro.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditProfileComponent } from './../edit-profile/edit-profile.component';
 import { Component, OnInit } from '@angular/core';
@@ -67,6 +69,12 @@ export class ProfileComponent implements OnInit {
       }
     }
   };
+
+  // Tabs
+  friendsTab = false;
+  groupsTab = false;
+  prosTab = false;
+  profileTab = true;
 
 
   constructor(
@@ -152,19 +160,51 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  async createNewPro() {
+    const modal = await this.modalController.create({
+      component: EditProComponent,
+      componentProps: {
+      }
+    });
+    return await modal.present();
+  }
+  
+  async createNewGroup() {
+    const modal = await this.modalController.create({
+      component: EditGroupeComponent,
+      componentProps: {
+      }
+    });
+    return await modal.present();
+  }
+
   async choiceAction() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Modification',
       buttons: [{
-        text: 'Modifié profil',
+        text: 'Modifier profil',
         icon: 'create-outline',
         handler: () => {
           this.editing();
         }
       },
       {
-        text: "Modifié l'image profil",
-        icon: 'create-outline',
+        text: 'Creer un groupe',
+        icon: 'people-outline',
+        handler: () => {
+          this.createNewGroup();
+        }
+      },
+      {
+        text: 'Creer un pro',
+        icon: 'pie-chart-outline',
+        handler: () => {
+          this.createNewPro();
+        }
+      },
+      {
+        text: 'Modifier l\'image profil',
+        icon: 'image-outline',
         handler: () => {
           this.editingUserImage();
         }
@@ -243,4 +283,43 @@ export class ProfileComponent implements OnInit {
     });
     return await modal.present();
   }
+
+  goTo(link, event) {
+    console.log(link);
+    console.log();
+
+    const Mytabs = document.getElementsByClassName('profileTab');
+
+    for (let index = 0; index < Mytabs.length; index++) {
+      Mytabs[index].className = Mytabs[index].className.replace(' active', '');
+    }
+
+    this.friendsTab = false;
+    this.groupsTab = false;
+    this.prosTab = false;
+    this.profileTab = false;
+
+    switch (link) {
+      case 'profile':
+        this.profileTab = true;
+        event.target.classList.add('active');
+        break;
+
+      case 'friends':
+        this.friendsTab = true;
+        event.target.classList.add('active');
+        break;
+
+      case 'groups':
+        this.groupsTab = true;
+        event.target.classList.add('active');
+        break;
+
+      case 'pros':
+        this.prosTab = true;
+        event.target.classList.add('active');
+        break;
+    }
+  }
+
 }

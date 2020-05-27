@@ -61,6 +61,7 @@ module.exports = {
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
+            let nameFile = 'fake';
             let r = Math.random().toString(36).substring(7);
             if(req.body.file != ''){
               nameFile = r;
