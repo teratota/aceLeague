@@ -7,6 +7,7 @@ import { PhotoService } from '../service/photo.service';
 import { ActionSheetController, Platform } from '@ionic/angular';
 import * as _ from 'lodash';
 import { GroupeService } from '../service/groupe.service';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-edit-groupe',
@@ -82,7 +83,7 @@ export class EditGroupeComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
+  constructor(private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService) {
     this.confirmation = true;
   }
   
@@ -107,7 +108,6 @@ export class EditGroupeComponent implements OnInit {
           image:'',
         })
       }else{
-        console.log(this.data)
         this.editView = true;
         this.addView = false;
         this.getData();
@@ -116,25 +116,24 @@ export class EditGroupeComponent implements OnInit {
   }
 
   checkData() {
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
     }else{
-      console.log('tgdsshbjhb')
-    console.log(this.photoService.blob)
-    console.log(this.photoService.base)
       this.GroupeService.newGroupe(this.groupeForm.value,this.photoService.base).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
         this.router.navigate(['/profile']);
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }
   }
 
   checkDataEdit() {
-    console.log(this.platform.platforms())
       this.GroupeService.updateGroupe(this.groupeFormEdit.value,this.data).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
@@ -142,18 +141,26 @@ export class EditGroupeComponent implements OnInit {
         this.editView = false;
         this.router.navigate(['groupe'], {state: {data:this.data}});
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
   }
 
   getData() {
     this.GroupeService.getGroupeInfo(this.data).subscribe(response => {
-      this.groupeEdit = response[0];
+      this.groupeEdit = JSON.parse(this.securityService.decode(response))[0];
       this.groupeFormEdit.patchValue({
         nom: this.groupeEdit.nom,
         private: this.groupeEdit.private,
         description: this.groupeEdit.description,
       })
       return this.groupeEdit;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -183,7 +190,6 @@ export class EditGroupeComponent implements OnInit {
                 this.previewImagePath = imgBase64Path;
               };
       }
-      console.log(this.file);
       reader.readAsDataURL(this.file);
      }
   }
@@ -193,7 +199,6 @@ export class EditGroupeComponent implements OnInit {
   }
 
   sendForElectron(){
-    console.log(this.groupeForm.value);
       this.imageError = null;
       if (this.file) {
           // Size Filter Bytes
@@ -221,8 +226,6 @@ export class EditGroupeComponent implements OnInit {
                   const img_height = rs.currentTarget['height'];
                   const img_width = rs.currentTarget['width'];
 
-                  console.log(img_height, img_width);
-
 
                   if (img_height > max_height && img_width > max_width) {
                       this.imageError =
@@ -242,6 +245,10 @@ export class EditGroupeComponent implements OnInit {
                           this.secondView = false;
                           this.router.navigate(['/profile']);
                           return this.config;
+                        },err => {
+                          if(err.error.error == "wrong token"){
+                            this.securityService.presentToast()
+                          }
                         });
                   }
               };
@@ -255,6 +262,10 @@ export class EditGroupeComponent implements OnInit {
             this.secondView = false;
             this.router.navigate(['/profile']);
             return this.config;
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
       }
   }

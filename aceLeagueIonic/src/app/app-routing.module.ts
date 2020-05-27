@@ -25,10 +25,16 @@ import { UploadPictureComponent } from './upload-picture/upload-picture.componen
 import { CommentaireComponent } from './commentaire/commentaire.component';
 import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
 import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HeaderComponent } from './header/header.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
+  { path : 'app', component : AppComponent},
   { path : 'register', component : RegisterComponent},
+  { path : 'navbar', component : NavbarComponent},
+  { path : 'header', component : HeaderComponent},
   { path : 'chat', component : ChatComponent},
   { path : 'listChatMessage', component : ListChatMessageComponent},
   { path : 'listCommunication', component : ListCommunicationComponent},

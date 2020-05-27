@@ -4,6 +4,7 @@ var jwtUtils  = require('../utils/jwt.utils');
 var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
+var cryptoUtils  = require('../utils/crypto.utils');
 
 // Constants
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,14 +14,15 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
 module.exports = {
 
   getUserFriend: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var OtherUser = cryptoUtils.decrypt(req.body.user);
 	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      if(req.body.user != null){
-        userId = req.body.user
+      if(OtherUser != ''){
+        userId = OtherUser
       }
     asyncLib.waterfall([
     function(done) {
@@ -57,26 +59,28 @@ module.exports = {
   ], 
   function(friend) {
   if (friend) {
-    return res.status(201).json(friend);
+    return res.status(201).json(cryptoUtils.encrypt(JSON.stringify(friend)));
   } else {
     return res.status(500).json({ 'error': 'cannot update user profile' });
   }
   });
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addNewUserFriend: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var user = cryptoUtils.decrypt(req.body.user);
 	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     sequelize.query('Insert into friend (ref_id_user_principal,ref_id_user_friend,validate) values ($idPrincipal,$idFriend,0) ',
-      { bind: { idPrincipal: userId , idFriend: req.body.user}, type: sequelize.QueryTypes.INSERT }
+      { bind: { idPrincipal: userId , idFriend: user}, type: sequelize.QueryTypes.INSERT }
     ).then(function(friend) {
   console.log(friend)
     if (friend) {
-        res.status(201).json(friend);
+        res.status(201).json(true);
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -86,21 +90,23 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ValidateNewUserFriend: function(req, res) {
     //update or delete
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var id = cryptoUtils.decrypt(req.body.id);
 	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     if(req.body.validate = true){
         sequelize.query('Update friend set validate = 1 where id = $id ',
-        { bind: { id: req.body.id }, type: sequelize.QueryTypes.UPDATE }
+        { bind: { id: id }, type: sequelize.QueryTypes.UPDATE }
         ).then(function(friend) {
           console.log(friend)
           if (friend) {
-            res.status(201).json(friend);
+            res.status(201).json(true);
           } else {
             res.status(404).json({ 'error': 'friend not found' });
           }
@@ -110,11 +116,11 @@ module.exports = {
         })
     }else{
         sequelize.query('Delete from friend where id = $id',
-        { bind: { id: req.body.id }, type: sequelize.QueryTypes.DELETE }
+        { bind: { id: id }, type: sequelize.QueryTypes.DELETE }
       ).then(function(friend) {
         console.log(friend)
         if (friend) {
-            res.status(201).json(friend);
+            res.status(201).json(true);
         } else {
             res.status(404).json({ 'error': 'friend not found' });
         }
@@ -125,9 +131,10 @@ module.exports = {
     }
     
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListValidateNewUserFriend: function(req, res){
       //list pas valider
-      var headerAuth  = req.body.token;
+      var headerAuth  = JSON.parse(cryptoUtils.decrypt(req.body.token));
     var userId      = jwtUtils.getUserId(headerAuth);
 	console.log(userId)
     if(userId<0){
@@ -138,7 +145,7 @@ module.exports = {
     ).then(function(friend) {
   console.log(friend)
     if (friend) {
-        res.status(201).json(friend);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(friend)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -147,9 +154,11 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkFriend: function(req, res){
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var user = cryptoUtils.decrypt(req.body.user);
 	console.log(userId)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
@@ -157,7 +166,7 @@ module.exports = {
     asyncLib.waterfall([
       function(done) {
     sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 1 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 1',
-      { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+      { bind: { id: userId, idFriend: user }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
   console.log(friend)
     if (friend[0]['COUNT(*)']==1) {
@@ -171,7 +180,7 @@ module.exports = {
   },
   function(done) {
     sequelize.query('Select COUNT(*) from friend where friend.ref_id_user_principal = $id and friend.ref_id_user_friend = $idFriend and validate = 0 or friend.ref_id_user_principal = $idFriend and friend.ref_id_user_friend = $id and validate = 0',
-      { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+      { bind: { id: userId, idFriend: user }, type: sequelize.QueryTypes.SELECT }
     ).then(function(friend) {
   console.log(friend)
     if (friend[0]['COUNT(*)']==1) {

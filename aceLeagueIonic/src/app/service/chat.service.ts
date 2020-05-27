@@ -14,6 +14,7 @@ export class ChatService {
   addChat(data){
     console.log('addchat')
     let token = this.securityService.getToken();
+    data = this.securityService.encode(JSON.stringify(data))
     return this.http.post(this.configUrl+"chat/add/",{token: token,data:data});
   }
 

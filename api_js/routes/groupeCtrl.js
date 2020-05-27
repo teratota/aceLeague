@@ -5,6 +5,7 @@ var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
 const fs = require('fs');
+var cryptoUtils  = require('../utils/crypto.utils');
 
 // Constants
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -14,18 +15,19 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
 module.exports = {
 
   getList: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    let data = JSON.parse(cryptoUtils.decrypt(req.body.data));
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }
-    let nom = req.body.data;
+    let nom = data;
     sequelize.query('Select id, nom From groupe WHERE nom LIKE $nom and private = 0',
       { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)
       if (groupe) {
-        res.status(201).json(groupe);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -33,9 +35,12 @@ module.exports = {
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addGroupe: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    let form = JSON.parse(cryptoUtils.decrypt(req.body.form));
+    let file = JSON.parse(cryptoUtils.decrypt(req.body.file));
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -48,15 +53,15 @@ module.exports = {
       var newUser = sequelize.query('INSERT INTO groupe (ref_id_user,nom,private,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$private,$description,$image,NOW(),NOW())',
       { bind: { 
         ref_id_user: userId,
-        nom: req.body.form.nom,
-        private: req.body.form.private,
-        description: req.body.form.description,
+        nom: form.nom,
+        private: form.private,
+        description: form.description,
         image: nameFile
        }, type: sequelize.QueryTypes.INSERT }
       )
       .then(function(newUser) {
-        if(req.body.file != ''){
-          fs.writeFile('./files/groupe/'+r, req.body.file, function (err) {
+        if(file != ''){
+          fs.writeFile('./files/groupe/'+r, file, function (err) {
            done(null)
           });
         }else{
@@ -72,9 +77,9 @@ module.exports = {
         sequelize.query('SELECT id from groupe where ref_id_user = $ref_id_user and nom = $nom and private = $private and description = $description  ',
       { bind: { 
         ref_id_user: userId,
-        nom: req.body.form.nom,
-        private: req.body.form.private,
-        description: req.body.form.description,
+        nom: form.nom,
+        private: form.private,
+        description: form.description,
        }, type: sequelize.QueryTypes.SELECT }
       )
       .then(function(groupe) {
@@ -103,16 +108,19 @@ module.exports = {
       },
     ], function(groupe) {
       if (groupe) {
-        return res.status(201).json(groupe);
+        return res.status(201).json(true);
       } else {
         return res.status(500).json({ 'error': 'cannot update user profile' });
       }
     });
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateGroupe: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    let form = JSON.parse(cryptoUtils.decrypt(req.body.form));
+    var groupe  = cryptoUtils.decrypt(req.body.groupe);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -120,10 +128,10 @@ module.exports = {
       sequelize.query('Update groupe set nom = $nom, description = $description ,private = $private,updatedAt = NOW() where id = $id and ref_id_user = $userId',
       { bind: { 
         userId: userId,
-        id: req.body.groupe,
-        nom: req.body.form.nom,
-        private: req.body.form.private,
-        description: req.body.form.description,
+        id: groupe,
+        nom: form.nom,
+        private: form.private,
+        description: form.description,
        }, type: sequelize.QueryTypes.UPDATE }
       )
       .then(function(newUser) {
@@ -135,9 +143,12 @@ module.exports = {
       });
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateGroupeImage: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var groupe  = cryptoUtils.decrypt(req.body.groupe);
+    let file = JSON.parse(cryptoUtils.decrypt(req.body.file));
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -145,12 +156,12 @@ module.exports = {
         function(done) {
           var newUser = sequelize.query('Select image from groupe where id = $id',
           { bind: { 
-            id: req.body.groupe,
+            id: groupe,
           }, type: sequelize.QueryTypes.SELECT }
           )
           .then(function(imagegroupe) {
             if(imagegroupe[0].image != null){
-              fs.writeFile('./files/groupe/'+imagegroupe[0].image, req.body.file, function (err) {
+              fs.writeFile('./files/groupe/'+imagegroupe[0].image, file, function (err) {
                 if (err) return console.log(err);
                 res.status(201).json(true);
               });
@@ -167,12 +178,12 @@ module.exports = {
         function(namefile, done) {
           sequelize.query('Update groupe set image = $image where id = $id',
           { bind: { 
-            id: req.body.groupe,
+            id: groupe,
             image: namefile,
           }, type: sequelize.QueryTypes.UPDATE }
           )
           .then(function(groupe) {
-            fs.writeFile('./files/groupe/'+namefile, req.body.file, function (err) {
+            fs.writeFile('./files/groupe/'+namefile, file, function (err) {
               if (err) return console.log(err);
               done(true)
             });
@@ -184,21 +195,23 @@ module.exports = {
         },
       ], function(groupe) {
         if (groupe) {
-          return res.status(201).json(groupe);
+          return res.status(201).json(true);
         } else {
           return res.status(500).json({ 'error': 'cannot update user profile' });
         }
       });
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getGroupe: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
   var userId      = jwtUtils.getUserId(headerAuth);
+  var groupe  = cryptoUtils.decrypt(req.body.groupe);
   if(userId<0){
     res.status(404).json({ 'error': 'wrong token' });
   }else{
     sequelize.query('Select * From groupe WHERE id = $id',
-      { bind: { id: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+      { bind: { id: groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)
       if (groupe[0].image != null) { 
@@ -206,7 +219,7 @@ module.exports = {
         groupe[0].image = file
       }
       if (groupe) {
-        res.status(201).json(groupe);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -215,8 +228,9 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupe: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
   var userId      = jwtUtils.getUserId(headerAuth);
   if(userId<0){
     res.status(404).json({ 'error': 'wrong token' });
@@ -230,7 +244,7 @@ module.exports = {
         groupe.image = file
       }
       if (groupe) {
-        res.status(201).json(groupe);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -239,8 +253,9 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupePrive: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
   var userId      = jwtUtils.getUserId(headerAuth);
   if(userId<0){
     res.status(404).json({ 'error': 'wrong token' });
@@ -254,7 +269,7 @@ module.exports = {
         groupe.image = file
       }
       if (groupe) {
-        res.status(201).json(groupe);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -263,8 +278,9 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupePublic: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
   var userId      = jwtUtils.getUserId(headerAuth);
   if(userId<0){
     res.status(404).json({ 'error': 'wrong token' });
@@ -278,7 +294,7 @@ module.exports = {
         groupe.image = file
       }
       if (groupe) {
-        res.status(201).json(groupe);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
@@ -287,9 +303,16 @@ module.exports = {
     })
   }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   deleteGroupe: function(req, res) {
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
+    var userId      = jwtUtils.getUserId(headerAuth);
+    var id  = cryptoUtils.decrypt(req.body.id);
+    if(userId<0){
+      res.status(404).json({ 'error': 'wrong token' });
+    }else{
     sequelize.query('Delete from groupe where id = $id and ref_id_user = $userId',
-    { bind: { userId:userId, id: req.body.id }, type: sequelize.QueryTypes.SELECT }
+    { bind: { userId:userId, id: id }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       if (groupe) {
           res.status(201).json(true);
@@ -299,17 +322,19 @@ module.exports = {
     }).catch(function(err) {      
         res.status(500).json({ 'error': 'cannot delete groupe' });
     })
+  }
   },
-
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkGroupeAuthor: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var groupe  = cryptoUtils.decrypt(req.body.groupe);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }
     let nom = req.body.data;
     sequelize.query('Select COUNT(*) From groupe where ref_id_user = $userId and id = $idGroupe',
-      { bind: { userId: userId, idGroupe: req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+      { bind: { userId: userId, idGroupe: groupe }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
       console.log(groupe)
       if (groupe[0]['COUNT(*)'] == 1) {

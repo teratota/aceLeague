@@ -7,6 +7,7 @@ import { ProService } from '../service/pro.service';
 import { GroupeService } from '../service/groupe.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-publication',
@@ -61,7 +62,7 @@ export class PublicationComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute) { }
+  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
@@ -123,18 +124,30 @@ export class PublicationComponent implements OnInit {
         this.publication = response;
         console.log(this.publication);
         this.router.navigate(['profile']);
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }else if(this.publicationForm.value.param == "Pro"){
       this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         console.log(this.publication);
         this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }else if(this.publicationForm.value.param == "Groupe"){
       this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         console.log(this.publication);
         this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }  
     }
@@ -189,18 +202,30 @@ export class PublicationComponent implements OnInit {
                           this.publication = response;
                           console.log(this.publication);
                           this.router.navigate(['profile']);
+                        },err => {
+                          if(err.error.error == "wrong token"){
+                            this.securityService.presentToast()
+                          }
                         });
                       }else if(this.publicationForm.value.param == "Pro"){
                         this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           console.log(this.publication);
                           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+                        },err => {
+                          if(err.error.error == "wrong token"){
+                            this.securityService.presentToast()
+                          }
                         });
                       }else if(this.publicationForm.value.param == "Groupe"){
                         this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           console.log(this.publication);
                           this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+                        },err => {
+                          if(err.error.error == "wrong token"){
+                            this.securityService.presentToast()
+                          }
                         });
                       }  
                   }
@@ -214,18 +239,30 @@ export class PublicationComponent implements OnInit {
             this.publication = response;
             console.log(this.publication);
             this.router.navigate(['profile']);
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }else if(this.publicationForm.value.param == "Pro"){
           this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             console.log(this.publication);
             this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }else if(this.publicationForm.value.param == "Groupe"){
           this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             console.log(this.publication);
             this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }  
       }
@@ -235,19 +272,27 @@ export class PublicationComponent implements OnInit {
     console.log('test')
     if(value == 'Groupe'){
       this.GroupeService.groupe2UserGetList().subscribe(response => {
-        this.groupe = response;
+        this.groupe = JSON.parse(this.securityService.decode(response));
         this.groupeActivated = true;
         this.proActivated = false;
         console.log(this.groupe);
         return this.groupe;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }else if(value == 'Pro'){
       this.ProService.getListMe().subscribe(response => {
-        this.pro = response;
+        this.pro = JSON.parse(this.securityService.decode(response));
         this.proActivated = true;
         this.groupeActivated = false;
         console.log(this.pro);
         return this.pro;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     } else if(value == 'Moi'){
       this.proActivated = false;

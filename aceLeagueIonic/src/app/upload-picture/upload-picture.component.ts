@@ -6,6 +6,7 @@ import { ActionSheetController, Platform } from '@ionic/angular';
 import { UserService } from '../service/user.service';
 import { GroupeService } from '../service/groupe.service';
 import * as _ from 'lodash';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-upload-picture',
@@ -48,7 +49,8 @@ export class UploadPictureComponent implements OnInit {
     public platform: Platform, 
     private activeRoute: ActivatedRoute,
     private UserService: UserService,
-    private GroupeService: GroupeService
+    private GroupeService: GroupeService,
+    private securityService : SecurityService
     ) 
     {
     this.confirmation = true;
@@ -71,28 +73,36 @@ export class UploadPictureComponent implements OnInit {
   }
 
   checkData() {
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
     }else{
-      console.log('tgdsshbjhb')
-    console.log(this.photoService.blob)
-    console.log(this.photoService.base)
     if(this.param == 'pro'){
       this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
         this.router.navigate(['pro'],{state: {data: this.data}});
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }else if(this.param == 'groupe'){
       this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
         this.router.navigate(['groupe'],{state: {data: this.data}});
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }else if(this.param == 'user'){
       this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
         this.router.navigate(['/profile']);
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }
     }  
@@ -112,7 +122,6 @@ export class UploadPictureComponent implements OnInit {
                 this.previewImagePath = imgBase64Path;
               };
       }
-      console.log(this.file);
       reader.readAsDataURL(this.file);
      }
   }
@@ -148,10 +157,6 @@ export class UploadPictureComponent implements OnInit {
               image.onload = rs => {
                   const img_height = rs.currentTarget['height'];
                   const img_width = rs.currentTarget['width'];
-
-                  console.log(img_height, img_width);
-
-
                   if (img_height > max_height && img_width > max_width) {
                       this.imageError =
                           'Maximum dimentions allowed ' +
@@ -169,16 +174,28 @@ export class UploadPictureComponent implements OnInit {
                       this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
                         this.router.navigate(['pro'],{state: {data: this.data}});
                         return this.config;
+                      },err => {
+                        if(err.error.error == "wrong token"){
+                          this.securityService.presentToast()
+                        }
                       });
                     }else if(this.param == 'groupe'){
                       this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
                         this.router.navigate(['groupe'],{state: {data: this.data}});
                         return this.config;
+                      },err => {
+                        if(err.error.error == "wrong token"){
+                          this.securityService.presentToast()
+                        }
                       });
                     }else if(this.param == 'user'){
                       this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
                         this.router.navigate(['/profile']);
                         return this.config;
+                      },err => {
+                        if(err.error.error == "wrong token"){
+                          this.securityService.presentToast()
+                        }
                       });
                     }
                   }
@@ -192,16 +209,28 @@ export class UploadPictureComponent implements OnInit {
           this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
             this.router.navigate(['/pro'],{state: {data: this.data}});
             return this.config;
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }else if(this.param == 'groupe'){
           this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
             this.router.navigate(['/groupe'],{state: {data: this.data}});
             return this.config;
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }else if(this.param == 'user'){
           this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
             this.router.navigate(['/profile']);
             return this.config;
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
         }
       }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicationService } from '../service/publication.service';
 import { ActivatedRoute } from '@angular/router';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-commentaire',
@@ -20,25 +21,33 @@ export class CommentaireComponent implements OnInit {
 
   commentaire: object;
 
-  constructor(private PublicationService: PublicationService, private activeRoute: ActivatedRoute) { }
+  constructor(private PublicationService: PublicationService, private activeRoute: ActivatedRoute ,private securityService: SecurityService) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      this.PublicationService.getCommentaire(this.param).subscribe(response => {
-        this.commentaire = response
-        console.log(this.commentaire)
-        return this.commentaire
-      });
+      this.getData();
     });
   }
+
+  getData(){
+    this.PublicationService.getCommentaire(this.param).subscribe(response => {
+      this.commentaire = JSON.parse(this.securityService.decode(response))
+      return this.commentaire
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
+    });
+  }
+
   getCommentaire
   checkData(){
     this.PublicationService.addCommentaire(this.param,this.commentaireFormEdit.value).subscribe(response => {
-      this.PublicationService.getCommentaire(this.param).subscribe(response => {
-        this.commentaire = response
-        console.log(this.commentaire)
-        return this.commentaire
-      });
+      this.getData();
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 }

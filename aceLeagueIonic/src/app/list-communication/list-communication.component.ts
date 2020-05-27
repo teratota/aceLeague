@@ -29,13 +29,19 @@ export class ListCommunicationComponent implements OnInit {
   getData(){
     this.chatService.getChat().subscribe(response => {
       this.chat=response
-      console.log(response);
       return this.chat;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     this.UserService.getInfosUser(this.userId).subscribe(response => {
-      this.user = response[0];
-      console.log(this.user);
+      this.user = JSON.parse(this.securityService.decode(response))[0];
       return this.user;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 

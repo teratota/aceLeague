@@ -8,6 +8,7 @@ import { EditGroupeComponent } from '../edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
 import { EditUserGroupeComponent } from '../edit-user-groupe/edit-user-groupe.component';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-groupe',
@@ -22,7 +23,8 @@ export class GroupeComponent implements OnInit {
     private GroupeService: GroupeService,
     public actionSheetController: ActionSheetController,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService
     ) { }
 
     // Modal
@@ -50,27 +52,40 @@ export class GroupeComponent implements OnInit {
 
   getData(){
     this.GroupeService.getGroupeInfo(this.groupeId).subscribe(response => {
-      this.groupe = response[0];
-      console.log(this.groupe);
+      this.groupe = JSON.parse(this.securityService.decode(response))[0];
       return this.groupe;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.GroupeService.groupe2userNumberUser(this.groupeId).subscribe(response => {
-      this.abonnement = response[0]['COUNT(*)'];
-      console.log(this.abonnement);
+      this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     
     this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-      this.publication = response;
-      console.log(this.publication);
+      this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.GroupeService.groupe2UserCheck(this.groupeId).subscribe(response => {
       if(response == true){
         this.isJoin = true;
         this.isNotJoin =false;
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
 
@@ -81,6 +96,10 @@ export class GroupeComponent implements OnInit {
         this.isAuthor = false;
       }
       return this.isAuthor;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     
   }
@@ -92,9 +111,16 @@ export class GroupeComponent implements OnInit {
         this.isNotJoin =false;
         this.GroupeService.groupe2userNumberUser(this.groupeId).subscribe(response => {
           this.abonnement = response[0]['COUNT(*)'];
-          console.log(this.abonnement);
           return this.abonnement;
+        },err => {
+          if(err.error.error == "wrong token"){
+            this.securityService.presentToast()
+          }
         });
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
   }
@@ -167,25 +193,38 @@ export class GroupeComponent implements OnInit {
   publicationDislike(id){
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   publicationLike(id){
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   async commentaireModal(id) {
-    console.log("sjjqhdqd")
     const modal = await this.modalController.create({
       component: CommentaireComponent,
       componentProps: {
@@ -200,7 +239,6 @@ export class GroupeComponent implements OnInit {
   dismissModal() {
     if (this.currentModal) {
       this.currentModal.dismiss().then(() => {
-        console.log('dissmiss')
         this.getData()
          this.currentModal = null; 
         });

@@ -7,6 +7,7 @@ import { ProService } from '../service/pro.service';
 import { EditProComponent } from '../edit-pro/edit-pro.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-pro',
@@ -21,7 +22,8 @@ export class ProComponent implements OnInit {
     private ProService: ProService,
     public actionSheetController: ActionSheetController,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService
     ) { }
 
     pro:object = {
@@ -47,36 +49,51 @@ export class ProComponent implements OnInit {
 
   getData(){
     this.ProService.getInfoPro(this.proId).subscribe(response => {
-      this.pro = response[0];
-      console.log(this.pro);
+      this.pro = JSON.parse(this.securityService.decode(response))[0];
       return this.pro;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.ProService.getNumberAbonnement(this.proId).subscribe(response => {
-      this.abonnement = response[0]['COUNT(*)'];
-      console.log(this.abonnement);
+      this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     
     this.PublicationService.getProPublication(this.proId).subscribe(response => {
-      this.publication = response;
-      console.log(this.publication);
+      this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
-    });
-
-    this.ProService.abonnementUserCheck(this.proId).subscribe(response => {
-      if(response == true){
-        console.log(response)
-        this.isJoin = true;
-        this.isNotJoin = false;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
 
     this.ProService.abonnementUserCheck(this.proId).subscribe(response => {
       if(response == true){
-        console.log(response)
         this.isJoin = true;
         this.isNotJoin = false;
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
+    });
+
+    this.ProService.abonnementUserCheck(this.proId).subscribe(response => {
+      if(response == true){
+        this.isJoin = true;
+        this.isNotJoin = false;
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
 
@@ -87,6 +104,10 @@ export class ProComponent implements OnInit {
         this.isAuthor = false;
       }
       return this.isAuthor;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -96,10 +117,17 @@ export class ProComponent implements OnInit {
         this.isJoin = true;
         this.isNotJoin = false;
         this.ProService.getNumberAbonnement(this.proId).subscribe(response => {
-          this.abonnement = response[0]['COUNT(*)'];
-          console.log(this.abonnement);
+          this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
           return this.abonnement;
+        },err => {
+          if(err.error.error == "wrong token"){
+            this.securityService.presentToast()
+          }
         });
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
   }
@@ -157,18 +185,24 @@ export class ProComponent implements OnInit {
   publicationDislike(id){
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getProPublication(this.proId).subscribe(response => {
-      this.publication = response;
-      console.log(this.publication);
+      this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   publicationLike(id){
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getProPublication(this.proId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
       });
     });

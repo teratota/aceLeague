@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Platform } from '@ionic/angular';
+import { SecurityService } from '../service/security.service';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,17 +14,21 @@ export class NavbarComponent implements OnInit {
   // Displaying
   displayNavbar: boolean = true;
 
-  constructor(private router:Router, public platform: Platform) { }
+  isConnect: boolean = true;
+
+  constructor(private router:Router, public platform: Platform, private securityService: SecurityService, private userService: UserService, private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    let platform = this.platform.platforms();
-    if (platform[0] === 'electron') {
-      this.displayNavbar = false;
-    }
-    else {
-      this.displayNavbar = true;
-    }
-
+    this.router.events.subscribe(event => {
+      this.refreshNavbar()
+      let platform = this.platform.platforms();
+      if (platform[0] === 'electron') {
+        this.displayNavbar = false;
+      }
+      else {
+        this.displayNavbar = true;
+      }
+    });
   }
   profil(){
     this.router.navigate(['profile'])
@@ -36,4 +42,17 @@ export class NavbarComponent implements OnInit {
   home(){
     this.router.navigate(['newsfeed'])
   }
+  refreshNavbar(){
+    this.activeRoute.params.subscribe(routeParams => {
+      this.userService.testConnection().subscribe(response => {
+        if(response == true){
+          this.isConnect = true;
+        }
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.isConnect = false;
+        }
+      });
+  });
+}
 }

@@ -6,6 +6,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
 import { ActionSheetController, Platform } from '@ionic/angular';
 import * as _ from 'lodash';
+import { SecurityService } from '../service/security.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-register',
@@ -83,13 +86,15 @@ export class RegisterComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private UserService: UserService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
+  constructor(private ValidationService: ValidationService, private UserService: UserService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute, private SecurityService: SecurityService, private navBarComponent: NavbarComponent) {
     this.confirmation = true;
   }
   
 
   ngOnInit() { 
     this.activeRoute.params.subscribe(routeParams => {
+      this.navBarComponent.refreshNavbar()
+      //this.headerComponent.refreshHeader()
       let platform = this.platform.platforms()
       this.file = null;
       this.photoService.base = null
@@ -116,14 +121,10 @@ export class RegisterComponent implements OnInit {
   }
 
   checkData() {
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
     }else{
-      console.log('tgdsshbjhb')
-    console.log(this.photoService.blob)
-    console.log(this.photoService.base)
     var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
     if(mail=false){
       this.mail = true;
@@ -137,12 +138,15 @@ export class RegisterComponent implements OnInit {
       var user = JSON.stringify(this.registerForm.value)
       this.UserService.newUser(this.registerForm.value,this.photoService.base).subscribe(response => {
         this.config = response;
+        this.config.token = this.SecurityService.encode(this.config.token);
         localStorage.setItem('token',this.config.token);
         this.firstView = true ;
         this.secondView = false;
         this.thirdView = false;
         this.foorView = false;
         this.fiveView = false;
+        this.navBarComponent.refreshNavbar()
+       // this.headerComponent.refreshHeader()
         this.router.navigate(['/profile']);
         return this.config;
       });
@@ -228,7 +232,6 @@ export class RegisterComponent implements OnInit {
     this.fiveView = false;
   }
   lastFour(){
-    console.log("last four")
     if(this.sportView == true){
       this.firstView = false ;
       this.secondView = false;
@@ -267,7 +270,6 @@ export class RegisterComponent implements OnInit {
                 this.previewImagePath = imgBase64Path;
               };
       }
-      console.log(this.file);
       reader.readAsDataURL(this.file);
      }
   }
@@ -277,7 +279,6 @@ export class RegisterComponent implements OnInit {
   }
 
   sendForElectron(){
-    console.log(this.registerForm.value);
       this.imageError = null;
       if (this.file) {
           // Size Filter Bytes
@@ -304,10 +305,6 @@ export class RegisterComponent implements OnInit {
               image.onload = rs => {
                   const img_height = rs.currentTarget['height'];
                   const img_width = rs.currentTarget['width'];
-
-                  console.log(img_height, img_width);
-
-
                   if (img_height > max_height && img_width > max_width) {
                       this.imageError =
                           'Maximum dimentions allowed ' +
@@ -334,12 +331,15 @@ export class RegisterComponent implements OnInit {
                         var user = JSON.stringify(this.registerForm.value)
                         this.UserService.newUser(this.registerForm.value,this.cardImageBase64).subscribe(response => {
                           this.config = response;
+                          this.config.token = this.SecurityService.encode(this.config.token);
                           localStorage.setItem('token',this.config.token);
                           this.firstView = true ;
                           this.secondView = false;
                           this.thirdView = false;
                           this.foorView = false;
                           this.fiveView = false;
+                          this.navBarComponent.refreshNavbar()
+                        //  this.headerComponent.refreshHeader()
                           this.router.navigate(['/profile']);
                           return this.config;
                         });
@@ -365,12 +365,15 @@ export class RegisterComponent implements OnInit {
           var user = JSON.stringify(this.registerForm.value)
           this.UserService.newUser(this.registerForm.value,this.cardImageBase64).subscribe(response => {
             this.config = response;
+            this.config.token = this.SecurityService.encode(this.config.token);
             localStorage.setItem('token',this.config.token);
             this.firstView = true ;
             this.secondView = false;
             this.thirdView = false;
             this.foorView = false;
             this.fiveView = false;
+            this.navBarComponent.refreshNavbar()
+            //this.headerComponent.refreshHeader()
             this.router.navigate(['/profile']);
             return this.config;
           });

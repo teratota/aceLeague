@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
+import { SecurityService } from '../service/security.service';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   config: any;
 
-  constructor(private UserService: UserService, private router : Router, private socket: Socket) { }
+  constructor(private UserService: UserService, private router : Router, private socket: Socket, private securityService: SecurityService, private navBarComponent: NavbarComponent, private activeRoute: ActivatedRoute) { }
 
   messageMail: boolean;
   messagePass: boolean;
@@ -42,30 +45,31 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.messageMail = false;
-    this.messagePass = false;
+    this.activeRoute.params.subscribe(routeParams => {
+      this.navBarComponent.refreshNavbar()
+     // this.headerComponent.refreshHeader()
+      this.messageMail = false;
+      this.messagePass = false
+    });
   }
 
   connection() {
-    console.log(this.loginForm.value);
     this.UserService.connection(this.loginForm.value)
     .subscribe(response => {
       this.config = response;
+      this.config.token = this.securityService.encode(this.config.token);
       localStorage.setItem('token',this.config.token);
+      this.navBarComponent.refreshNavbar()
+    //  this.headerComponent.refreshHeader()
       this.router.navigate(['/profile']);
       return this.config;
+    },err => {
+      console.log(err.error)
     });
   }
 
   register(){
     this.router.navigate(['/register']);
-  }
-
-  joinChat() {
-    this.socket.connect();
-    //this.socket.emit('join', this.chatForm.value.room);
-    this.socket.emit('set-nickname', {nickname:this.chatForm.value.name,room:this.chatForm.value.room});
-    this.router.navigate(['chat'], {state: {data: this.chatForm.value.name}});
   }
   
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -42,20 +43,22 @@ export class EditProfileComponent implements OnInit {
   });
 
 
-  constructor(private UserService: UserService, private router: Router) { }
+  constructor(private UserService: UserService, private router: Router,private securityService: SecurityService) { }
 
   ngOnInit() {
-    console.log(this.user['username']);
     this.profileForm.setValue({
       username: this.user['username'], bio: this.user['bio'], sport: this.user['sport'], level:this.user['level'], sportDescription:this.user['sportDescription']
     });
   }
 
   checkData() {
-    console.log(this.profileForm.value);
     this.UserService.userUpdate(this.profileForm.value).subscribe(response => {
       this.config = response;
       this.router.navigate(['/profile']);
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 

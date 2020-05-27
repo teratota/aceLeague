@@ -10,6 +10,7 @@ import { ProService } from '../service/pro.service';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 import { RegisterComponent } from '../register/register.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
+import { SecurityService } from '../service/security.service';
 
 
 @Component({
@@ -78,14 +79,14 @@ export class ProfileComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private ProService: ProService,
-    public popoverController: PopoverController
+    public popoverController: PopoverController,
+    private securityService: SecurityService
     ) { }
 
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
-      console.log(this.userId)
       if(this.userId != null){
         this.isOtherUser = false;
         this.checkFriend()
@@ -95,7 +96,6 @@ export class ProfileComponent implements OnInit {
         this.isFriend = false
         this.isOtherUser = true;
       }
-      console.log(this.userId)
       this.getDataProfile();
     });
   }
@@ -104,28 +104,40 @@ export class ProfileComponent implements OnInit {
 
   getDataProfile() {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
-      this.user = response[0];
-      console.log(this.user,this.userId);
+      this.user = JSON.parse(this.securityService.decode(response))[0];
       return this.user;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.PublicationService.getPublications(this.userId).subscribe(response => {
-      this.publication = response;
-      console.log(this.publication,this.userId);
+      this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.FriendService.getFriendList(this.userId).subscribe(response => {
-      this.friends = response;
-      console.log(this.friends);
+      this.friends = JSON.parse(this.securityService.decode(response));
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.ProService.getNumberAbonnementUser(this.userId).subscribe(response => {
-      this.abonnement = response[0]['COUNT(*)'];
-      console.log(this.abonnement);
+      this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -190,20 +202,34 @@ export class ProfileComponent implements OnInit {
   publicationDislike(id){
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication,this.userId);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   publicationLike(id){
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication,this.userId);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -230,6 +256,10 @@ export class ProfileComponent implements OnInit {
   addFriend(){
     this.FriendService.addFriend(this.userId).subscribe(response => {
       this.checkFriend()
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -244,3 +274,4 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 }
+

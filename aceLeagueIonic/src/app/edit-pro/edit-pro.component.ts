@@ -7,6 +7,7 @@ import { PhotoService } from '../service/photo.service';
 import { ActionSheetController, Platform } from '@ionic/angular';
 import * as _ from 'lodash';
 import { ProService } from '../service/pro.service';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-edit-pro',
@@ -84,7 +85,7 @@ export class EditProComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private ProService: ProService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
+  constructor(private ValidationService: ValidationService, private ProService: ProService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute,private securityService: SecurityService) {
     this.confirmation = true;
   }
   
@@ -117,25 +118,24 @@ export class EditProComponent implements OnInit {
   }
 
   checkData() {
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
     }else{
-      console.log('tgdsshbjhb')
-    console.log(this.photoService.blob)
-    console.log(this.photoService.base)
       this.ProService.newPro(this.proForm.value,this.photoService.base).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
         this.router.navigate(['/profile']);
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
     }
   }
 
   checkDataEdit() {
-    console.log(this.platform.platforms())
       this.ProService.updatePro(this.proFormEdit.value,this.data).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
@@ -143,18 +143,26 @@ export class EditProComponent implements OnInit {
         this.editView = false;
         this.router.navigate(['/profile']);
         return this.config;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
   }
 
   getData() {
     this.ProService.getInfoPro(this.data).subscribe(response => {
-      this.proEdit = response[0];
+      this.proEdit = JSON.parse(this.securityService.decode(response))[0];
       this.proFormEdit.patchValue({
         nom: this.proEdit.nom,
         type: this.proEdit.type,
         description: this.proEdit.description,
       })
       return this.proEdit;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -184,7 +192,6 @@ export class EditProComponent implements OnInit {
                 this.previewImagePath = imgBase64Path;
               };
       }
-      console.log(this.file);
       reader.readAsDataURL(this.file);
      }
   }
@@ -194,7 +201,6 @@ export class EditProComponent implements OnInit {
   }
 
   sendForElectron(){
-    console.log(this.proForm.value);
       this.imageError = null;
       if (this.file) {
           // Size Filter Bytes
@@ -221,8 +227,6 @@ export class EditProComponent implements OnInit {
               image.onload = rs => {
                   const img_height = rs.currentTarget['height'];
                   const img_width = rs.currentTarget['width'];
-
-                  console.log(img_height, img_width);
 
 
                   if (img_height > max_height && img_width > max_width) {
@@ -256,6 +260,10 @@ export class EditProComponent implements OnInit {
             this.secondView = false;
             this.router.navigate(['/profile']);
             return this.config;
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
           });
       }
   }

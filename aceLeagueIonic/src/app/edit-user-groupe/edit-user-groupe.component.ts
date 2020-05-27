@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PhotoService } from '../service/photo.service';
 import { ActionSheetController, Platform, ModalController } from '@ionic/angular';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-edit-user-groupe',
@@ -24,7 +25,7 @@ export class EditUserGroupeComponent implements OnInit {
   listUser : object;
   lisFriend: object;
 
-  constructor(private modalCtrl: ModalController, private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute) {
+  constructor(private modalCtrl: ModalController, private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute,private securityService: SecurityService) {
   }
 
   ngOnInit() {
@@ -35,19 +36,24 @@ export class EditUserGroupeComponent implements OnInit {
 
   getData(){
     this.GroupeService.groupe2userListUser(this.data).subscribe(response => {
-      this.listUser = response
-      console.log(this.listUser);
+      this.listUser = JSON.parse(this.securityService.decode(response))
       return this.listUser
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     this.GroupeService.groupe2userFriendListUserIsNot(this.data).subscribe(response => {
-      this.lisFriend = response
-      console.log(this.lisFriend);
+      this.lisFriend = JSON.parse(this.securityService.decode(response))
       return this.lisFriend
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   checkData() {
-    console.log(this.editUserform.value)
       this.GroupeService.groupe2UserAdd(this.data,this.editUserform.value.user).subscribe(response => {
         this.getData();
         this.editUserform.patchValue({

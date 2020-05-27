@@ -1,6 +1,7 @@
 // Imports
 var bcrypt    = require('bcrypt');
 var jwtUtils  = require('../utils/jwt.utils');
+var cryptoUtils  = require('../utils/crypto.utils');
 var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
@@ -13,24 +14,31 @@ const PASSWORD_REGEX  = /^(?=.*\d).{4,20}$/;
 // Routes
 module.exports = {
   testConnection: function(req, res){
-    var headerAuth  = req.body.token;
-    var userId = jwtUtils.getUserId(headerAuth);
-    if(userId<0){
+    if(req.body.token == null){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      res.status(201).json(true);
+      var headerAuth  = cryptoUtils.decrypt(req.body.token);
+      var userId = jwtUtils.getUserId(headerAuth);
+      if(userId<0){
+        res.status(404).json({ 'error': 'wrong token' });
+      }else{
+        res.status(201).json(true);
+      }
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   register: function(req, res) {
     
     // Params
-    var email    = req.body.form.email;
-    var username = req.body.form.username;
-    var password = req.body.form.password;
-    var bio      = req.body.form.bio;
-    var level    = req.body.form.level;
-    var sport    = req.body.form.sport;
-    var sportDescription    = req.body.form.sportDescription;
+    data = cryptoUtils.decrypt(req.body.form)
+    data = JSON.parse(data)
+    var email    = data.email;
+    var username = data.username;
+    var password = data.password;
+    var bio      = data.bio;
+    var level    = data.level;
+    var sport    = data.sport;
+    var sportDescription    = data.sportDescription;
 
     if (email == null || username == null || password == null) {
       return res.status(400).json({ 'error': 'missing parameters' });
@@ -74,7 +82,9 @@ module.exports = {
       function(userFound, bcryptedPassword, done) {
         let r = Math.random().toString(36).substring(7);
         let nameFile = null
-        if(req.body.file != ''){
+        file = cryptoUtils.decrypt(req.body.file)
+        file = JSON.parse(file)
+        if(file != ''){
           nameFile = r;
         }
         console.log(nameFile);
@@ -92,8 +102,9 @@ module.exports = {
          }, type: sequelize.QueryTypes.INSERT }
         )
         .then(function(newUser) {
-          if(req.body.file != ''){
-            fs.writeFile('./files/user/'+r, req.body.file, function (err) {
+          
+          if(file != ''){
+            fs.writeFile('./files/user/'+r, file, function (err) {
               done(newUser);
             });
           }else{
@@ -112,7 +123,7 @@ module.exports = {
         .then(function(newUser) {
           if (newUser) {
             return res.status(201).json({
-              'token': jwtUtils.generateTokenForUser(newUser)
+              'token': jwtUtils.generateTokenForUser(userFound)
             });
           } else {
             return res.status(500).json({ 'error': 'cannot add user' });
@@ -124,11 +135,15 @@ module.exports = {
         });
     });
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   login: function(req, res) {
     console.log(req.body);
     // Params
-    var email    = req.body.email;
-    var password = req.body.password;
+    data = cryptoUtils.decrypt(req.body.data)
+    data = JSON.parse(data)
+    console.log(data);
+    var email    = data.email;
+    var password = data.password;
     if (req.method == "OPTIONS")
     {
         res.writeHead(200, {"Content-Type": "application/json"});
@@ -174,7 +189,6 @@ module.exports = {
       if (userFound) {
 		 console.log(userFound);
         return res.status(201).json({
-          'userId': userFound[0].id,
           'token': jwtUtils.generateTokenForUser(userFound)
         });
       } else {
@@ -182,20 +196,23 @@ module.exports = {
       }
     });
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getUserProfile: function(req, res) {
     // Getting auth header
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var otherUser = cryptoUtils.decrypt(req.body.user);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      if(req.body.user != null){
-        userId = req.body.user
+      if(otherUser!= ''){
+        userId = otherUser
       }
       console.log(userId);
-    sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',
+    var user = sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
+      console.log('hello')
       for (let i = 0; i < user.length; i++) {
             
         if (user[i].image != null) {
@@ -204,73 +221,32 @@ module.exports = {
         }
       }
       if (user) {
-        res.status(201).json(user);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(user)));
       } else {
         res.status(404).json({ 'error': 'user not found' });
       }
     }).catch(function(err) {
+      console.log(err)
       res.status(500).json({ 'error': 'cannot fetch user' });
     });
     }
   },
-  updateUserProfile: function(req, res) {
-    // Getting auth header
-    var headerAuth  = req.body.token;
-    var userId      = jwtUtils.getUserId(headerAuth);
-    if(userId<0){
-      res.status(404).json({ 'error': 'wrong token' });
-    }
-
-    // Params
-    var bio = req.body.bio;
-
-    asyncLib.waterfall([
-      function(done) {
-        models.User.findOne({
-          attributes: ['id', 'bio'],
-          where: { id: userId }
-        }).then(function (userFound) {
-          done(null, userFound);
-        })
-        .catch(function(err) {
-          return res.status(500).json({ 'error': 'unable to verify user' });
-        });
-      },
-      function(userFound, done) {
-        if(userFound) {
-          userFound.update({
-            bio: (bio ? bio : userFound.bio)
-          }).then(function() {
-            done(userFound);
-          }).catch(function(err) {
-            res.status(500).json({ 'error': 'cannot update user' });
-          });
-        } else {
-          res.status(404).json({ 'error': 'user not found' });
-        }
-      },
-    ], function(userFound) {
-      if (userFound) {
-        return res.status(201).json(userFound);
-      } else {
-        return res.status(500).json({ 'error': 'cannot update user profile' });
-      }
-    });
-  },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUser: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var data = JSON.parse(cryptoUtils.decrypt(req.body.data));
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     sequelize.query('Update user set username = $username,bio = $bio, sport = $sport ,level = $level,sportDescription= $sportDescription, updatedAt = NOW() where id = $id',
     { bind: { 
       id :userId,
-      username: req.body.data.username,
-      sport: req.body.data.sport,
-      bio: req.body.data.bio,
-      level: req.body.data.level,
-      sportDescription: req.body.data.sportDescription,
+      username: data.username,
+      sport: data.sport,
+      bio: data.bio,
+      level: data.level,
+      sportDescription: data.sportDescription,
     }, type: sequelize.QueryTypes.UPDATE }
     )
     .then(function(updateUser) {
@@ -282,9 +258,11 @@ module.exports = {
     });
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUserImage: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var file = JSON.parse(cryptoUtils.decrypt(req.body.file));
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -297,7 +275,7 @@ module.exports = {
           )
           .then(function(imageuser) {
             if(imageuser[0].image != null){
-              fs.writeFile('./files/user/'+imageuser[0].image, req.body.file, function (err) {
+              fs.writeFile('./files/user/'+imageuser[0].image, file, function (err) {
                 if (err) return console.log(err);
                 res.status(201).json(true);
               });
@@ -319,7 +297,7 @@ module.exports = {
           }, type: sequelize.QueryTypes.UPDATE }
           )
           .then(function(user) {
-            fs.writeFile('./files/user/'+namefile, req.body.file, function (err) {
+            fs.writeFile('./files/user/'+namefile, file, function (err) {
               if (err) return console.log(err);
               done(true)
             });
@@ -331,26 +309,28 @@ module.exports = {
         },
       ], function(user) {
         if (user) {
-          return res.status(201).json(user);
+          return res.status(201).json(true);
         } else {
           return res.status(500).json({ 'error': 'cannot update user profile' });
         }
       });
     }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getlist: function(req, res) {
-    let nom = req.body.data;
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    let data = JSON.parse(cryptoUtils.decrypt(req.body.data));
+    console.log(data)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
       sequelize.query('Select id, username From user WHERE username LIKE $nom',
-      { bind: { nom: '%'+nom+'%' }, type: sequelize.QueryTypes.SELECT }
+      { bind: { nom: '%'+data+'%' }, type: sequelize.QueryTypes.SELECT }
     ).then(function(user) {
       console.log(user)
       if (user) {
-        res.status(201).json(user);
+        res.status(201).json(cryptoUtils.encrypt(JSON.stringify(user)));
       } else {
         res.status(404).json({ 'error': 'friend not found' });
       }
