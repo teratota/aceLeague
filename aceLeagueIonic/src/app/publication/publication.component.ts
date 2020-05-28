@@ -100,7 +100,6 @@ export class PublicationComponent implements OnInit {
                 this.previewImagePath = imgBase64Path;
               };
       }
-      console.log(this.file);
       reader.readAsDataURL(this.file);
      }
   }
@@ -110,19 +109,13 @@ export class PublicationComponent implements OnInit {
   }
 
   send(){
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
     }else{
-      console.log('tgdsshbjhb')
-    console.log(this.photoService.blob)
-    console.log(this.photoService.base)
-    console.log(this.publicationForm.value)
     if(this.publicationForm.value.param == "Moi"){
       this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        console.log(this.publication);
         this.router.navigate(['profile']);
       },err => {
         if(err.error.error == "wrong token"){
@@ -132,7 +125,6 @@ export class PublicationComponent implements OnInit {
     }else if(this.publicationForm.value.param == "Pro"){
       this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        console.log(this.publication);
         this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
       },err => {
         if(err.error.error == "wrong token"){
@@ -142,7 +134,6 @@ export class PublicationComponent implements OnInit {
     }else if(this.publicationForm.value.param == "Groupe"){
       this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        console.log(this.publication);
         this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
       },err => {
         if(err.error.error == "wrong token"){
@@ -154,7 +145,6 @@ export class PublicationComponent implements OnInit {
   }
 
   sendForElectron(){
-    console.log(this.publicationForm.value);
       this.imageError = null;
       if (this.file) {
           // Size Filter Bytes
@@ -181,10 +171,6 @@ export class PublicationComponent implements OnInit {
               image.onload = rs => {
                   const img_height = rs.currentTarget['height'];
                   const img_width = rs.currentTarget['width'];
-
-                  console.log(img_height, img_width);
-
-
                   if (img_height > max_height && img_width > max_width) {
                       this.imageError =
                           'Maximum dimentions allowed ' +
@@ -200,7 +186,6 @@ export class PublicationComponent implements OnInit {
                       if(this.publicationForm.value.param == "Moi"){
                         this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          console.log(this.publication);
                           this.router.navigate(['profile']);
                         },err => {
                           if(err.error.error == "wrong token"){
@@ -210,7 +195,6 @@ export class PublicationComponent implements OnInit {
                       }else if(this.publicationForm.value.param == "Pro"){
                         this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          console.log(this.publication);
                           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
                         },err => {
                           if(err.error.error == "wrong token"){
@@ -220,7 +204,6 @@ export class PublicationComponent implements OnInit {
                       }else if(this.publicationForm.value.param == "Groupe"){
                         this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          console.log(this.publication);
                           this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
                         },err => {
                           if(err.error.error == "wrong token"){
@@ -237,7 +220,6 @@ export class PublicationComponent implements OnInit {
         if(this.publicationForm.value.param == "Moi"){
           this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            console.log(this.publication);
             this.router.navigate(['profile']);
           },err => {
             if(err.error.error == "wrong token"){
@@ -247,7 +229,6 @@ export class PublicationComponent implements OnInit {
         }else if(this.publicationForm.value.param == "Pro"){
           this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            console.log(this.publication);
             this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
           },err => {
             if(err.error.error == "wrong token"){
@@ -257,7 +238,6 @@ export class PublicationComponent implements OnInit {
         }else if(this.publicationForm.value.param == "Groupe"){
           this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            console.log(this.publication);
             this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
           },err => {
             if(err.error.error == "wrong token"){
@@ -269,13 +249,11 @@ export class PublicationComponent implements OnInit {
   }
 
   getList(value){
-    console.log('test')
     if(value == 'Groupe'){
       this.GroupeService.groupe2UserGetList().subscribe(response => {
         this.groupe = JSON.parse(this.securityService.decode(response));
         this.groupeActivated = true;
         this.proActivated = false;
-        console.log(this.groupe);
         return this.groupe;
       },err => {
         if(err.error.error == "wrong token"){
@@ -287,7 +265,6 @@ export class PublicationComponent implements OnInit {
         this.pro = JSON.parse(this.securityService.decode(response));
         this.proActivated = true;
         this.groupeActivated = false;
-        console.log(this.pro);
         return this.pro;
       },err => {
         if(err.error.error == "wrong token"){

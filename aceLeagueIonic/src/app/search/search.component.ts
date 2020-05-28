@@ -26,7 +26,6 @@ export class SearchComponent implements OnInit {
     this.GroupeService.getlist(event.target.value)
     .subscribe(response => {
       this.groupes = JSON.parse(this.securityService.decode(response));
-      console.log(this.groupes);
       return this.groupes;
     },err => {
       if(err.error.error == "wrong token"){
@@ -36,7 +35,6 @@ export class SearchComponent implements OnInit {
     this.UserService.getlist(event.target.value)
     .subscribe(response => {
       this.users = JSON.parse(this.securityService.decode(response));
-      console.log(this.users);
       return this.users;
     },err => {
       if(err.error.error == "wrong token"){
@@ -46,7 +44,6 @@ export class SearchComponent implements OnInit {
     this.ProService.getlist(event.target.value)
     .subscribe(response => {
       this.pros = JSON.parse(this.securityService.decode(response));
-      console.log(this.pros);
       return this.pros;
     },err => {
       if(err.error.error == "wrong token"){

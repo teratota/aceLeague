@@ -14,16 +14,12 @@ module.exports = {
   getUserPublication: function(req, res) {
     // Getting auth header
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
-    console.log(headerAuth);
     var userId      = jwtUtils.getUserId(headerAuth);
-    console.log(userId);
     var OtherUser = cryptoUtils.decrypt(req.body.user);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      console.log(OtherUser)
       if(OtherUser != ''){
-        console.log('dsflqfl');
         userId = OtherUser
       }
       asyncLib.waterfall([
@@ -84,7 +80,6 @@ module.exports = {
           sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
               { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
               ).then(function(like) {
-                console.log()
                 for (let i = 0; i < publication.length; i++) {
                   publication[i].likeMax = 0;
                   if(like.length != 0){
@@ -104,7 +99,6 @@ module.exports = {
               sequelize.query('SELECT * from `commentaire` where ref_id_publication in '+ publicationList,
                   { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
                   ).then(function(commentaire) {
-                    console.log()
                     for (let i = 0; i < publication.length; i++) {
                       publication[i].commentaireMax = 0;
                       if(commentaire.length != 0){
@@ -197,7 +191,6 @@ module.exports = {
        let x = friendFound.length;
        if(friendP.lenght != 0){
         for (let index = 0; index < friendP.length; index++) {
-          console.log(friendFound.lenght)
           friendFound[friendFound.length] = {
             ref_id_user_friend:friendP[index].ref_id_user_principal,
             username:friendP[index].username,
@@ -292,7 +285,6 @@ module.exports = {
             sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
                 { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
                 ).then(function(like) {
-                  console.log()
                   for (let i = 0; i < publication.length; i++) {
                     publication[i].likeMax = 0;
                     if(like.length != 0){
@@ -312,7 +304,6 @@ module.exports = {
             sequelize.query('SELECT * from `commentaire` where ref_id_publication in '+ publicationList,
                 { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
                 ).then(function(commentaire) {
-                  console.log()
                   for (let i = 0; i < publication.length; i++) {
                     publication[i].commentaireMax = 0;
                     if(commentaire.length != 0){
@@ -342,8 +333,6 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var pro = cryptoUtils.decrypt(req.body.pro);
-    console.log("jqsjcjlwlkxn,jc");
-    console.log(pro)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -400,7 +389,6 @@ module.exports = {
           sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
               { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
               ).then(function(like) {
-                console.log()
                 for (let i = 0; i < publication.length; i++) {
                   publication[i].likeMax = 0;
                   if(like.length != 0){
@@ -420,7 +408,6 @@ module.exports = {
             sequelize.query('SELECT * from `commentaire` where ref_id_publication in '+ publicationList,
                 { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
                 ).then(function(commentaire) {
-                  console.log()
                   for (let i = 0; i < publication.length; i++) {
                     publication[i].commentaireMax = 0;
                     if(commentaire.length != 0){
@@ -505,7 +492,6 @@ module.exports = {
           sequelize.query('SELECT * from `like` where ref_id_publication in '+ publicationList,
               { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
               ).then(function(like) {
-                console.log()
                 for (let i = 0; i < publication.length; i++) {
                   publication[i].likeMax = 0;
                   if(like.length != 0){
@@ -525,7 +511,6 @@ module.exports = {
               sequelize.query('SELECT * from `commentaire` where ref_id_publication in '+ publicationList,
                   { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
                   ).then(function(commentaire) {
-                    console.log()
                     for (let i = 0; i < publication.length; i++) {
                       publication[i].commentaireMax = 0;
                       if(commentaire.length != 0){
