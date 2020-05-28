@@ -22,19 +22,20 @@ module.exports = {
       res.status(404).json({ 'error': 'wrong token' });
     }else{
         let nom = Math.random().toString(36).substring(7);
+        console.log(data)
   asyncLib.waterfall([
     function(done) {
-        sequelize.query('INSERT INTO chat (nom,createdAt,updateAt) VALUES ($nom,NOW(),NOW())',
-        { bind: { nom: nom }, type: sequelize.QueryTypes.INSERT }
+        sequelize.query('INSERT INTO chat (nom,createdAt,updateAt,nomvue) VALUES ($nom,NOW(),NOW(),$nomvue)',
+        { bind: { nom: nom, nomvue:data.nom }, type: sequelize.QueryTypes.INSERT }
       )
       .then(function(friendFound) {
-        fs.writeFile('./files/chat/'+nom+'.json', file, function (err) {
+        fs.writeFile('./files/chat/'+nom+'.json', '[]', function (err) {
           if (err) return console.log(err);
-          res.status(201).json(true);
         });
         done(friendFound);
       })
       .catch(function(err) {
+        console.log(err)
         return res.status(500).json({ 'error': 'unable to find friends' });
       });
     }
@@ -75,7 +76,7 @@ module.exports = {
         }else{
       asyncLib.waterfall([
         function(done) {
-            sequelize.query('select chat.id, chat.nom From chat Inner Join chat2user On chat2user.ref_id_chat = chat.id WHERE chat2user.ref_id_user = $iduser',
+            sequelize.query('select chat.id, chat.nom, chat.nomvue From chat Inner Join chat2user On chat2user.ref_id_chat = chat.id WHERE chat2user.ref_id_user = $iduser',
           { bind: { iduser: userId}, type: sequelize.QueryTypes.SELECT }
         )
           .then(function(chatFound) {
@@ -105,6 +106,20 @@ module.exports = {
       });
     
     }
+    },getChatMessage: function(req,res){
+      var headerAuth  = cryptoUtils.decrypt(req.body.token);
+      var userId      = jwtUtils.getUserId(headerAuth);
+      let room = cryptoUtils.decrypt(req.body.room);
+      if(userId<0){
+        res.status(404).json({ 'error': 'wrong token' });
+      }else{
+          let data = fs.readFileSync('./files/chat/'+room+'.json','utf8')
+          if (data) {
+            res.status(201).json(data);
+          } else {
+            res.status(404).json({ 'error': 'chat not found' });
+          }
+      }
     }
 }
 

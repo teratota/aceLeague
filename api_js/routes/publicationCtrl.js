@@ -266,7 +266,12 @@ module.exports = {
                 }
               }
             }
-            publicationList = '(' + publicationList + ')'
+            if(publicationList == ""){
+              publicationList=0;
+              publicationList = '(' + publicationList + ')';
+            }else{
+              publicationList = '(' + publicationList + ')';
+            }
           done(null ,publication, publicationList);
         })
         .catch(function(err) {
@@ -349,14 +354,17 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var pro = cryptoUtils.decrypt(req.body.pro);
+    console.log('bnsdcnjkxwbnjbnxwc')
+    console.log(pro)
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
     asyncLib.waterfall([
       function(done) {
       sequelize.query('Select pro.nom, pro.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id',
-      { bind: { id: req.body.pro }, type: sequelize.QueryTypes.SELECT }
+      { bind: { id: pro }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
+        console.log(publication)
         let publicationList = ''
         for (let i = 0; i < publication.length; i++) {
           if (i == 0) {
@@ -377,7 +385,12 @@ module.exports = {
         }
 
       }
-      publicationList = '(' + publicationList + ')'
+      if(publicationList == ""){
+        publicationList=0;
+        publicationList = '(' + publicationList + ')';
+      }else{
+        publicationList = '(' + publicationList + ')';
+      }
         done(null,publication,publicationList)
       }).catch(function(err) {
         console.log(err)
@@ -463,8 +476,8 @@ module.exports = {
     }else{
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, user.image as profilePic publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id',
-      { bind: { userid:userId, id:  req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id',
+      { bind: { userid:userId, id:  groupe }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;   
           let publicationList = ''
@@ -487,9 +500,15 @@ module.exports = {
               }
 
             }
-            publicationList = '(' + publicationList + ')'
+            if(publicationList == ""){
+              publicationList=0;
+              publicationList = '(' + publicationList + ')';
+            }else{
+              publicationList = '(' + publicationList + ')';
+            }
         done(null,publication,publicationList)
       }).catch(function(err) {
+        console.log(err)
         res.status(500).json({ 'error': 'cannot fetch publications' });
       })
     },
@@ -512,6 +531,7 @@ module.exports = {
             }
             done(null,publication,publicationList)
           }).catch(function(err) {
+            console.log(err)
             res.status(500).json({ 'error': 'cannot fetch publications' });
           })
         },
@@ -531,6 +551,7 @@ module.exports = {
                 }
                 done(null,publication,publicationList)
               }).catch(function(err) {
+                console.log(err)
                 res.status(500).json({ 'error': 'cannot fetch publications' });
               })
             },
@@ -550,6 +571,7 @@ module.exports = {
                     }
                     done(publication)
                   }).catch(function(err) {
+                    console.log(err)
                     res.status(500).json({ 'error': 'cannot fetch publications' });
                   })
                 }

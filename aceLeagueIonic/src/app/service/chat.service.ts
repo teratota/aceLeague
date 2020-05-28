@@ -21,4 +21,10 @@ export class ChatService {
     let token = this.securityService.getToken();
     return this.http.post(this.configUrl+"chat/get/",{token: token});
   }
+
+  getChatMessage(data){
+    let token = this.securityService.getToken();
+    let room = this.securityService.encode(data)
+    return this.http.post(this.configUrl+"chat/get/message",{token: token, room: room});
+  }
 }

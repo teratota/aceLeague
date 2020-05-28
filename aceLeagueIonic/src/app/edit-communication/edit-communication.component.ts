@@ -16,7 +16,10 @@ export class EditCommunicationComponent implements OnInit {
   chatForm = new FormGroup({
     friend:new FormControl('',[
       Validators.required
-    ])
+    ]),
+    nom:new FormControl('',[
+      Validators.required
+    ]),
   });
   user:number = null;
   friends : object;
@@ -26,6 +29,7 @@ export class EditCommunicationComponent implements OnInit {
   ngOnInit() {
     this.FriendService.getFriendList(this.user).subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
+      console.log(this.friends)
       return this.friends;
     },err => {
       if(err.error.error == "wrong token"){

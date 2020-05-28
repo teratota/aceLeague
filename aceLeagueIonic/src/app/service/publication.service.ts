@@ -28,12 +28,14 @@ export class PublicationService {
   uploadPublicationPro(file,form){
     let token = this.securityService.getToken();
     file = this.securityService.encode(JSON.stringify(file))
+    form = this.securityService.encode(JSON.stringify(form))
     return this.http.post(this.configUrl+"publication/upload/pro/",{file: file, form: form, token: token});
   }
 
   uploadPlublicationGroupe(file,form){
     let token = this.securityService.getToken();
     file = this.securityService.encode(JSON.stringify(file))
+    form = this.securityService.encode(JSON.stringify(form))
     return this.http.post(this.configUrl+"publication/upload/groupe",{file: file, form: form, token: token});
   }
 

@@ -88,6 +88,7 @@ exports.router = (function() {
   //Chat
   apiRouter.route('/chat/add').post(chatCtrl.addChat);
   apiRouter.route('/chat/get').post(chatCtrl.getChat);
+  apiRouter.route('/chat/get/message').post(chatCtrl.getChatMessage);
 
   return apiRouter;
 })();

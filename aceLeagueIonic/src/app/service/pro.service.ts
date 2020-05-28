@@ -21,7 +21,7 @@ export class ProService {
   }
   newPro(form,file){
     let token = this.securityService.getToken();
-    file = this.securityService.encode(JSON.stringify(form))
+    form = this.securityService.encode(JSON.stringify(form))
     file = this.securityService.encode(JSON.stringify(file))
     return this.http.post(this.configUrl+"pro/add",{form: form,file:file,token: token});
   }

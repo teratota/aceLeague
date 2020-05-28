@@ -78,17 +78,19 @@ io.on('connection', (socket) => {
       var userId      = jwtUtils.getUserId(headerAuth);
 	    console.log(userId)
       if(userId>0){
-        fs.readFile('myjsonfile.json', 'utf8', function readFileCallback(err, data){ 
+        fs.readFile('./files/chat/'+socket.room+'.json', 'utf8', function readFileCallback(err, data){ 
           if (err){
            console.log(err); 
           } else {
-             obj = json.parse(data); 
+             obj = JSON.parse(data); 
              let date = new Date();
-             obj.table.push({user: socket.nickname , message: message.text, time : date});
-             json = json.stringify(obj); 
-             fs.writeFile(socket.room+'.json', json, 'utf8', callback);
-             io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});
-        }});  
+             obj.push({user: socket.nickname , message: message.text, time : date});
+             let json = JSON.stringify(obj); 
+             fs.writeFile('./files/chat/'+socket.room+'.json', json, function (err) {
+              if (err) return console.log(err);
+              io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});
+              });
+            }});  
       } 
     });
   });
