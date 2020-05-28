@@ -62,7 +62,7 @@ ion-title{
     overflow: hidden;
     width: $profilePicture-size;
     height: $profilePicture-size;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -73,7 +73,7 @@ ion-title{
     overflow: hidden;
     width: $profilePictureFriends-size;
     height: $profilePictureFriends-size;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -134,6 +134,7 @@ ion-title{
 // Cards
 ion-card{
     width: 100%;
+    margin: 0;
 }
 
 ion-card-header{
@@ -197,4 +198,23 @@ ion-card-content {
 // Button Social 
 .button-bottom .button {
     color: white;
+}
+
+// RESPONSIVE
+@media (max-width: 575.98px) {
+    
+    // PROFILE PIC
+    .headerProfil .profilePic {
+        width: $profilePictureFriends-size;
+        height: $profilePictureFriends-size;
+        min-width: $profilePictureFriends-size;
+        min-height: $profilePictureFriends-size;
+        align-self: center;
+    }
+    
+    // NavBar Profile
+    .profileTab {
+        padding: 10px;
+    }
+
 }

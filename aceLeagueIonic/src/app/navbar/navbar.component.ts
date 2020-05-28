@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { SecurityService } from '../service/security.service';
 import { UserService } from '../service/user.service';
+import { PublicationComponent } from './../publication/publication.component';
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +12,15 @@ import { UserService } from '../service/user.service';
 })
 export class NavbarComponent implements OnInit {
 
+  // Modal
+  currentModal: any;
+
   // Displaying
   displayNavbar: boolean = true;
 
   isConnect: boolean = true;
 
-  constructor(private router:Router, public platform: Platform, private securityService: SecurityService, private userService: UserService, private activeRoute: ActivatedRoute) { }
+  constructor(private router:Router, public platform: Platform, private securityService: SecurityService, private userService: UserService, private activeRoute: ActivatedRoute, private modalController: ModalController) { }
 
   ngOnInit() {
     this.router.events.subscribe(event => {

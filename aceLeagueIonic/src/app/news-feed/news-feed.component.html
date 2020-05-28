@@ -1,83 +1,99 @@
 <ion-content>
-  <div *ngFor="let publication of publications">
-    <ion-card>
-      <ion-card-header>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="2">
-              <img src='{{publication.profilePic}}' class="profilePic">
-            </ion-col>
-            <ion-col size="9">
-              <div *ngIf='publication.username != null'>
-                <ion-card-title>{{ publication.username }}</ion-card-title>
-              </div>
-              <div *ngIf='publication.username == null'>
-                <ion-card-title>{{ publication.nom }}</ion-card-title>
-              </div>
-              <ion-card-subtitle>{{ publication.createdAt }}</ion-card-subtitle>
-            </ion-col>
-            <ion-col size="1">
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" size-md="8">
+
+          <!-- <app-publication></app-publication> VOIR POUR METTRA CE COMPONENT ICI -->
+
+        <div *ngFor="let publication of publications">
+          <ion-card>
+            <ion-card-header>
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="2">
+                    <img src='{{publication.profilePic}}' class="profilePic">
+                  </ion-col>
+                  <ion-col size="10">
+                    <div *ngIf='publication.username != null'>
+                      <ion-card-title>{{ publication.username }}</ion-card-title>
+                    </div>
+                    <div *ngIf='publication.username == null'>
+                      <ion-card-title>{{ publication.nom }}</ion-card-title>
+                    </div>
+                    <ion-card-subtitle>{{ publication.createdAt }}</ion-card-subtitle>
+                  </ion-col>
+                  <!-- <ion-col size="1">
               <div class="button" (click)="moreOptions()">
                 <ion-icon name="ellipsis-vertical-outline" size="large"></ion-icon>
               </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-header>
-    
-      <ion-card-content>
-        {{ publication.description }}
-      </ion-card-content>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col size="12">
-            <div *ngIf="publication.image" class="publicationPic">
-              <img src="{{publication.image}}" alt="">
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div class="button-bottom">
-        <ion-grid>
-          <ion-row>
-            <div *ngIf="publication.like == false">
-              <div class="button" (click)="publicationLike(publication.id)">
-                <ion-col size="1">
-                  <ion-icon name="heart-outline" size="large"></ion-icon>
-                  <span>{{publication.likeMax}}</span>
+            </ion-col> -->
+                </ion-row>
+              </ion-grid>
+            </ion-card-header>
+
+            <ion-card-content>
+              {{ publication.description }}
+            </ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <div *ngIf="publication.image" class="publicationPic">
+                    <img src="{{publication.image}}" alt="">
+                  </div>
                 </ion-col>
-              </div>
-            </div>
-              <div *ngIf="publication.like == true">
-                <div class="button" (click)="publicationDislike(publication.id)">
-                  <ion-col size="1">
-                    <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
-                    <span>{{publication.likeMax}}</span>
-                  </ion-col>
-                </div>
-            </div>
-            <div class="button" (click)="commentaireModal(publication.id)">
-              <ion-col size="1">
-                <ion-icon name="chatbubble-outline" size="large"></ion-icon>
-                <span>{{publication.commentaireMax}}</span>
-              </ion-col>
-            </div>
-            <!-- <div class="button" (click)="sharing()">
+              </ion-row>
+            </ion-grid>
+            <div class="button-bottom">
+              <ion-grid>
+                <ion-row>
+                  <div *ngIf="publication.like == false">
+                    <div class="button" (click)="publicationLike(publication.id)">
+                      <ion-col size="1">
+                        <ion-icon name="heart-outline" size="large"></ion-icon>
+                        <span>{{publication.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div *ngIf="publication.like == true">
+                    <div class="button" (click)="publicationDislike(publication.id)">
+                      <ion-col size="1">
+                        <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                        <span>{{publication.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div class="button" (click)="commentaireModal(publication.id)">
+                    <ion-col size="1">
+                      <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                      <span>{{publication.commentaireMax}}</span>
+                    </ion-col>
+                  </div>
+                  <!-- <div class="button" (click)="sharing()">
               <ion-col size="1">
                 <ion-icon name="share-social-outline" size="large"></ion-icon>
               </ion-col>
             </div> -->
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-card>
+        </div>
+
+        <ion-grid fixed>
+          <ion-row class="eof">
+            <ion-col size="12">
+              <p>Fin des publications</p>
+            </ion-col>
           </ion-row>
         </ion-grid>
-      </div>
-    </ion-card>
-  </div>
 
-  <ion-grid fixed>
-    <ion-row class="eof">
-      <ion-col size="12">
-        <p>Fin des publications</p>
       </ion-col>
+
+      <ion-col size="4">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet iure libero ad minus inventore dolores, culpa ea ipsum sapiente non consequuntur eveniet corrupti totam, impedit soluta repellendus fuga tempore eos.</p>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
 

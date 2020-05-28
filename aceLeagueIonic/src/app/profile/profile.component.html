@@ -2,7 +2,7 @@
   <ion-grid fixed>
     <ion-row class="rowHeader">
       <div class="headerProfil">
-        <img src='{{user.image}}' class="profilePic">
+        <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
 
         <div class="username">
           <p class="name">{{ user.username }}</p>
@@ -13,13 +13,13 @@
           </div>
         </div>
         <div *ngIf="isOtherUser">
-        <div (click)="choiceAction()" class="settingsIcon">
-          <ion-icon name="settings-outline"></ion-icon>
+          <div (click)="choiceAction()" class="settingsIcon">
+            <ion-icon name="settings-outline"></ion-icon>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
     </ion-row>
- 
+
 
     <ion-row class="rowFriends">
       <ion-col size="6">
@@ -33,18 +33,30 @@
         </div>
       </ion-col>
       <div *ngIf='isNotFriend'>
-        <ion-col size="6"(click)='addFriend()'>
-          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demandée en amie</p></div>
+        <ion-col size="6" (click)='addFriend()'>
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="person-add-outline"></ion-icon>
+              </span>Demandée en amie</p>
+          </div>
         </ion-col>
       </div>
       <div *ngIf='isFriendCours'>
         <ion-col size="6">
-          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="person-add-outline"></ion-icon></span> Demande en cours</p></div>
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="person-add-outline"></ion-icon>
+              </span> Demande en cours</p>
+          </div>
         </ion-col>
       </div>
       <div *ngIf='isFriend'>
         <ion-col size="6">
-          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color"><ion-icon name="checkmark-outline"></ion-icon></span> Amie</p></div>
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="checkmark-outline"></ion-icon>
+              </span> Amie</p>
+          </div>
         </ion-col>
       </div>
     </ion-row>
@@ -66,65 +78,67 @@
         Pros
       </div>
     </div>
-    
+
     <ion-row class="row-friends" *ngIf="friendsTab">
       <ion-col size="12">
-        <p class="friends-title section-bloc-title">Amis</p>
-        <ion-slides pager="true" [options]="slideOpts">
-          <ion-slide *ngFor="let friend of friends">
-            <ion-card>
-              <ion-card-header>
-                <div>
-                  <div class="profilePicFriends"
-                    style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
-                  </div>
-                </div>
-                <div class="cardHeadContent">
-                  <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
-                  <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
-                </div>
-              </ion-card-header>
+        <div class="lists">
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let friend of friends">
 
-              <ion-card-content>
-                <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
-                  Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
-                </ion-button>
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-        </ion-slides>
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+user.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
       </ion-col>
     </ion-row>
 
     <ion-row>
       <ion-col size="12" *ngIf="prosTab">
-        <p class="friends-title section-bloc-title">Clubs</p>
-        <ion-slides pager="true" [options]="slideOpts">
-          <ion-slide *ngFor="let friend of friends">
-            <ion-card>
-              <ion-card-header>
-                <div>
-                  <div class="profilePicFriends"
-                    style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
-                  </div>
-                </div>
-                <div class="cardHeadContent">
-                  <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
-                  <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
-                </div>
-              </ion-card-header>
+        <div class="lists">
 
-              <ion-card-content>
-                <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
-                  <span>
-                    Profil
-                  </span>
-                  <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
-                </ion-button>
-              </ion-card-content>
-            </ion-card>
-          </ion-slide>
-        </ion-slides>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let friend of friends">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+user.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                      <span>
+                        Profil
+                      </span>
+                      <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -135,7 +149,7 @@
         <div *ngFor="let publications of publication">
           <ion-card class="publicationCard">
             <ion-card-header>
-              <img src='{{user.image}}' class="profilePic">
+              <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
               <div class="headerCard">
                 <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
                 <ion-card-subtitle><span>{{ publications.createdAt }}</span></ion-card-subtitle>
@@ -167,13 +181,13 @@
                       </ion-col>
                     </div>
                   </div>
-                    <div *ngIf="publications.like == true">
-                      <div class="button" (click)="publicationDislike(publications.id)">
-                        <ion-col size="1">
-                          <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
-                          <span>{{publications.likeMax}}</span>
-                        </ion-col>
-                      </div>
+                  <div *ngIf="publications.like == true">
+                    <div class="button" (click)="publicationDislike(publications.id)">
+                      <ion-col size="1">
+                        <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
+                      </ion-col>
+                    </div>
                   </div>
                   <div class="button" (click)="commentaireModal(publications.id)">
                     <ion-col size="1">

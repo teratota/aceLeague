@@ -62,7 +62,7 @@ export class PublicationComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService) { }
+  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
