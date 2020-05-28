@@ -5,6 +5,7 @@ var models    = require('../models');
 var asyncLib  = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils  = require('../utils/crypto.utils');
+const fs = require('fs');
 
 // Constants
 const EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,6 +28,10 @@ module.exports = {
         { bind: { nom: nom }, type: sequelize.QueryTypes.INSERT }
       )
       .then(function(friendFound) {
+        fs.writeFile('./files/chat/'+nom+'.json', file, function (err) {
+          if (err) return console.log(err);
+          res.status(201).json(true);
+        });
         done(friendFound);
       })
       .catch(function(err) {

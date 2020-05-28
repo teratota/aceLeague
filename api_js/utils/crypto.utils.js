@@ -8,7 +8,12 @@ module.exports = {
       return encryptData
     },
     decrypt: function(data) {
+      if(data != undefined){
         var decryptData  = CryptoJS.AES.decrypt(data, key).toString(CryptoJS.enc.Utf8);
         return decryptData;
+      }else{
+        var decryptData = null
+        return decryptData;
+      }
     }
   }

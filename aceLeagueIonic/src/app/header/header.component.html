@@ -1,8 +1,6 @@
 <ion-header *ngIf="displayHeader">
   <ion-toolbar>
     <ion-title> <img src="../../assets/logo/logo-full-white.svg" alt="logo" class="logo"> AceLeague</ion-title>
-    <div *ngIf="isConnect">
-      <ion-button slot="end" (click)="getNotif()"><ion-icon name="mail-outline"></ion-icon></ion-button>
-    </div>
+      <ion-button slot="end" (click)="getNotif()"  *ngIf="isConnect"><ion-icon name="mail-outline"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-header>
