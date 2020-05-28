@@ -28,8 +28,10 @@ export class PhotoService {
     this.photos=[]
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
-      //source: CameraSource.Camera,
-      quality: 50
+      source: CameraSource.Prompt,
+      quality: 60,
+      width : 720,
+      allowEditing : true
     });
 
     this.image = this.sanitizer.bypassSecurityTrustResourceUrl(capturedPhoto && (capturedPhoto.webPath));
@@ -133,14 +135,6 @@ export class PhotoService {
         photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
       }
     }
-  }
-
-  public async takePicture() {
-    const takenImage = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-      quality: 85
-    });
-    
   }
 
   public async deletePicture(photo: Photo, position: number) {

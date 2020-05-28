@@ -5,7 +5,7 @@
         <ion-grid>
           <ion-row>
             <ion-col size="2">
-              <div class="profilePic" style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')"></div>
+              <img src='{{publication.profilePic}}' class="profilePic">
             </ion-col>
             <ion-col size="9">
               <div *ngIf='publication.username != null'>
@@ -72,5 +72,13 @@
       </div>
     </ion-card>
   </div>
+
+  <ion-grid fixed>
+    <ion-row class="eof">
+      <ion-col size="12">
+        <p>Fin des publications</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

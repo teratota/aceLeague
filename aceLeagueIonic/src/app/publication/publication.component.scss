@@ -1,4 +1,100 @@
+.form-grid {
+  margin: 0;
+}
+
 ion-slide img {
     height: 70vh !important;
     width: auto !important;
   }
+
+.publication {
+  position: relative;
+}
+
+.title {
+  font-family: "Bebas Neue";
+  text-align: center;
+  font-size: 30px;
+  margin: 10px 0;
+  letter-spacing: 2px;
+}
+
+.top-rounded {
+  border-radius: 5px 5px 0 0;
+}
+
+.bottom-rounded {
+  border-radius: 0 0 5px 5px;
+}
+
+.rounded {
+  border-radius: 5px;
+}
+
+.closeModal {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  font-size: 30px;
+  margin: 0;
+}
+
+.modal {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 70px);
+}
+
+
+// Button
+.col-btn {
+  align-self: flex-end;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+.upload-btn-wrapper .btn {
+  color: #fff;
+  background-color: #007b99;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 4px 2px;
+  width: calc(100% - 5px);
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+// Img
+ion-img.imgPreview {
+  max-height: 200px;
+  height: 200px;
+}
+
+::ng-deep ion-radio-group ion-item,
+::ng-deep ion-select-popover .list-md {
+  --background: #003542;
+  background: #003542;
+  --color: #fffff;
+  --border-color: transparent;
+}
+
+::ng-deep ion-radio{
+  --color: #fff;
+
+}

@@ -23,7 +23,7 @@
               <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
               <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
             </ion-item>
-            <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+            <ion-button (click)="next()">Suivant</ion-button>
             </div>
             <div *ngIf="secondView">
               <ion-item>

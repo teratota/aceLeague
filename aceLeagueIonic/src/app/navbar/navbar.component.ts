@@ -33,8 +33,12 @@ export class NavbarComponent implements OnInit {
   profil(){
     this.router.navigate(['profile'])
   }
-  publication(){
-    this.router.navigate(['publication'])
+  async publication(){
+    const modal = await this.modalController.create({
+      component: PublicationComponent
+    });
+    await modal.present();
+    this.currentModal = modal;
   }
   search(){
     this.router.navigate(['search'])

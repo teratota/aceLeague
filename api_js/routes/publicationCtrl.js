@@ -24,7 +24,7 @@ module.exports = {
       }
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null ORDER BY publication.createdAt DESC',
+      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
        let publicationList = ""
@@ -38,6 +38,10 @@ module.exports = {
           if (publication[i].image != null) {
             let file = fs.readFileSync ('./files/publication/' + publication[i].image,  'utf8' );
             publication[i].image = file
+          }
+          if (publication[i].profilePic != null) {
+            let file = fs.readFileSync ('./files/user/' + publication[i].profilePic,  'utf8' );
+            publication[i].profilePic = file
           }
         }
         if(publicationList == ""){
@@ -230,7 +234,7 @@ module.exports = {
         proList = '(' + proList + ')'
         
         
-        sequelize.query('Select pro.nom ,user.username, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC',
+        sequelize.query('Select pro.nom, pro.image as proPic ,user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC',
         { type: sequelize.QueryTypes.SELECT }
         )
         .then(function(publication) {
@@ -249,6 +253,18 @@ module.exports = {
                 publication[i].image = file
               }
 
+              if (publication[i].username != null) {
+                if (publication[i].profilePic != null) {
+                  let file = fs.readFileSync ('./files/user/' + publication[i].profilePic,  'utf8' );
+                  publication[i].profilePic = file
+                }
+              }
+              else if(publication[i].nom != null){
+                if (publication[i].proPic != null) {
+                  let file = fs.readFileSync ('./files/pro/' + publication[i].proPic,  'utf8' );
+                  publication[i].proPic = file
+                }
+              }
             }
             publicationList = '(' + publicationList + ')'
           done(null ,publication, publicationList);
@@ -338,8 +354,8 @@ module.exports = {
     }else{
     asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select pro.nom, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id ORDER BY publication.createdAt DESC',
-      { bind: { id: pro }, type: sequelize.QueryTypes.SELECT }
+      sequelize.query('Select pro.nom, pro.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id',
+      { bind: { id: req.body.pro }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         let publicationList = ''
         for (let i = 0; i < publication.length; i++) {
@@ -353,6 +369,11 @@ module.exports = {
         if (publication[i].image != null) { 
           let file = fs.readFileSync ('./files/publication/' + publication[i].image,  'utf8' );
           publication[i].image = file
+        }
+
+        if (publication[i].profilePic != null) {
+          let file = fs.readFileSync ('./files/pro/' + publication[i].profilePic,  'utf8' );
+          publication[i].profilePic = file
         }
 
       }
@@ -442,9 +463,10 @@ module.exports = {
     }else{
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id ORDER BY publication.createdAt DESC',
-      { bind: { userid:userId, id:groupe }, type: sequelize.QueryTypes.SELECT }
-      ).then(function(publication) { 
+      sequelize.query('Select user.username, user.image as profilePic publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id',
+      { bind: { userid:userId, id:  req.body.groupe }, type: sequelize.QueryTypes.SELECT }
+      ).then(function(publication) {
+        PubObject = publication;   
           let publicationList = ''
           for (let i = 0; i < publication.length; i++) {
                 if (i == 0) {
@@ -457,6 +479,11 @@ module.exports = {
               if (publication[i].image != null) { 
                 let file = fs.readFileSync ('./files/publication/' + publication[i].image,  'utf8' );
                 publication[i].image = file
+              }
+
+              if (publication[i].profilePic != null) {
+                let file = fs.readFileSync ('./files/user/' + publication[i].profilePic,  'utf8' );
+                publication[i].profilePic = file
               }
 
             }

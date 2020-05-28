@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicationService } from 'src/app/service/publication.service';
 import { PhotoService } from 'src/app/service/photo.service';
-import { ActionSheetController, Platform} from '@ionic/angular';
+import { ActionSheetController, Platform, ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
 import { GroupeService } from '../service/groupe.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -320,4 +320,9 @@ export class PublicationComponent implements OnInit {
     });
     await actionSheet.present();
   }
+
+  public async closeModal() {
+    await this.modalCtrl.dismiss();
+  }
+
 }

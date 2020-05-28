@@ -1,0 +1,24 @@
+::ng-deep .searchbar-input.sc-ion-searchbar-md {
+    box-shadow: unset !important;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    font-size: 60px;
+
+}
+
+::ng-deep .searchbar-clear-icon.sc-ion-searchbar-md {
+    width: 40px;
+}
+
+.section-title {
+    font-family: 'Bebas Neue';
+    font-size: 24px;
+    margin-bottom: 0;
+}
+
+::ng-deep ion-col .searchResult ion-item{
+    --background: transparent;
+    --border-color: transparent;
+
+    border-bottom: solid 1px rgba(0, 0, 0, 0.3);
+}
