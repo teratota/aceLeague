@@ -24,10 +24,17 @@ import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
 import { CommentaireComponent } from './commentaire/commentaire.component';
 import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
+import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HeaderComponent } from './header/header.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
+  { path : 'app', component : AppComponent},
   { path : 'register', component : RegisterComponent},
+  { path : 'navbar', component : NavbarComponent},
+  { path : 'header', component : HeaderComponent},
   { path : 'chat', component : ChatComponent},
   { path : 'listChatMessage', component : ListChatMessageComponent},
   { path : 'listCommunication', component : ListCommunicationComponent},
@@ -49,7 +56,8 @@ const routes: Routes = [
   { path : 'editGroupe', component : EditGroupeComponent},
   { path : 'uploadPicture', component : UploadPictureComponent},
   { path : 'commentaire', component : CommentaireComponent},
-  { path : 'listfriendnotvalidate', component : ListUnvalidateFriendComponent}
+  { path : 'listfriendnotvalidate', component : ListUnvalidateFriendComponent},
+  { path : 'editusergroupe', component : EditUserGroupeComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

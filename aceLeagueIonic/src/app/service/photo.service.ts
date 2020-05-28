@@ -36,7 +36,6 @@ export class PhotoService {
 
     this.image = this.sanitizer.bypassSecurityTrustResourceUrl(capturedPhoto && (capturedPhoto.webPath));
     this.blob = await fetch(capturedPhoto.webPath).then(r => r.blob());
-    console.log(this.blob)
 
     this.base = await this.readAsBase64(capturedPhoto);
 
@@ -60,7 +59,6 @@ export class PhotoService {
     var reader = new FileReader();
    reader.readAsDataURL(file);
    reader.onload = function () {
-     console.log(reader.result);
    };
    reader.onerror = function (error) {
      console.log('Error: ', error);
@@ -72,7 +70,6 @@ export class PhotoService {
     
 
     let url = "./"
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     
     if(platform[0]=="electron"){
@@ -120,7 +117,6 @@ export class PhotoService {
   public async loadSaved() {
     const photos = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photos.value) || [];
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0]=="electron"){
     for (const photo of this.photos) {
@@ -147,7 +143,6 @@ export class PhotoService {
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });
-    console.log(this.platform.platforms())
     let platform = this.platform.platforms()
     if(platform[0]=="electron"){
     const filename = photo.filepath

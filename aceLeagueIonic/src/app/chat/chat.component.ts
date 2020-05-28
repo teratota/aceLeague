@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs/Observable';
 import { ToastController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +22,7 @@ export class ChatComponent {
     ])
   });
 
-  constructor(private socket: Socket,  private toastCtrl: ToastController) { 
+  constructor(private socket: Socket,  private toastCtrl: ToastController, private securityService: SecurityService) { 
   this.nickname = history.state.data;
 
   this.getMessages().subscribe(message => {

@@ -12,7 +12,6 @@ export class SettingsComponent implements OnInit {
   ngOnInit() {}
 
   changeSetting(option) {
-    console.log(option);
     this.router.navigate(['listSetting'], {state: {data: {option}}});
   }
 

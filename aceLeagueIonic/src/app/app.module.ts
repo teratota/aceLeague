@@ -37,6 +37,7 @@ import { EditProComponent } from './edit-pro/edit-pro.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
 import { CommentaireComponent } from './commentaire/commentaire.component';
 import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
+import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -67,7 +68,8 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     EditProComponent,
     UploadPictureComponent,
     CommentaireComponent,
-    ListUnvalidateFriendComponent
+    ListUnvalidateFriendComponent,
+    EditUserGroupeComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],

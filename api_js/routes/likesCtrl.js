@@ -3,6 +3,7 @@ var models   = require('../models');
 var jwtUtils = require('../utils/jwt.utils');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
+var cryptoUtils  = require('../utils/crypto.utils');
 
 // Constants
 const DISLIKED = 0;
@@ -11,13 +12,14 @@ const LIKED    = 1;
 // Routes
 module.exports = {
   likePublication: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
      var userId      = jwtUtils.getUserId(headerAuth);
+     var publication = cryptoUtils.decrypt(req.body.publication);
      if(userId<0){
        res.status(404).json({ 'error': 'wrong token' });
      }else{
      sequelize.query('INSERT into `like` (ref_id_user, ref_id_publication, etat) values ($idUser,$idPublication,$etat) ',
-       { bind: { idUser:userId ,idPublication:req.body.publication,etat: 1}, type: sequelize.QueryTypes.INSERT }
+       { bind: { idUser:userId ,idPublication:publication,etat: 1}, type: sequelize.QueryTypes.INSERT }
      ).then(function(like) {
      if (like) {
          res.status(201).json(true);
@@ -29,14 +31,16 @@ module.exports = {
      })
    }
   },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   dislikePublication: function(req, res) {
-    var headerAuth  = req.body.token;
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
      var userId      = jwtUtils.getUserId(headerAuth);
+     var publication = cryptoUtils.decrypt(req.body.publication);
      if(userId<0){
        res.status(404).json({ 'error': 'wrong token' });
      }else{
       sequelize.query('Delete from `like` where ref_id_publication = $idPublication and ref_id_user = $idUser',
-      { bind: { idUser: userId, idPublication: req.body.publication }, type: sequelize.QueryTypes.DELETE }
+      { bind: { idUser: userId, idPublication: publication }, type: sequelize.QueryTypes.DELETE }
       ).then(function(friend) {
             res.status(201).json(true);
       }).catch(function(err) { 

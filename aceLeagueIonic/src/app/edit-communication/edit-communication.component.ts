@@ -4,6 +4,7 @@ import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import { FriendService } from '../service/friend.service';
 import { ChatService } from '../service/chat.service';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-edit-communication',
@@ -20,21 +21,26 @@ export class EditCommunicationComponent implements OnInit {
   user:number = null;
   friends : object;
 
-  constructor( private router : Router, private socket: Socket,  private FriendService: FriendService, private chatService: ChatService) { }
+  constructor( private router : Router, private socket: Socket,  private FriendService: FriendService, private chatService: ChatService,private securityService: SecurityService) { }
 
   ngOnInit() {
     this.FriendService.getFriendList(this.user).subscribe(response => {
-      this.friends = response;
-      console.log(this.friends);
+      this.friends = JSON.parse(this.securityService.decode(response));
       return this.friends;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   joinChat() {
-    console.log(this.chatForm.value)
     this.chatService.addChat(this.chatForm.value).subscribe(response => {
-      console.log(response);
       this.router.navigate(['listCommunication']);
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 

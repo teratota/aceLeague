@@ -1,0 +1,19 @@
+<ion-content>
+  <p class="closeModal" (click)="closeModal()">
+    <ion-icon name="close-outline"></ion-icon>
+  </p>
+  <div *ngFor="let listUsers of listUser">
+    <ion-item>
+      <span>{{listUsers.username}} :</span>
+      <ion-button (click)="delete(listUsers.id)"><ion-icon name="trash-outline"></ion-icon></ion-button>
+    </ion-item>
+  </div>
+  </ion-content>
+  <ion-footer>
+    <form [formGroup]="editUserform" (ngSubmit)="checkData()">
+      <ion-select formControlName="user" multiple="false" cancelText="Annuler" okText="Valider" >
+        <ion-select-option *ngFor="let friend of lisFriend" value="{{ friend.ref_id_user_friend }}">{{ friend.username }}</ion-select-option>
+      </ion-select>
+      <ion-button type="submit" [disabled]="!editUserform.valid">Ajouter</ion-button>
+    </form>
+  </ion-footer>

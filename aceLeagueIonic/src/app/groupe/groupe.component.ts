@@ -7,6 +7,8 @@ import { GroupeService } from '../service/groupe.service';
 import { EditGroupeComponent } from '../edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
+import { EditUserGroupeComponent } from '../edit-user-groupe/edit-user-groupe.component';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-groupe',
@@ -21,8 +23,12 @@ export class GroupeComponent implements OnInit {
     private GroupeService: GroupeService,
     public actionSheetController: ActionSheetController,
     private router: Router,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService
     ) { }
+
+    // Modal
+  currentModal = null;
 
     groupe:object = {
       nom:'',
@@ -46,27 +52,40 @@ export class GroupeComponent implements OnInit {
 
   getData(){
     this.GroupeService.getGroupeInfo(this.groupeId).subscribe(response => {
-      this.groupe = response[0];
-      console.log(this.groupe);
+      this.groupe = JSON.parse(this.securityService.decode(response))[0];
       return this.groupe;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.GroupeService.groupe2userNumberUser(this.groupeId).subscribe(response => {
-      this.abonnement = response[0]['COUNT(*)'];
-      console.log(this.abonnement);
+      this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     
     this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-      this.publication = response;
-      console.log(this.publication);
+      this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
 
     this.GroupeService.groupe2UserCheck(this.groupeId).subscribe(response => {
       if(response == true){
         this.isJoin = true;
         this.isNotJoin =false;
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
 
@@ -77,6 +96,10 @@ export class GroupeComponent implements OnInit {
         this.isAuthor = false;
       }
       return this.isAuthor;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     
   }
@@ -88,14 +111,21 @@ export class GroupeComponent implements OnInit {
         this.isNotJoin =false;
         this.GroupeService.groupe2userNumberUser(this.groupeId).subscribe(response => {
           this.abonnement = response[0]['COUNT(*)'];
-          console.log(this.abonnement);
           return this.abonnement;
+        },err => {
+          if(err.error.error == "wrong token"){
+            this.securityService.presentToast()
+          }
         });
+      }
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
       }
     });
   }
 
-  async editingPro() {
+  async editingGroupe() {
     const modal = await this.modalController.create({
       component: EditGroupeComponent,
       componentProps: {
@@ -103,10 +133,11 @@ export class GroupeComponent implements OnInit {
         'profilPic': 'noOneForMoment',
       }
     });
+    this.currentModal = modal;
     return await modal.present();
   }
 
-  async editingProImage() {
+  async editingGroupeImage() {
     const modal = await this.modalController.create({
       component: UploadPictureComponent,
       componentProps: {
@@ -115,7 +146,20 @@ export class GroupeComponent implements OnInit {
         'profilPic': 'noOneForMoment',
       }
     });
-    return await modal.present();
+    this.currentModal = modal;
+    await modal.present();
+  }
+
+  async editingUserGroupe() {
+    const modal = await this.modalController.create({
+      component: EditUserGroupeComponent,
+      componentProps: {
+        'data': this.groupeId,
+        'profilPic': 'noOneForMoment',
+      }
+    });
+    this.currentModal = modal;
+    await modal.present();
   }
 
   async choiceAction() {
@@ -125,13 +169,20 @@ export class GroupeComponent implements OnInit {
         text: 'Modifié profil du Groupe',
         icon: 'create-outline',
         handler: () => {
-          this.editingPro();
+          this.editingGroupe();
         }
       }, {
         text: "Modifié l'image de profil du Groupe",
         icon: 'create-outline',
         handler: () => {
-          this.editingProImage();
+          this.editingGroupeImage();
+        }
+      },
+      {
+        text: "Gestion des Utilisateurs",
+        icon: 'create-outline',
+        handler: () => {
+          this.editingUserGroupe();
         }
       }
     ]
@@ -142,33 +193,55 @@ export class GroupeComponent implements OnInit {
   publicationDislike(id){
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   publicationLike(id){
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
-        this.publication = response;
-        console.log(this.publication);
+        this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
       });
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
   async commentaireModal(id) {
-    console.log("sjjqhdqd")
     const modal = await this.modalController.create({
       component: CommentaireComponent,
       componentProps: {
         'param': id,
         'profilPic': 'noOneForMoment',
-      }
+      },
     });
+    this.currentModal = modal;
     return await modal.present();
   }
 
+  dismissModal() {
+    if (this.currentModal) {
+      this.currentModal.dismiss().then(() => {
+        this.getData()
+         this.currentModal = null; 
+        });
+    }
+  }
 }
