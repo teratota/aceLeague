@@ -1,4 +1,8 @@
 <ion-content>
+  <p class="title">Pro</p>
+  <p class="closeModal" (click)="closeModal()">
+    <ion-icon name="close-outline"></ion-icon>
+  </p>
         <div *ngIf="addView">
           <p class="title">Inscription Pro</p>
           <form [formGroup]="proForm" (ngSubmit)="checkData()">

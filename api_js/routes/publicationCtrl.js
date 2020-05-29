@@ -24,7 +24,7 @@ module.exports = {
       }
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null',
+      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_user = $id and publication.ref_id_groupe is null ORDER BY publication.createdAt DESC',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
        let publicationList = ""
@@ -234,7 +234,7 @@ module.exports = {
         proList = '(' + proList + ')'
         
         
-        sequelize.query('Select pro.nom, pro.image as proPic ,user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC',
+        sequelize.query('Select pro.nom, pro.image as proPic ,user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC limit 20',
         { type: sequelize.QueryTypes.SELECT }
         )
         .then(function(publication) {
@@ -354,6 +354,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var pro = cryptoUtils.decrypt(req.body.pro);
+    if(typeof pro == 'string'){
+      pro = JSON.parse(pro)
+    }
     console.log('bnsdcnjkxwbnjbnxwc')
     console.log(pro)
     if(userId<0){
@@ -361,7 +364,7 @@ module.exports = {
     }else{
     asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select pro.nom, pro.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id',
+      sequelize.query('Select pro.nom, pro.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join pro On publication.ref_id_pro = pro.id WHERE publication.ref_id_pro = $id ORDER BY publication.createdAt DESC',
       { bind: { id: pro }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         console.log(publication)
@@ -471,12 +474,15 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe = cryptoUtils.decrypt(req.body.groupe);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
       asyncLib.waterfall([
       function(done) {
-      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id',
+      sequelize.query('Select user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication Inner Join user On publication.ref_id_user = user.id WHERE publication.ref_id_groupe = $id ORDER BY publication.createdAt DESC',
       { bind: { userid:userId, id:  groupe }, type: sequelize.QueryTypes.SELECT }
       ).then(function(publication) {
         PubObject = publication;   

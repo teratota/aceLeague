@@ -100,6 +100,9 @@ module.exports = {
           var userId      = jwtUtils.getUserId(headerAuth);
           var form = JSON.parse(cryptoUtils.decrypt(req.body.form));
           var pro = cryptoUtils.decrypt(req.body.pro);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
@@ -126,6 +129,9 @@ module.exports = {
           var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var pro = cryptoUtils.decrypt(req.body.pro);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           var file = JSON.parse(cryptoUtils.decrypt(req.body.file));
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
@@ -187,6 +193,9 @@ module.exports = {
         var headerAuth  = cryptoUtils.decrypt(req.body.token);
         var userId      = jwtUtils.getUserId(headerAuth);
         var pro = cryptoUtils.decrypt(req.body.pro);
+        if(typeof pro == 'string'){
+          pro = JSON.parse(pro)
+        }
         if(userId<0){
           res.status(404).json({ 'error': 'wrong token' });
         }else{
@@ -212,6 +221,9 @@ module.exports = {
           var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var pro = cryptoUtils.decrypt(req.body.id);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
@@ -278,6 +290,9 @@ module.exports = {
           var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var pro = cryptoUtils.decrypt(req.body.pro);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
@@ -300,6 +315,9 @@ module.exports = {
           var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var pro = cryptoUtils.decrypt(req.body.pro);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }
@@ -321,6 +339,9 @@ module.exports = {
           var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var pro = cryptoUtils.decrypt(req.body.pro);
+          if(typeof pro == 'string'){
+            pro = JSON.parse(pro)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }

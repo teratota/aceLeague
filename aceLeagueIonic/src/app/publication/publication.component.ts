@@ -117,6 +117,7 @@ export class PublicationComponent implements OnInit {
       this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         this.router.navigate(['profile']);
+        this.modalCtrl.dismiss();
       },err => {
         if(err.error.error == "wrong token"){
           this.securityService.presentToast()
@@ -126,6 +127,7 @@ export class PublicationComponent implements OnInit {
       this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+        this.modalCtrl.dismiss();
       },err => {
         if(err.error.error == "wrong token"){
           this.securityService.presentToast()
@@ -135,6 +137,7 @@ export class PublicationComponent implements OnInit {
       this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
         this.publication = response;
         this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+        this.modalCtrl.dismiss();
       },err => {
         if(err.error.error == "wrong token"){
           this.securityService.presentToast()
@@ -187,6 +190,7 @@ export class PublicationComponent implements OnInit {
                         this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           this.router.navigate(['profile']);
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -195,7 +199,9 @@ export class PublicationComponent implements OnInit {
                       }else if(this.publicationForm.value.param == "Pro"){
                         this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
+                          console.log(this.publicationForm.value.pro)
                           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -205,6 +211,7 @@ export class PublicationComponent implements OnInit {
                         this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
                           this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -221,6 +228,7 @@ export class PublicationComponent implements OnInit {
           this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             this.router.navigate(['profile']);
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()
@@ -230,6 +238,7 @@ export class PublicationComponent implements OnInit {
           this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()
@@ -239,6 +248,7 @@ export class PublicationComponent implements OnInit {
           this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
             this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()
