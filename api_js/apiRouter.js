@@ -74,8 +74,10 @@ exports.router = (function() {
   apiRouter.route('/groupe/add').post(groupeCtrl.addGroupe)
   apiRouter.route('/groupe/update/image').post(groupeCtrl.updateGroupeImage)
   apiRouter.route('/groupe/update').post(groupeCtrl.updateGroupe)
+  apiRouter.route('/groupe/update').post(groupeCtrl.updateGroupe)
+  apiRouter.route('/groupe/me/prive').post(groupeCtrl.getMyGroupePrive)
+  apiRouter.route('/groupe/me/public').post(groupeCtrl.getMyGroupePublic)
   
-
   // Groupe2User
   apiRouter.route('/groupe2user/getlist').post(groupe2userCtrl.getListGroup2User);
   apiRouter.route('/groupe2user/add').post(groupe2userCtrl.addUser2Groupe)

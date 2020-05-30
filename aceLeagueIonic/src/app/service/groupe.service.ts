@@ -60,8 +60,9 @@ export class GroupeService {
     return this.http.post(this.configUrl+"groupe2user/getlist",{token: token});
   }
   groupe2UserAdd(groupe,user=null){
+    console.log(groupe)
     let token = this.securityService.getToken();
-    groupe = this.securityService.encode(JSON.stringify(user))
+    user = this.securityService.encode(JSON.stringify(user))
     groupe = this.securityService.encode(JSON.stringify(groupe))
     return this.http.post(this.configUrl+"groupe2user/add",{groupe:groupe,user:user,token: token});
   }
@@ -90,5 +91,13 @@ export class GroupeService {
     let token = this.securityService.getToken();
     groupe = this.securityService.encode(JSON.stringify(groupe))
     return this.http.post(this.configUrl+"groupe2user/list/userfriend/isnot",{groupe:groupe,token: token});
+  }
+  getMyGroupePublic(){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/me/public",{token: token});
+  }
+  getMyGroupePrive(){
+    let token = this.securityService.getToken();
+    return this.http.post(this.configUrl+"groupe/me/prive",{token: token});
   }
 }
