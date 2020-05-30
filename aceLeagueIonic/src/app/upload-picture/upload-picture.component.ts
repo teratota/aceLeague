@@ -2,11 +2,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ProService } from '../service/pro.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PhotoService } from '../service/photo.service';
-import { ActionSheetController, Platform } from '@ionic/angular';
+import { ActionSheetController, Platform, ModalController } from '@ionic/angular';
 import { UserService } from '../service/user.service';
 import { GroupeService } from '../service/groupe.service';
 import * as _ from 'lodash';
 import { SecurityService } from '../service/security.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-upload-picture',
@@ -50,7 +51,9 @@ export class UploadPictureComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private UserService: UserService,
     private GroupeService: GroupeService,
-    private securityService : SecurityService
+    private securityService : SecurityService,
+    private location : Location,
+    private modalCtrl: ModalController
     ) 
     {
     this.confirmation = true;
@@ -74,38 +77,56 @@ export class UploadPictureComponent implements OnInit {
 
   checkData() {
     let platform = this.platform.platforms()
-    if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+    // if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
-    }else{
-    if(this.param == 'pro'){
-      this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
-        this.router.navigate(['pro'],{state: {data: this.data}});
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.param == 'groupe'){
-      this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
-        this.router.navigate(['groupe'],{state: {data: this.data}});
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.param == 'user'){
-      this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
-        this.router.navigate(['/profile']);
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }
-    }  
+    // }else{
+    // if(this.param == 'pro'){
+    //   this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //     if(location == "/pro"){
+    //       this.router.navigate(['proReload'], {state: {data:this.data}});
+    //     }else if(location == "/proReload"){
+    //       this.router.navigate(['pro'], {state: {data:this.data}});
+    //     }
+    //     this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.param == 'groupe'){
+    //   this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //         if(location == "/groupe"){
+    //           this.router.navigate(['groupeReload'], {state: {data:this.data}});
+    //         }else if(location == "/groupe"){
+    //           this.router.navigate(['groupe'], {state: {data:this.data}});
+    //         }
+    //         this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.param == 'user'){
+    //   this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //         if(location == "/profile"){
+    //           this.router.navigate(['profileReload']);
+    //         }else if(location == "/profileReload"){
+    //           this.router.navigate(['profile']);
+    //         }
+    //         this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }
+    // }  
   }
 
   onChange(file: File) {
@@ -172,7 +193,13 @@ export class UploadPictureComponent implements OnInit {
                     ///////////////////////////////////////////
                     if(this.param == 'pro'){
                       this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
-                        this.router.navigate(['pro'],{state: {data: this.data}});
+                        let location = this.location.path()
+                        if(location == "/pro"){
+                          this.router.navigate(['proReload'], {state: {data:this.data}});
+                        }else if(location == "/proReload"){
+                          this.router.navigate(['pro'], {state: {data:this.data}});
+                        }
+                        this.modalCtrl.dismiss();
                         return this.config;
                       },err => {
                         if(err.error.error == "wrong token"){
@@ -181,7 +208,13 @@ export class UploadPictureComponent implements OnInit {
                       });
                     }else if(this.param == 'groupe'){
                       this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
-                        this.router.navigate(['groupe'],{state: {data: this.data}});
+                        let location = this.location.path()
+                        if(location == "/groupe"){
+                          this.router.navigate(['groupeReload'], {state: {data:this.data}});
+                        }else if(location == "/groupe"){
+                          this.router.navigate(['groupe'], {state: {data:this.data}});
+                        }
+                        this.modalCtrl.dismiss();
                         return this.config;
                       },err => {
                         if(err.error.error == "wrong token"){
@@ -190,7 +223,13 @@ export class UploadPictureComponent implements OnInit {
                       });
                     }else if(this.param == 'user'){
                       this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
-                        this.router.navigate(['/profile']);
+                        let location = this.location.path()
+                        if(location == "/profile"){
+                          this.router.navigate(['profileReload']);
+                        }else if(location == "/profileReload"){
+                          this.router.navigate(['profile']);
+                        }
+                        this.modalCtrl.dismiss();
                         return this.config;
                       },err => {
                         if(err.error.error == "wrong token"){
@@ -207,7 +246,13 @@ export class UploadPictureComponent implements OnInit {
         //////////////////////////////////////////////////////
         if(this.param == 'pro'){
           this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
-            this.router.navigate(['/pro'],{state: {data: this.data}});
+            let location = this.location.path()
+            if(location == "/pro"){
+              this.router.navigate(['proReload'], {state: {data:this.data}});
+            }else if(location == "/proReload"){
+              this.router.navigate(['pro'], {state: {data:this.data}});
+            }
+            this.modalCtrl.dismiss();
             return this.config;
           },err => {
             if(err.error.error == "wrong token"){
@@ -216,7 +261,13 @@ export class UploadPictureComponent implements OnInit {
           });
         }else if(this.param == 'groupe'){
           this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
-            this.router.navigate(['/groupe'],{state: {data: this.data}});
+            let location = this.location.path()
+            if(location == "/groupe"){
+              this.router.navigate(['groupeReload'], {state: {data:this.data}});
+            }else if(location == "/groupe"){
+              this.router.navigate(['groupe'], {state: {data:this.data}});
+            }
+            this.modalCtrl.dismiss();
             return this.config;
           },err => {
             if(err.error.error == "wrong token"){
@@ -225,7 +276,13 @@ export class UploadPictureComponent implements OnInit {
           });
         }else if(this.param == 'user'){
           this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
-            this.router.navigate(['/profile']);
+            let location = this.location.path()
+            if(location == "/profile"){
+              this.router.navigate(['profileReload']);
+            }else if(location == "/profileReload"){
+              this.router.navigate(['profile']);
+            }
+            this.modalCtrl.dismiss();
             return this.config;
           },err => {
             if(err.error.error == "wrong token"){
@@ -275,5 +332,9 @@ export class UploadPictureComponent implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+
+  public async closeModal() {
+    await this.modalCtrl.dismiss();
   }
 }

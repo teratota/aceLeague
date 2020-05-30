@@ -120,6 +120,9 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     let form = JSON.parse(cryptoUtils.decrypt(req.body.form));
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -146,6 +149,9 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
     let file = JSON.parse(cryptoUtils.decrypt(req.body.file));
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -204,6 +210,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
   var userId      = jwtUtils.getUserId(headerAuth);
   var groupe  = cryptoUtils.decrypt(req.body.groupe);
+  if(typeof groupe == 'string'){
+    groupe = JSON.parse(groupe)
+  }
   if(userId<0){
     res.status(404).json({ 'error': 'wrong token' });
   }else{
@@ -322,6 +331,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }

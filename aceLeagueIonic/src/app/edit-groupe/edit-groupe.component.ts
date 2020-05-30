@@ -4,10 +4,11 @@ import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
-import { ActionSheetController, Platform } from '@ionic/angular';
+import { ActionSheetController, Platform, ModalController } from '@ionic/angular';
 import * as _ from 'lodash';
 import { GroupeService } from '../service/groupe.service';
 import { SecurityService } from '../service/security.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-groupe',
@@ -83,7 +84,7 @@ export class EditGroupeComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService) {
+  constructor(private ValidationService: ValidationService, private GroupeService: GroupeService,private router : Router, private photoService: PhotoService,  public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService, private modalCtrl: ModalController, private location: Location) {
     this.confirmation = true;
   }
   
@@ -123,7 +124,12 @@ export class EditGroupeComponent implements OnInit {
       this.GroupeService.newGroupe(this.groupeForm.value,this.photoService.base).subscribe(response => {
         this.firstView = true ;
         this.secondView = false;
-        this.router.navigate(['/profile']);
+        let location = this.location.path()
+        if(location == "/profile"){
+          this.router.navigate(['profileReload']);
+        }else{
+          this.router.navigate(['profile']);
+        }
         return this.config;
       },err => {
         if(err.error.error == "wrong token"){
@@ -139,7 +145,13 @@ export class EditGroupeComponent implements OnInit {
         this.secondView = false;
         this.addView = true;
         this.editView = false;
-        this.router.navigate(['groupe'], {state: {data:this.data}});
+        let location = this.location.path()
+        if(location == "/groupe"){
+          this.router.navigate(['groupeReload'], {state: {data:this.data}});
+        }else{
+          this.router.navigate(['groupe'], {state: {data:this.data}});
+        }
+        this.modalCtrl.dismiss();
         return this.config;
       },err => {
         if(err.error.error == "wrong token"){
@@ -243,7 +255,13 @@ export class EditGroupeComponent implements OnInit {
                         this.GroupeService.newGroupe(this.groupeForm.value,this.cardImageBase64).subscribe(response => {
                           this.firstView = true ;
                           this.secondView = false;
-                          this.router.navigate(['/profile']);
+                          let location = this.location.path()
+                          if(location == "/profile"){
+                            this.router.navigate(['profileReload']);
+                          }else{
+                            this.router.navigate(['profile']);
+                          }
+                          this.modalCtrl.dismiss();
                           return this.config;
                         },err => {
                           if(err.error.error == "wrong token"){
@@ -260,7 +278,13 @@ export class EditGroupeComponent implements OnInit {
           this.GroupeService.newGroupe(this.groupeForm.value,this.cardImageBase64).subscribe(response => {
             this.firstView = true ;
             this.secondView = false;
-            this.router.navigate(['/profile']);
+            let location = this.location.path()
+            if(location == "/profile"){
+              this.router.navigate(['profileReload']);
+            }else{
+              this.router.navigate(['profile']);
+            }
+            this.modalCtrl.dismiss();
             return this.config;
           },err => {
             if(err.error.error == "wrong token"){
@@ -312,6 +336,10 @@ export class EditGroupeComponent implements OnInit {
       }]
     });
     await actionSheet.present();
+  }
+
+  public async closeModal() {
+    await this.modalCtrl.dismiss();
   }
 
 }

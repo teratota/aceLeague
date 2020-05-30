@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserService } from '../service/user.service';
 import { Router } from '@angular/router';
 import { SecurityService } from '../service/security.service';
+import { ModalController } from '@ionic/angular';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-profile',
@@ -43,7 +45,7 @@ export class EditProfileComponent implements OnInit {
   });
 
 
-  constructor(private UserService: UserService, private router: Router,private securityService: SecurityService) { }
+  constructor(private UserService: UserService, private router: Router,private securityService: SecurityService, private location: Location, private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.profileForm.setValue({
@@ -54,12 +56,23 @@ export class EditProfileComponent implements OnInit {
   checkData() {
     this.UserService.userUpdate(this.profileForm.value).subscribe(response => {
       this.config = response;
-      this.router.navigate(['/profile']);
+      let location = this.location.path()
+            if(location == "/profile"){
+              this.router.navigate(['profileReload']);
+            }else{
+              this.router.navigate(['profile']);
+            }
+            this.modalCtrl.dismiss();
     },err => {
       if(err.error.error == "wrong token"){
         this.securityService.presentToast()
       }
     });
   }
+
+  public async closeModal() {
+    await this.modalCtrl.dismiss();
+  }
+
 
 }

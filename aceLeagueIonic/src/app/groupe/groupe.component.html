@@ -73,7 +73,7 @@
             <ion-grid fixed>
               <ion-row>
                 <ion-col size="12">
-                  <div *ngIf="publications.image != 'undefined'" class="publicationPic">
+                  <div *ngIf="publications.image != null" class="publicationPic">
                     <img src="{{publications.image}}" alt="">
                   </div>
                 </ion-col>

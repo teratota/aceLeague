@@ -42,12 +42,14 @@ export class ProComponent implements OnInit {
     this.activeRoute.params.subscribe(routeParams => {
       this.isAuthor = false;
       this.proId = history.state.data;
+      console.log(this.proId);
       this.getData();
     });
   }
   
 
   getData(){
+    console.log(this.proId)
     this.ProService.getInfoPro(this.proId).subscribe(response => {
       this.pro = JSON.parse(this.securityService.decode(response))[0];
       return this.pro;
@@ -213,6 +215,7 @@ export class ProComponent implements OnInit {
       component: CommentaireComponent,
       componentProps: {
         'param': id,
+        'data':this.proId,
         'profilPic': 'noOneForMoment',
       }
     });

@@ -37,6 +37,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -60,6 +63,9 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
     var user  = cryptoUtils.decrypt(req.body.user);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -76,8 +82,15 @@ module.exports = {
   addUser2Groupe: function(req, res){
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
-    var groupe  = cryptoUtils.decrypt(req.body.groupe);
     var user  = cryptoUtils.decrypt(req.body.user);
+    var groupe  = cryptoUtils.decrypt(req.body.groupe);
+    console.log(groupe);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
+    if(typeof user == 'string'){
+      user = JSON.parse(user)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
@@ -99,7 +112,7 @@ module.exports = {
       sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
       { bind: { 
         ref_id_user: user,
-        ref_id_groupe: req.body.groupe
+        ref_id_groupe: groupe
        }, type: sequelize.QueryTypes.INSERT }
       )
       .then(function(groupe) {
@@ -117,6 +130,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var groupe  = cryptoUtils.decrypt(req.body.groupe);
+          if(typeof groupe == 'string'){
+            groupe = JSON.parse(groupe)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
@@ -138,6 +154,9 @@ module.exports = {
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
           var userId      = jwtUtils.getUserId(headerAuth);
           var groupe  = cryptoUtils.decrypt(req.body.groupe);
+          if(typeof groupe == 'string'){
+            groupe = JSON.parse(groupe)
+          }
           if(userId<0){
             res.status(404).json({ 'error': 'wrong token' });
           }else{
@@ -161,6 +180,9 @@ module.exports = {
     var userId      = jwtUtils.getUserId(headerAuth);
     var groupe  = cryptoUtils.decrypt(req.body.groupe);
     var user  = cryptoUtils.decrypt(req.body.user);
+    if(typeof groupe == 'string'){
+      groupe = JSON.parse(groupe)
+    }
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{

@@ -229,6 +229,7 @@ export class GroupeComponent implements OnInit {
       component: CommentaireComponent,
       componentProps: {
         'param': id,
+        'data':this.groupeId,
         'profilPic': 'noOneForMoment',
       },
     });

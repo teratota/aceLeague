@@ -3,7 +3,7 @@
 </ion-content>
 <ion-list>
   <ion-item *ngFor="let chats of chat">
-    <ion-label>{{chats.nom}}</ion-label>
+    <ion-label>{{chats.nomvue}}</ion-label>
     <ion-button (click)="join(chats.nom)">Join</ion-button>
   </ion-item>
 </ion-list>

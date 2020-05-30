@@ -5,6 +5,9 @@ var apiRouter   = require('./apiRouter').router;
 let http = require('http').Server(express);
 let io = require('socket.io')(http);
 var jwtUtils  = require('./utils/jwt.utils');
+var cryptoUtils  = require('./utils/crypto.utils');
+const fs = require('fs');
+
 
 // Instantiate server
 var server = express();
@@ -32,14 +35,14 @@ server.use('/api/', apiRouter);
 
 io.on('connection', (socket) => {
 
-    socket.on('createRoom', function(){
-      console.log(socket)
-      socket.join(socket.room);  
-    });
+    // socket.on('createRoom', function(){
+    //   console.log(socket)
+    //   socket.join(socket.room);  
+    // });
   
     socket.on('join', function(room){
       console.log(socket)
-      var headerAuth  = room.token;
+      var headerAuth  = cryptoUtils.decrypt(room.token);
       var userId      = jwtUtils.getUserId(headerAuth);
 	    console.log(userId)
       if(userId>0){
@@ -49,7 +52,7 @@ io.on('connection', (socket) => {
   
     
     socket.on('disconnect', function(){
-      var headerAuth  = socket.token;
+      var headerAuth  = cryptoUtils.decrypt(socket.token);
       var userId      = jwtUtils.getUserId(headerAuth);
 	    console.log(userId)
       if(userId>0){
@@ -61,7 +64,7 @@ io.on('connection', (socket) => {
       socket.nickname = nickname.nickname;
       socket.room = nickname.room;
       socket.token = nickname.token;
-      var headerAuth  = socket.token;
+      var headerAuth  = cryptoUtils.decrypt(socket.token);
       var userId      = jwtUtils.getUserId(headerAuth);
 	    console.log(userId)
       if(userId>0){
@@ -71,11 +74,23 @@ io.on('connection', (socket) => {
     });
     
     socket.on('add-message', (message) => {
-      var headerAuth  = socket.token;
+      var headerAuth  = cryptoUtils.decrypt(socket.token);
       var userId      = jwtUtils.getUserId(headerAuth);
 	    console.log(userId)
       if(userId>0){
-        io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});   
+        fs.readFile('./files/chat/'+socket.room+'.json', 'utf8', function readFileCallback(err, data){ 
+          if (err){
+           console.log(err); 
+          } else {
+             obj = JSON.parse(data); 
+             let date = new Date();
+             obj.push({user: socket.nickname , message: message.text, time : date});
+             let json = JSON.stringify(obj); 
+             fs.writeFile('./files/chat/'+socket.room+'.json', json, function (err) {
+              if (err) return console.log(err);
+              io.sockets.in(socket.room).emit('message', {text: message.text, from: socket.nickname, created: new Date()});
+              });
+            }});  
       } 
     });
   });

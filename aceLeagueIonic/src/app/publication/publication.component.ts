@@ -8,6 +8,7 @@ import { GroupeService } from '../service/groupe.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { SecurityService } from '../service/security.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-publication',
@@ -62,7 +63,7 @@ export class PublicationComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService, private modalCtrl: ModalController) { }
+  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService, private modalCtrl: ModalController, private location: Location) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
@@ -110,38 +111,56 @@ export class PublicationComponent implements OnInit {
 
   send(){
     let platform = this.platform.platforms()
-    if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+  //  if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
-    }else{
-    if(this.publicationForm.value.param == "Moi"){
-      this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        this.router.navigate(['profile']);
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.publicationForm.value.param == "Pro"){
-      this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.publicationForm.value.param == "Groupe"){
-      this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }  
-    }
+ //   }else{
+    // if(this.publicationForm.value.param == "Moi"){
+    //   this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //     if(location == "/profile"){
+    //       this.router.navigate(['profileReload']);
+    //     }else{
+    //       this.router.navigate(['profile']);
+    //     }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.publicationForm.value.param == "Pro"){
+    //   this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //         if(location == "/pro"){
+    //           this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
+    //         }else{
+    //           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+    //         }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.publicationForm.value.param == "Groupe"){
+    //   this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //     if(location == "/groupe"){
+    //       this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
+    //     }else{
+    //       this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+    //     }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }  
+   // }
   }
 
   sendForElectron(){
@@ -186,7 +205,13 @@ export class PublicationComponent implements OnInit {
                       if(this.publicationForm.value.param == "Moi"){
                         this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          this.router.navigate(['profile']);
+                          let location = this.location.path()
+                          if(location == "/profile"){
+                            this.router.navigate(['profileReload']);
+                          }else{
+                            this.router.navigate(['profile']);
+                          }
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -195,7 +220,14 @@ export class PublicationComponent implements OnInit {
                       }else if(this.publicationForm.value.param == "Pro"){
                         this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+                          console.log(this.publicationForm.value.pro)
+                          let location = this.location.path()
+                          if(location == "/pro"){
+                            this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
+                          }else{
+                            this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+                          }
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -204,7 +236,13 @@ export class PublicationComponent implements OnInit {
                       }else if(this.publicationForm.value.param == "Groupe"){
                         this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
                           this.publication = response;
-                          this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+                          let location = this.location.path()
+                          if(location == "/groupe"){
+                            this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
+                          }else{
+                            this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+                          }
+                          this.modalCtrl.dismiss();
                         },err => {
                           if(err.error.error == "wrong token"){
                             this.securityService.presentToast()
@@ -220,7 +258,13 @@ export class PublicationComponent implements OnInit {
         if(this.publicationForm.value.param == "Moi"){
           this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            this.router.navigate(['profile']);
+            let location = this.location.path()
+            if(location == "/profile"){
+              this.router.navigate(['profileReload']);
+            }else{
+              this.router.navigate(['profile']);
+            }
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()
@@ -229,7 +273,13 @@ export class PublicationComponent implements OnInit {
         }else if(this.publicationForm.value.param == "Pro"){
           this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+            let location = this.location.path()
+            if(location == "/pro"){
+              this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
+            }else{
+              this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+            }
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()
@@ -238,7 +288,13 @@ export class PublicationComponent implements OnInit {
         }else if(this.publicationForm.value.param == "Groupe"){
           this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
             this.publication = response;
-            this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+            let location = this.location.path()
+            if(location == "/groupe"){
+              this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
+            }else{
+              this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+            }
+            this.modalCtrl.dismiss();
           },err => {
             if(err.error.error == "wrong token"){
               this.securityService.presentToast()

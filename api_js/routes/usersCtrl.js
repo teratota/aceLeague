@@ -137,6 +137,7 @@ module.exports = {
   login: function(req, res) {
     // Params
     data = cryptoUtils.decrypt(req.body.data)
+    console.log(data);
     data = JSON.parse(data)
     var email    = data.email;
     var password = data.password;
@@ -199,7 +200,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      if(otherUser!= ''){
+      if(otherUser!= '' && otherUser!= 'null'){
         userId = otherUser
       }
     var user = sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1',

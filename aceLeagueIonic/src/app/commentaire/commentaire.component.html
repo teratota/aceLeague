@@ -1,4 +1,8 @@
 <ion-content>
+<p class="title">Commentaire</p>
+<p class="closeModal" (click)="closeModal()">
+  <ion-icon name="close-outline"></ion-icon>
+</p>
 <div *ngFor="let commentaires of commentaire">
   <ion-item>
     <span>{{commentaires.username}} :</span>
