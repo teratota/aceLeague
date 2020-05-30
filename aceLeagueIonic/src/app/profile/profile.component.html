@@ -14,7 +14,7 @@
         </div>
         <div *ngIf="isOtherUser">
           <div (click)="choiceAction()" class="settingsIcon">
-            <ion-icon name="settings-outline"></ion-icon>
+            <ion-icon color="dark" name="settings-outline"></ion-icon>
           </div>
         </div>
       </div>
@@ -212,7 +212,7 @@
   <ion-grid fixed>
     <ion-row class="eof">
       <ion-col size="12">
-        <p>Fin des publications</p>
+        <p *ngIf="profileTab">Fin des publications</p>
       </ion-col>
     </ion-row>
   </ion-grid>

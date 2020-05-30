@@ -56,6 +56,10 @@ ion-title{
 }
 
 // Profil picture
+.publicationCard .profilePic {
+    border-color: white;
+}
+
 .profilePic{
     border-radius: 50%;
     border: 1px solid var(--ion-color-dark);
@@ -69,7 +73,7 @@ ion-title{
 
 .profilePicFriends{
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid white;
     overflow: hidden;
     width: $profilePictureFriends-size;
     height: $profilePictureFriends-size;
