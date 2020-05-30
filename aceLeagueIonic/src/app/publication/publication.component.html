@@ -38,7 +38,7 @@
     </ion-grid>
     <div>
       <ion-grid>
-        <ion-row *ngIf='isPC'>
+        <!-- <ion-row *ngIf='isPC'> -->
           <ion-col size="6" class="col-btn">
             <div>
               <div class="upload-btn-wrapper">
@@ -56,9 +56,9 @@
               [disabled]="!publicationForm.valid">
               Envoyer</ion-button>
           </ion-col>
-        </ion-row>
+        <!-- </ion-row> -->
 
-        <ion-row *ngIf='isMobile'>
+        <!-- <ion-row *ngIf='isMobile'>
           <div *ngIf='isImageMobile'>
               <ion-row>
                 <ion-col size="12" *ngFor="let photo of photoService.photos; index as position">
@@ -79,7 +79,7 @@
               [disabled]="!publicationForm.valid">
               Envoyer</ion-button>
           </ion-col>
-        </ion-row>
+        </ion-row> -->
       </ion-grid>
     </div>
   </form>

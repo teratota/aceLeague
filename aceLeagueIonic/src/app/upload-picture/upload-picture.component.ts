@@ -77,56 +77,56 @@ export class UploadPictureComponent implements OnInit {
 
   checkData() {
     let platform = this.platform.platforms()
-    if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+    // if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
-    }else{
-    if(this.param == 'pro'){
-      this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
-        let location = this.location.path()
-        if(location == "/pro"){
-          this.router.navigate(['proReload'], {state: {data:this.data}});
-        }else if(location == "/proReload"){
-          this.router.navigate(['pro'], {state: {data:this.data}});
-        }
-        this.modalCtrl.dismiss();
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.param == 'groupe'){
-      this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
-        let location = this.location.path()
-            if(location == "/groupe"){
-              this.router.navigate(['groupeReload'], {state: {data:this.data}});
-            }else if(location == "/groupe"){
-              this.router.navigate(['groupe'], {state: {data:this.data}});
-            }
-            this.modalCtrl.dismiss();
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.param == 'user'){
-      this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
-        let location = this.location.path()
-            if(location == "/profile"){
-              this.router.navigate(['profileReload']);
-            }else if(location == "/profileReload"){
-              this.router.navigate(['profile']);
-            }
-            this.modalCtrl.dismiss();
-        return this.config;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }
-    }  
+    // }else{
+    // if(this.param == 'pro'){
+    //   this.ProService.updateProImage(this.data,this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //     if(location == "/pro"){
+    //       this.router.navigate(['proReload'], {state: {data:this.data}});
+    //     }else if(location == "/proReload"){
+    //       this.router.navigate(['pro'], {state: {data:this.data}});
+    //     }
+    //     this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.param == 'groupe'){
+    //   this.GroupeService.updateGroupeImage(this.data,this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //         if(location == "/groupe"){
+    //           this.router.navigate(['groupeReload'], {state: {data:this.data}});
+    //         }else if(location == "/groupe"){
+    //           this.router.navigate(['groupe'], {state: {data:this.data}});
+    //         }
+    //         this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.param == 'user'){
+    //   this.UserService.updateUserImage(this.cardImageBase64).subscribe(response => {
+    //     let location = this.location.path()
+    //         if(location == "/profile"){
+    //           this.router.navigate(['profileReload']);
+    //         }else if(location == "/profileReload"){
+    //           this.router.navigate(['profile']);
+    //         }
+    //         this.modalCtrl.dismiss();
+    //     return this.config;
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }
+    // }  
   }
 
   onChange(file: File) {

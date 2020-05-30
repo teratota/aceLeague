@@ -122,37 +122,37 @@ export class RegisterComponent implements OnInit {
 
   checkData() {
     let platform = this.platform.platforms()
-    if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+    // if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
-    }else{
-    var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
-    if(mail=false){
-      this.mail = true;
-    }else{
-      this.mail = false;
-      var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password,this.registerForm.value.password2);
-    if(result == false){
-      this.password=true;
-    }else{
-      this.password=false;
-      var user = JSON.stringify(this.registerForm.value)
-      this.UserService.newUser(this.registerForm.value,this.photoService.base).subscribe(response => {
-        this.config = response;
-        this.config.token = this.SecurityService.encode(this.config.token);
-        localStorage.setItem('token',this.config.token);
-        this.firstView = true ;
-        this.secondView = false;
-        this.thirdView = false;
-        this.foorView = false;
-        this.fiveView = false;
-        this.navBarComponent.refreshNavbar()
-       // this.headerComponent.refreshHeader()
-        this.router.navigate(['/profile']);
-        return this.config;
-      });
-    }
-    }
-    }
+    // }else{
+    // var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
+    // if(mail=false){
+    //   this.mail = true;
+    // }else{
+    //   this.mail = false;
+    //   var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password,this.registerForm.value.password2);
+    // if(result == false){
+    //   this.password=true;
+    // }else{
+    //   this.password=false;
+    //   var user = JSON.stringify(this.registerForm.value)
+    //   this.UserService.newUser(this.registerForm.value,this.photoService.base).subscribe(response => {
+    //     this.config = response;
+    //     this.config.token = this.SecurityService.encode(this.config.token);
+    //     localStorage.setItem('token',this.config.token);
+    //     this.firstView = true ;
+    //     this.secondView = false;
+    //     this.thirdView = false;
+    //     this.foorView = false;
+    //     this.fiveView = false;
+    //     this.navBarComponent.refreshNavbar()
+    //    // this.headerComponent.refreshHeader()
+    //     this.router.navigate(['/profile']);
+    //     return this.config;
+    //   });
+    // }
+    // }
+    // }
   }
 
   login(){

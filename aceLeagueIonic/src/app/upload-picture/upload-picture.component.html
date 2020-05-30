@@ -1,16 +1,16 @@
 <ion-content>
 <ion-fab>
-  <div *ngIf='isPC'>
+  <!-- <div *ngIf='isPC'> -->
     <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"><ion-icon name="camera"></ion-icon>
-  </div>
-  <div *ngIf='isMobile'>
+  <!-- </div> -->
+  <!-- <div *ngIf='isMobile'>
     <ion-fab-button (click)="photo()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
-  </div>
-</ion-fab>
+  </div>-->
+</ion-fab> 
 
-<div *ngIf='isImagePc'>
+<!-- <div *ngIf='isImagePc'> -->
   <ion-grid>
     <ion-row>
       <ion-col size="6">
@@ -18,9 +18,9 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-</div>
+<!-- </div> -->
 
-<div *ngIf='isImageMobile'>
+<!-- <div *ngIf='isImageMobile'>
   <ion-grid>
     <ion-row>
     <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
@@ -28,7 +28,7 @@
     </ion-col>
     </ion-row>
   </ion-grid> 
-</div>
+</div> -->
 
 <ion-button type="submit" color="tertiary" (click)='checkData()'>Changer l'image de profil</ion-button>
 

@@ -111,56 +111,56 @@ export class PublicationComponent implements OnInit {
 
   send(){
     let platform = this.platform.platforms()
-    if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+  //  if(platform[0] == 'electron' || platform[0] == 'desktop' ){
       this.sendForElectron() 
-    }else{
-    if(this.publicationForm.value.param == "Moi"){
-      this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        let location = this.location.path()
-        if(location == "/profile"){
-          this.router.navigate(['profileReload']);
-        }else{
-          this.router.navigate(['profile']);
-        }
-        this.modalCtrl.dismiss();
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.publicationForm.value.param == "Pro"){
-      this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        let location = this.location.path()
-            if(location == "/pro"){
-              this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
-            }else{
-              this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
-            }
-        this.modalCtrl.dismiss();
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }else if(this.publicationForm.value.param == "Groupe"){
-      this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
-        this.publication = response;
-        let location = this.location.path()
-        if(location == "/groupe"){
-          this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
-        }else{
-          this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
-        }
-        this.modalCtrl.dismiss();
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
-        }
-      });
-    }  
-    }
+ //   }else{
+    // if(this.publicationForm.value.param == "Moi"){
+    //   this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //     if(location == "/profile"){
+    //       this.router.navigate(['profileReload']);
+    //     }else{
+    //       this.router.navigate(['profile']);
+    //     }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.publicationForm.value.param == "Pro"){
+    //   this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //         if(location == "/pro"){
+    //           this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
+    //         }else{
+    //           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
+    //         }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }else if(this.publicationForm.value.param == "Groupe"){
+    //   this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
+    //     this.publication = response;
+    //     let location = this.location.path()
+    //     if(location == "/groupe"){
+    //       this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
+    //     }else{
+    //       this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
+    //     }
+    //     this.modalCtrl.dismiss();
+    //   },err => {
+    //     if(err.error.error == "wrong token"){
+    //       this.securityService.presentToast()
+    //     }
+    //   });
+    // }  
+   // }
   }
 
   sendForElectron(){
