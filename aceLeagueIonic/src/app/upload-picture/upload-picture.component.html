@@ -1,75 +1,19 @@
 <ion-content>
-<ion-fab>
-  <!-- <div *ngIf='isPC'> -->
-    <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"><ion-icon name="camera"></ion-icon>
-  <!-- </div> -->
-  <!-- <div *ngIf='isMobile'>
-    <ion-fab-button (click)="photo()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </div>-->
-</ion-fab> 
 
   <p class="title">Modifier mon image</p>
-<!-- <div *ngIf='isImagePc'> -->
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6">
-        <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-<!-- </div> -->
 
   <div class="previewPic">
-    <div *ngIf='isImagePc' [style.background-image]="'url('+previewImagePath+')'"
+    
+    <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
       (click)="showActionSheetElectron(photo, position)">
     </div>
-<!-- <div *ngIf='isImageMobile'>
-  <ion-grid>
-    <ion-row>
-    <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-      <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
-    </ion-col>
-    </ion-row>
-  </ion-grid> 
-</div> -->
 
-
-    <!-- <div *ngIf='isImageMobile'>
-      <ion-grid>
-        <ion-row>
-          <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-            <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
-              (click)="showActionSheet(photo, position)"></ion-img>
-          </ion-col>
-        </ion-row>
-      </ion-grid> -->
-    <!-- </div> -->
-
-    <div *ngIf='isImageMobile'>
-      <div size="12" *ngFor="let photo of photoService.photos; index as position">
-        <!-- <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
-          (click)="showActionSheet(photo, position)"></ion-img> -->
-        <div [style.background-image]="'url('+photo.webviewPath+')'"></div>
-      </div>
-    </div>
-
-    <div class="popopo" *ngIf='isPC && !isImagePc'>
+    <div class="popopo" *ngIf="!isImagePc">
       <div class="uploadBtnPc">
               <div class="upload-btn-wrapper">
                 <button class="btn">Sélectionner mon image</button>
                 <input type='file' #fileInput (change)="onChange(fileInput.files[0])">
               </div>
-
-      </div>
-
-      <div *ngIf='isMobile' class="uploadBtn">
-        <div>
-          <ion-fab-button (click)="photo()">
-            <ion-icon name="camera"></ion-icon>
-          </ion-fab-button>
-        </div>
       </div>
     </div>
 

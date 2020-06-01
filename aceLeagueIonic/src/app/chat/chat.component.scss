@@ -1,0 +1,34 @@
+.message{
+    padding: 15px 0;
+}
+
+.message > div {
+
+}
+
+.message .user_name {
+
+}
+
+.message .time {
+    font-size: 12px;
+    opacity: 0.4;
+    padding-left: 10px;
+}
+
+.message .text {
+    margin: 0;
+    padding: 3px 0;
+}
+
+.formChat {
+    display: flex;
+}
+
+.formChat ion-icon {
+    color: white;
+}
+
+.formChat ion-input {
+    padding-right: 10px !important;
+}

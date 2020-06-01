@@ -152,7 +152,7 @@
               <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
               <div class="headerCard">
                 <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
-                <ion-card-subtitle><span>{{ publications.createdAt }}</span></ion-card-subtitle>
+                <ion-card-subtitle><span>{{ publications.createdAt | date:'dd.MM.yyyy' }}</span></ion-card-subtitle>
               </div>
               <div class="button options" (click)="moreOptions()">
                 <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
