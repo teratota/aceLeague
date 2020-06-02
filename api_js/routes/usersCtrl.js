@@ -26,6 +26,20 @@ module.exports = {
       }
     }
   },
+  isCurrentUser: function(req, res){
+      var headerAuth  = cryptoUtils.decrypt(req.body.token);
+      var userId = jwtUtils.getUserId(headerAuth);
+      var user = JSON.parse(cryptoUtils.decrypt(req.body.user));
+      if(userId<0){
+        res.status(404).json({ 'error': 'wrong token' });
+      }else{
+        if(userId == user){
+          res.status(201).json(true);
+        }else{
+          res.status(201).json(false);
+        }
+      }
+  },
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   register: function(req, res) {
     
@@ -121,7 +135,7 @@ module.exports = {
         .then(function(newUser) {
           if (newUser) {
             return res.status(201).json({
-              'token': jwtUtils.generateTokenForUser(userFound)
+              'token': jwtUtils.generateTokenForUser(newUser)
             });
           } else {
             return res.status(500).json({ 'error': 'cannot add user' });

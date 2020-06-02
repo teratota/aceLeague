@@ -94,7 +94,7 @@ module.exports = {
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-      if(user == ''){
+      if(user == '' || user == null){
       sequelize.query('INSERT INTO groupe2user (ref_id_user,ref_id_groupe) VALUES ($ref_id_user,$ref_id_groupe)',
       { bind: { 
         ref_id_user: userId,

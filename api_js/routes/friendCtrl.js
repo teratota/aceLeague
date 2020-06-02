@@ -92,11 +92,13 @@ module.exports = {
     //update or delete
     var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
+    var validate   =  JSON.parse(cryptoUtils.decrypt(req.body.validate));
     var id = cryptoUtils.decrypt(req.body.id);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });
     }else{
-    if(req.body.validate = true){
+      console.log(validate)
+    if(validate == true){
         sequelize.query('Update friend set validate = 1 where id = $id ',
         { bind: { id: id }, type: sequelize.QueryTypes.UPDATE }
         ).then(function(friend) {
@@ -112,11 +114,7 @@ module.exports = {
         sequelize.query('Delete from friend where id = $id',
         { bind: { id: id }, type: sequelize.QueryTypes.DELETE }
       ).then(function(friend) {
-        if (friend) {
             res.status(201).json(true);
-        } else {
-            res.status(404).json({ 'error': 'friend not found' });
-        }
       }).catch(function(err) {      
           res.status(500).json({ 'error': 'cannot fetch friends' });
       })
@@ -127,7 +125,7 @@ module.exports = {
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListValidateNewUserFriend: function(req, res){
       //list pas valider
-      var headerAuth  = JSON.parse(cryptoUtils.decrypt(req.body.token));
+    var headerAuth  = cryptoUtils.decrypt(req.body.token);
     var userId      = jwtUtils.getUserId(headerAuth);
     if(userId<0){
       res.status(404).json({ 'error': 'wrong token' });

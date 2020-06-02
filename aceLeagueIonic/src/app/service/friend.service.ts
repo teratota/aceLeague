@@ -29,7 +29,7 @@ export class FriendService {
     let token = this.securityService.getToken();
     id = this.securityService.encode(JSON.stringify(id))
     validate = this.securityService.encode(JSON.stringify(validate))
-    return this.http.post(this.configUrl+"users/validatefriend/",{vlidate:validate,id:id,token: token});
+    return this.http.post(this.configUrl+"users/validatefriend/",{validate:validate,id:id,token: token});
   }
   checkFriend(user){
     let token = this.securityService.getToken();

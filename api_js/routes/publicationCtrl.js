@@ -190,7 +190,7 @@ module.exports = {
         });
       },function(friendFound,proFound,done) {
         sequelize.query('Select user.username, user.bio, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1',
-          { bind: { id: userId, idFriend: req.body.user }, type: sequelize.QueryTypes.SELECT }
+          { bind: { id: userId}, type: sequelize.QueryTypes.SELECT }
         ).then(function(friendP) {
        let x = friendFound.length;
        if(friendP.lenght != 0){
@@ -219,7 +219,12 @@ module.exports = {
             friendList += "," + friendFound[i].ref_id_user_friend;
         }
 
-        friendList = '(' + friendList + ')'
+        if(friendList == ""){
+          friendList=0;
+          friendList = '(' + friendList + ')';
+        }else{
+          friendList = '(' + friendList + ')';
+        }
 
         let proList = "";
 
@@ -231,7 +236,12 @@ module.exports = {
           proList += "," + proFound[i].ref_id_pro;
         }
 
-        proList = '(' + proList + ')'
+        if(proList == ""){
+          proList=0;
+          proList = '(' + proList + ')';
+        }else{
+          proList = '(' + proList + ')';
+        }
         
         
         sequelize.query('Select pro.nom, pro.image as proPic ,user.username, user.image as profilePic, publication.image, publication.id, publication.description, publication.createdAt From publication left Join user On publication.ref_id_user = user.id  left JOIN pro on publication.ref_id_pro = pro.id WHERE publication.ref_id_groupe is null and publication.ref_id_user IN '+ friendList + ' or publication.ref_id_pro in '+proList+' ORDER BY publication.createdAt DESC limit 20',

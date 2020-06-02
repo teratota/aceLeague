@@ -35,6 +35,7 @@ export class ProfileComponent implements OnInit {
   isNotFriend:boolean = false
   isFriendCours:boolean = false
   isFriend:boolean = false
+  isCurrentUser:boolean = false
 
   abonnement: number;
   // Infos
@@ -96,6 +97,17 @@ export class ProfileComponent implements OnInit {
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
       if(this.userId != null){
+        this.UserService.isCurrentUser(this.userId).subscribe(response => {
+          if(response == true){
+            this.isCurrentUser = false
+          }else{
+            this.isCurrentUser = true
+          }
+        },err => {
+          if(err.error.error == "wrong token"){
+            this.securityService.presentToast()
+          }
+        });
         this.isOtherUser = false;
         this.checkFriend()
       }else{

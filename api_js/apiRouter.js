@@ -23,6 +23,8 @@ exports.router = (function() {
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
   apiRouter.route('/users/update').post(usersCtrl.updateUser);
   apiRouter.route('/users/update/image').post(usersCtrl.updateUserImage);
+  apiRouter.route('/users/isCurrentUser').post(usersCtrl.isCurrentUser);
+  
   
   
   // Friends
