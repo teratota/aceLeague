@@ -71,7 +71,8 @@
             <div *ngIf="fiveView">
               <ion-fab>
                 <!-- <div *ngIf='isPC'> -->
-                  <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
+                  <!-- <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon> -->
+                  <ion-button (click)="onChange()">upload</ion-button>
                 <!-- </div> -->
                 <!-- <div *ngIf='isMobile'>
                   <ion-fab-button (click)="photo()">

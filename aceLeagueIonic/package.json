@@ -1,5 +1,5 @@
 {
-  "name": "aceLeague",
+  "name": "aceleague",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -30,6 +30,7 @@
     "core-js": "^2.5.4",
     "crypto-js": "^4.0.0",
     "ng-socket-io": "^0.2.4",
+    "ngx-image-compress": "^8.0.4",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.5.1",
     "rxjs-compat": "^6.5.5",

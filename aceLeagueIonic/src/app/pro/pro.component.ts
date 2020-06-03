@@ -83,20 +83,9 @@ export class ProComponent implements OnInit {
         this.isNotJoin = false;
       }
     },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
-
-    this.ProService.abonnementUserCheck(this.proId).subscribe(response => {
-      if(response == true){
-        this.isJoin = true;
-        this.isNotJoin = false;
-      }
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
+      // if(err.error.error == "wrong token"){
+      //   this.securityService.presentToast()
+      // }
     });
 
     this.ProService.checkProAuthor(this.proId).subscribe(response => {

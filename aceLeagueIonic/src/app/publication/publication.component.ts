@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 import { SecurityService } from '../service/security.service';
 import { Location } from '@angular/common';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-publication',
@@ -21,313 +22,179 @@ export class PublicationComponent implements OnInit {
     initialSlide: 1,
     speed: 400
   };
-  isPC : boolean = false
-  isMobile : boolean = false
-  isImagePc :boolean = false
-  isImageMobile :boolean = false
+  isPC: boolean = false
+  isMobile: boolean = false
+  isImagePc: boolean = false
+  isImageMobile: boolean = false
   publicationForm = new FormGroup({
-    description:new FormControl('',[
+    description: new FormControl('', [
       Validators.required
-    ]) ,    
-    pro : new FormControl('',[
-    ]) ,   
-    groupe : new FormControl('',[
-    ]) , 
-    param : new FormControl('Moi',[
-    ]) ,  
-    image: new FormControl('',[
-    ]) ,                                       
+    ]),
+    pro: new FormControl('', []),
+    groupe: new FormControl('', []),
+    param: new FormControl('Moi', []),
+    image: new FormControl('', []),
   });
 
   pro: object = {
-    id : null,
+    id: null,
     nom: null
   }
-  proActivated : boolean = false;
+  proActivated: boolean = false;
   groupe: object = {
     id: null,
     nom: null
   }
-  groupeActivated : boolean = false;
+  groupeActivated: boolean = false;
 
   imageError: string;
   isImageSaved: boolean;
-  cardImageBase64: string;
   previewImagePath: any
 
-  publication : any;
-
-  file: File;
+  publication: any;
 
   imageUrl: string | ArrayBuffer =
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService,  public actionSheetController: ActionSheetController, private ProService : ProService, private GroupeService : GroupeService, public platform: Platform, private activeRoute: ActivatedRoute ,private securityService: SecurityService, private modalCtrl: ModalController, private location: Location) { }
+  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService, public actionSheetController: ActionSheetController, private ProService: ProService, private GroupeService: GroupeService, public platform: Platform, private activeRoute: ActivatedRoute, private securityService: SecurityService, private modalCtrl: ModalController, private location: Location, private imageCompress: NgxImageCompressService) {}
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       let platform = this.platform.platforms()
-      this.file = null;
       this.photoService.base = null
-      if(platform[0] == 'electron' || platform[0] == 'desktop' ){
+      if (platform[0] == 'electron' || platform[0] == 'desktop') {
         this.isPC = true;
         this.isImagePc = false;
-      }else{
-        this.isMobile  = true;
+      } else {
+        this.isMobile = true;
         this.isImageMobile = true;
       }
       this.publicationForm.setValue({
         description: '',
-        pro:'',
-        groupe:'',
-        param:'Moi',
-        image:''
+        pro: '',
+        groupe: '',
+        param: 'Moi',
+        image: ''
       })
     });
   }
 
-  onChange(file: File) {
-    if (file) {
-      this.fileName = file.name;
-      this.file = file;
-      this.isImagePc = true
-      var reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-              image.src = e.target.result;
-              image.onload = rs => {
-                const imgBase64Path = e.target.result;
-                this.previewImagePath = imgBase64Path;
-              };
+  onChange() {
+    this.isImagePc = true
+    this.imageCompress.uploadFile().then(({
+      image,
+      orientation
+    }) => {
+      console.warn('Size before:', this.imageCompress.byteCount(image));
+      if (this.imageCompress.byteCount(image) > 1000000) {
+        this.imageCompress.compressFile(image, orientation, 50, 50).then(
+          result => this.previewImagePath = result
+        );
+      } else {
+        this.previewImagePath = image
       }
-      reader.readAsDataURL(this.file);
-     }
+    });
   }
 
-  photo(){
+  photo() {
     this.photoService.addNewToGallery()
   }
 
-  send(){
-    let platform = this.platform.platforms()
-  //  if(platform[0] == 'electron' || platform[0] == 'desktop' ){
-      this.sendForElectron() 
- //   }else{
-    // if(this.publicationForm.value.param == "Moi"){
-    //   this.PublicationService.uploadPublication(this.photoService.base, this.publicationForm.value).subscribe(response => {
-    //     this.publication = response;
-    //     let location = this.location.path()
-    //     if(location == "/profile"){
-    //       this.router.navigate(['profileReload']);
-    //     }else{
-    //       this.router.navigate(['profile']);
-    //     }
-    //     this.modalCtrl.dismiss();
-    //   },err => {
-    //     if(err.error.error == "wrong token"){
-    //       this.securityService.presentToast()
-    //     }
-    //   });
-    // }else if(this.publicationForm.value.param == "Pro"){
-    //   this.PublicationService.uploadPublicationPro(this.photoService.base, this.publicationForm.value).subscribe(response => {
-    //     this.publication = response;
-    //     let location = this.location.path()
-    //         if(location == "/pro"){
-    //           this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
-    //         }else{
-    //           this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
-    //         }
-    //     this.modalCtrl.dismiss();
-    //   },err => {
-    //     if(err.error.error == "wrong token"){
-    //       this.securityService.presentToast()
-    //     }
-    //   });
-    // }else if(this.publicationForm.value.param == "Groupe"){
-    //   this.PublicationService.uploadPlublicationGroupe(this.photoService.base, this.publicationForm.value).subscribe(response => {
-    //     this.publication = response;
-    //     let location = this.location.path()
-    //     if(location == "/groupe"){
-    //       this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
-    //     }else{
-    //       this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
-    //     }
-    //     this.modalCtrl.dismiss();
-    //   },err => {
-    //     if(err.error.error == "wrong token"){
-    //       this.securityService.presentToast()
-    //     }
-    //   });
-    // }  
-   // }
+  send() {
+    this.sendForElectron()
   }
 
-  sendForElectron(){
-      this.imageError = null;
-      if (this.file) {
-          // Size Filter Bytes
-          const max_size = 2097152000000;
-          const allowed_types = ['image/png', 'image/jpeg'];
-          const max_height = 15200;
-          const max_width = 25600;
-
-         if (this.file.size > max_size) {
-              this.imageError =
-                  'Maximum size allowed is ' + max_size / 1000 + 'Mb';
-
-              return false;
-          }
-
-          if (!_.includes(allowed_types, this.file.type)) {
-              this.imageError = 'Only Images are allowed ( JPG | PNG )';
-              return false;
-          }
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-              const image = new Image();
-              image.src = e.target.result;
-              image.onload = rs => {
-                  const img_height = rs.currentTarget['height'];
-                  const img_width = rs.currentTarget['width'];
-                  if (img_height > max_height && img_width > max_width) {
-                      this.imageError =
-                          'Maximum dimentions allowed ' +
-                          max_height +
-                          '*' +
-                          max_width +
-                          'px';
-                      return false;
-                  } else {
-                      const imgBase64Path = e.target.result;
-                      this.cardImageBase64 = imgBase64Path;
-                      this.isImageSaved = true;
-                      if(this.publicationForm.value.param == "Moi"){
-                        this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-                          this.publication = response;
-                          let location = this.location.path()
-                          if(location == "/profile"){
-                            this.router.navigate(['profileReload']);
-                          }else{
-                            this.router.navigate(['profile']);
-                          }
-                          this.modalCtrl.dismiss();
-                        },err => {
-                          if(err.error.error == "wrong token"){
-                            this.securityService.presentToast()
-                          }
-                        });
-                      }else if(this.publicationForm.value.param == "Pro"){
-                        this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-                          this.publication = response;
-                          console.log(this.publicationForm.value.pro)
-                          let location = this.location.path()
-                          if(location == "/pro"){
-                            this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
-                          }else{
-                            this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
-                          }
-                          this.modalCtrl.dismiss();
-                        },err => {
-                          if(err.error.error == "wrong token"){
-                            this.securityService.presentToast()
-                          }
-                        });
-                      }else if(this.publicationForm.value.param == "Groupe"){
-                        this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-                          this.publication = response;
-                          let location = this.location.path()
-                          if(location == "/groupe"){
-                            this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
-                          }else{
-                            this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
-                          }
-                          this.modalCtrl.dismiss();
-                        },err => {
-                          if(err.error.error == "wrong token"){
-                            this.securityService.presentToast()
-                          }
-                        });
-                      }  
-                  }
-              };
-          };
-
-          reader.readAsDataURL(this.file);
-      }else{
-        if(this.publicationForm.value.param == "Moi"){
-          this.PublicationService.uploadPublication(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-            this.publication = response;
-            let location = this.location.path()
-            if(location == "/profile"){
-              this.router.navigate(['profileReload']);
-            }else{
-              this.router.navigate(['profile']);
-            }
-            this.modalCtrl.dismiss();
-          },err => {
-            if(err.error.error == "wrong token"){
-              this.securityService.presentToast()
+  sendForElectron() {
+    if (this.publicationForm.value.param == "Moi") {
+      this.PublicationService.uploadPublication(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+        this.publication = response;
+        let location = this.location.path()
+        if (location == "/profile") {
+          this.router.navigate(['profileReload']);
+        } else {
+          this.router.navigate(['profile']);
+        }
+        this.modalCtrl.dismiss();
+      }, err => {
+        if (err.error.error == "wrong token") {
+          this.securityService.presentToast()
+        }
+      });
+    } else if (this.publicationForm.value.param == "Pro") {
+      this.PublicationService.uploadPublicationPro(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+        this.publication = response;
+        console.log(this.publicationForm.value.pro)
+        let location = this.location.path()
+        if (location == "/pro") {
+          this.router.navigate(['proReload'], {
+            state: {
+              data: this.publicationForm.value.pro
             }
           });
-        }else if(this.publicationForm.value.param == "Pro"){
-          this.PublicationService.uploadPublicationPro(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-            this.publication = response;
-            let location = this.location.path()
-            if(location == "/pro"){
-              this.router.navigate(['proReload'], {state: {data:this.publicationForm.value.pro}});
-            }else{
-              this.router.navigate(['pro'], {state: {data:this.publicationForm.value.pro}});
-            }
-            this.modalCtrl.dismiss();
-          },err => {
-            if(err.error.error == "wrong token"){
-              this.securityService.presentToast()
+        } else {
+          this.router.navigate(['pro'], {
+            state: {
+              data: this.publicationForm.value.pro
             }
           });
-        }else if(this.publicationForm.value.param == "Groupe"){
-          this.PublicationService.uploadPlublicationGroupe(this.cardImageBase64, this.publicationForm.value).subscribe(response => {
-            this.publication = response;
-            let location = this.location.path()
-            if(location == "/groupe"){
-              this.router.navigate(['groupeReload'], {state: {data:this.publicationForm.value.groupe}});
-            }else{
-              this.router.navigate(['groupe'], {state: {data:this.publicationForm.value.groupe}});
-            }
-            this.modalCtrl.dismiss();
-          },err => {
-            if(err.error.error == "wrong token"){
-              this.securityService.presentToast()
+        }
+        this.modalCtrl.dismiss();
+      }, err => {
+        if (err.error.error == "wrong token") {
+          this.securityService.presentToast()
+        }
+      });
+    } else if (this.publicationForm.value.param == "Groupe") {
+      this.PublicationService.uploadPlublicationGroupe(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+        this.publication = response;
+        let location = this.location.path()
+        if (location == "/groupe") {
+          this.router.navigate(['groupeReload'], {
+            state: {
+              data: this.publicationForm.value.groupe
             }
           });
-        }  
-      }
+        } else {
+          this.router.navigate(['groupe'], {
+            state: {
+              data: this.publicationForm.value.groupe
+            }
+          });
+        }
+        this.modalCtrl.dismiss();
+      }, err => {
+        if (err.error.error == "wrong token") {
+          this.securityService.presentToast()
+        }
+      });
+    }
   }
 
-  getList(value){
-    if(value == 'Groupe'){
+  getList(value) {
+    if (value == 'Groupe') {
       this.GroupeService.groupe2UserGetList().subscribe(response => {
         this.groupe = JSON.parse(this.securityService.decode(response));
         this.groupeActivated = true;
         this.proActivated = false;
         return this.groupe;
-      },err => {
-        if(err.error.error == "wrong token"){
+      }, err => {
+        if (err.error.error == "wrong token") {
           this.securityService.presentToast()
         }
       });
-    }else if(value == 'Pro'){
+    } else if (value == 'Pro') {
       this.ProService.getListMe().subscribe(response => {
         this.pro = JSON.parse(this.securityService.decode(response));
         this.proActivated = true;
         this.groupeActivated = false;
         return this.pro;
-      },err => {
-        if(err.error.error == "wrong token"){
+      }, err => {
+        if (err.error.error == "wrong token") {
           this.securityService.presentToast()
         }
       });
-    } else if(value == 'Moi'){
+    } else if (value == 'Moi') {
       this.proActivated = false;
       this.groupeActivated = false;
     }
@@ -362,9 +229,9 @@ export class PublicationComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.isImagePc = false;
-          this.file = null;
+          this.previewImagePath = "";
           this.publicationForm.patchValue({
-            image:''
+            image: ''
           })
         }
       }, {

@@ -42,8 +42,8 @@
           <ion-col size="6" class="col-btn">
             <div>
               <div class="upload-btn-wrapper">
-                <button class="btn">Sélection d'image</button>
-                <input type='file' #fileInput (change)="onChange(fileInput.files[0])" formControlName="image">
+                <ion-button class="btn" (click)="onChange()">Sélection d'image</ion-button>
+                <!-- <input type='file' #fileInput (change)="onChange(fileInput.files[0])" formControlName="image"> -->
               </div>
             </div>
           </ion-col>

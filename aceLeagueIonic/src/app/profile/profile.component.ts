@@ -33,11 +33,11 @@ export class ProfileComponent implements OnInit {
 
   // Friends
   friends: object;
-  friendsNumber = 0;
-  isNotFriend = false;
-  isFriendCours = false;
-  isFriend = false;
-  abonnement: number;
+  friendsNumber: number = 0;
+  isNotFriend:boolean = false
+  isFriendCours:boolean = false
+  isFriend:boolean = false
+  isCurrentUser:boolean = false
 
 
   // Pros
@@ -83,7 +83,18 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
-      if (this.userId != null) {
+      if(this.userId != null){
+        this.UserService.isCurrentUser(this.userId).subscribe(response => {
+          if(response == true){
+            this.isCurrentUser = false
+          }else{
+            this.isCurrentUser = true
+          }
+        },err => {
+          if(err.error.error == "wrong token"){
+            this.securityService.presentToast()
+          }
+        });
         this.isOtherUser = false;
         this.checkFriend();
       } else {
@@ -101,6 +112,7 @@ export class ProfileComponent implements OnInit {
   getDataProfile() {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
+      console.log(this.user)
       return this.user;
     }, err => {
       if (err.error.error == 'wrong token') {
