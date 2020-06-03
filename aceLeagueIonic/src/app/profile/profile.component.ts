@@ -125,6 +125,7 @@ export class ProfileComponent implements OnInit {
   getDataProfile() {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
+      console.log(this.user)
       return this.user;
     },err => {
       if(err.error.error == "wrong token"){

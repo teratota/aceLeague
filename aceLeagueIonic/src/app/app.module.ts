@@ -38,6 +38,7 @@ import { UploadPictureComponent } from './upload-picture/upload-picture.componen
 import { CommentaireComponent } from './commentaire/commentaire.component';
 import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
 import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
+import {NgxImageCompressService} from 'ngx-image-compress';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -76,6 +77,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
   providers: [
     StatusBar,
     SplashScreen,
+    NgxImageCompressService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

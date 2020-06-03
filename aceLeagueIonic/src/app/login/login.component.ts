@@ -46,6 +46,13 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
+      this.UserService.testConnection().subscribe(response => {
+        if(response == true){
+          this.router.navigate(['/profile']);
+        }
+      },err => {
+      });
+      console.log('login')
       this.navBarComponent.refreshNavbar()
      // this.headerComponent.refreshHeader()
       this.messageMail = false;
