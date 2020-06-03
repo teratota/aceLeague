@@ -1,3 +1,4 @@
+import { GroupeService } from './../service/groupe.service';
 import { EditGroupeComponent } from './../edit-groupe/edit-groupe.component';
 import { EditProComponent } from './../edit-pro/edit-pro.component';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,6 +14,7 @@ import { UploadPictureComponent } from '../upload-picture/upload-picture.compone
 import { RegisterComponent } from '../register/register.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
 import { SecurityService } from '../service/security.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -31,12 +33,20 @@ export class ProfileComponent implements OnInit {
 
   // Friends
   friends: object;
-  friendsNumber: number = 0;
-  isNotFriend:boolean = false
-  isFriendCours:boolean = false
-  isFriend:boolean = false
-
+  friendsNumber = 0;
+  isNotFriend = false;
+  isFriendCours = false;
+  isFriend = false;
   abonnement: number;
+
+
+  // Pros
+  pros: object;
+
+  // Groups
+  publicGroups: object;
+  privateGroups: object;
+
   // Infos
   user: object = {
     username: 'toto',
@@ -45,16 +55,14 @@ export class ProfileComponent implements OnInit {
   userPicture;
   userName;
   userBio;
-
   userId: number = null;
-  isOtherUser: boolean = false;
+  isOtherUser = false;
 
   // Tabs
   friendsTab = false;
   groupsTab = false;
   prosTab = false;
   profileTab = true;
-
 
   constructor(
     private UserService: UserService,
@@ -66,20 +74,22 @@ export class ProfileComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private ProService: ProService,
     public popoverController: PopoverController,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private location: Location,
+    private GroupeService: GroupeService
     ) { }
 
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
-      if(this.userId != null){
+      if (this.userId != null) {
         this.isOtherUser = false;
-        this.checkFriend()
-      }else{
-        this.isNotFriend = false
-        this.isFriendCours = false
-        this.isFriend = false
+        this.checkFriend();
+      } else {
+        this.isNotFriend = false;
+        this.isFriendCours = false;
+        this.isFriend = false;
         this.isOtherUser = true;
       }
       this.getDataProfile();
@@ -92,18 +102,18 @@ export class ProfileComponent implements OnInit {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
       return this.user;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
 
     this.PublicationService.getPublications(this.userId).subscribe(response => {
       this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
 
@@ -111,20 +121,48 @@ export class ProfileComponent implements OnInit {
       this.friends = JSON.parse(this.securityService.decode(response));
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
 
     this.ProService.getNumberAbonnementUser(this.userId).subscribe(response => {
       this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
+
+    this.ProService.getListMe().subscribe(response => {
+      this.pros = JSON.parse(this.securityService.decode(response));
+      return this.pros;
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+
+    this.GroupeService.getMyGroupePublic().subscribe(response => {
+      this.publicGroups = JSON.parse(this.securityService.decode(response));
+      return this.publicGroups;
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+
+    this.GroupeService.getMyGroupePrive().subscribe(response => {
+      this.privateGroups = JSON.parse(this.securityService.decode(response));
+      return this.privateGroups;
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+
   }
 
 
@@ -132,8 +170,8 @@ export class ProfileComponent implements OnInit {
     const modal = await this.modalController.create({
       component: EditProfileComponent,
       componentProps: {
-        'user': this.user,
-        'profilPic': 'noOneForMoment',
+        user: this.user,
+        profilPic: 'noOneForMoment',
       }
     });
     return await modal.present();
@@ -143,8 +181,8 @@ export class ProfileComponent implements OnInit {
     const modal = await this.modalController.create({
       component: UploadPictureComponent,
       componentProps: {
-        'param': 'user',
-        'profilPic': 'noOneForMoment',
+        param: 'user',
+        profilPic: 'noOneForMoment',
       }
     });
     return await modal.present();
@@ -158,7 +196,7 @@ export class ProfileComponent implements OnInit {
     });
     return await modal.present();
   }
-  
+
   async createNewGroup() {
     const modal = await this.modalController.create({
       component: EditGroupeComponent,
@@ -217,66 +255,66 @@ export class ProfileComponent implements OnInit {
     await actionSheet.present();
   }
 
-  publicationDislike(id){
+  publicationDislike(id) {
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
         this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
         }
       });
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
-  publicationLike(id){
+  publicationLike(id) {
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
         this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
         }
       });
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
-  checkFriend(){
-    this.isNotFriend = false
-    this.isFriendCours = false
-    this.isFriend = false
-      this.FriendService.checkFriend(this.userId).subscribe(response => {
-        if(response == true){
-          this.isNotFriend = false
-          this.isFriendCours = false
-          this.isFriend = true
-        }else if(response == 'cour'){
-          this.isNotFriend = false
-          this.isFriendCours = true
-          this.isFriend = false
-        }else if(response == false){
-          this.isNotFriend = true
-          this.isFriendCours = false
-          this.isFriend = false
+  checkFriend() {
+    this.isNotFriend = false;
+    this.isFriendCours = false;
+    this.isFriend = false;
+    this.FriendService.checkFriend(this.userId).subscribe(response => {
+        if (response === true) {
+          this.isNotFriend = false;
+          this.isFriendCours = false;
+          this.isFriend = true;
+        } else if (response === 'cour') {
+          this.isNotFriend = false;
+          this.isFriendCours = true;
+          this.isFriend = false;
+        } else if (response === false) {
+          this.isNotFriend = true;
+          this.isFriendCours = false;
+          this.isFriend = false;
         }
       });
   }
-  addFriend(){
+  addFriend() {
     this.FriendService.addFriend(this.userId).subscribe(response => {
-      this.checkFriend()
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+      this.checkFriend();
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
@@ -285,8 +323,8 @@ export class ProfileComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CommentaireComponent,
       componentProps: {
-        'param': id,
-        'profilPic': 'noOneForMoment',
+        param: id,
+        profilPic: 'noOneForMoment',
       }
     });
     return await modal.present();
@@ -330,5 +368,22 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  goToPro(idPro) {
+    this.router.navigate(['pro'], {state: {data: idPro}});
+  }
+
+  goToGroupe(idGroupe) {
+    this.router.navigate(['groupe'], {state: {data: idGroupe}});
+  }
+
+  goToUser(idUser) {
+    const location = this.location.path();
+
+    if (location === '/profile') {
+      this.router.navigate(['profileReload'], {state: {data: idUser}});
+    } else if (location === '/profileReload') {
+      this.router.navigate(['profile'], {state: {data: idUser}});
+    }
+  }
 }
 

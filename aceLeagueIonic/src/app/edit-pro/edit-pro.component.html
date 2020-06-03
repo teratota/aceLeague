@@ -1,61 +1,70 @@
 <ion-content>
-  <p class="title">Pro</p>
-  <p class="closeModal" (click)="closeModal()">
-    <ion-icon name="close-outline"></ion-icon>
-  </p>
-        <div *ngIf="addView">
-          <p class="title">Inscription Pro</p>
-          <form [formGroup]="proForm" (ngSubmit)="checkData()">
-            <div *ngIf="firstView">
-            <ion-item>
-              <ion-input type="text" formControlName="nom" placeholder="Non de l'entreprise"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input type="text" formControlName="type" placeholder="Club, Boutique etc"></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
-            </ion-item>
-            <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
-            </div>
-            <div *ngIf="secondView">
-              <ion-fab>
-                <div *ngIf='isPC'>
-                  <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
-                </div>
-                <div *ngIf='isMobile'>
-                  <ion-fab-button (click)="photo()">
-                    <ion-icon name="camera"></ion-icon>
-                  </ion-fab-button>
-                </div>
-              </ion-fab>
+  <div class="title-ctn">
+    <p class="title">Pro</p>
+    <p class="closeModal" (click)="closeModal()">
+      <ion-icon name="close-outline"></ion-icon>
+    </p>
+  </div>
 
-              <div *ngIf='isImagePc'>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="6">
-                      <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </div>
-              
-              <div *ngIf='isImageMobile'>
-                <ion-grid>
-                  <ion-row>
-                  <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-                    <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
-                  </ion-col>
-                  </ion-row>
-                </ion-grid> 
-              </div>
-              <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
-              <ion-button type="submit" color="tertiary" [disabled]="!proForm.valid">Créer</ion-button>
-            </div>
-          </form>
+  <div *ngIf="addView">
+    <p class="title">Inscription Pro</p>
+    <form [formGroup]="proForm" (ngSubmit)="checkData()">
+      <div *ngIf="firstView">
+        <ion-item>
+          <ion-input type="text" formControlName="nom" placeholder="Non de l'entreprise"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="text" formControlName="type" placeholder="Club, Boutique etc"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+        </ion-item>
+        <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+      </div>
+      <div *ngIf="secondView">
+        <ion-fab>
+          <div *ngIf='isPC'>
+            <input type='file' #fileInput (change)="onChange(fileInput.files[0])" formControlName="image">
+            <ion-icon name="camera"></ion-icon>
           </div>
-          <div *ngIf="editView">
-          <form [formGroup]="proFormEdit" (ngSubmit)="checkDataEdit()">
+          <div *ngIf='isMobile'>
+            <ion-fab-button (click)="photo()">
+              <ion-icon name="camera"></ion-icon>
+            </ion-fab-button>
+          </div>
+        </ion-fab>
+
+        <div *ngIf='isImagePc'>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6">
+                <ion-img id='image' src="{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)">
+                </ion-img>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+
+        <div *ngIf='isImageMobile'>
+          <ion-grid>
+            <ion-row>
+              <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+                <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
+                  (click)="showActionSheet(photo, position)"></ion-img>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+        <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
+        <ion-button type="submit" color="tertiary" [disabled]="!proForm.valid">Créer</ion-button>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="editView">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="12">
+          <form [formGroup]="proFormEdit" (ngSubmit)="checkDataEdit()" class="formEdit">
             <ion-item>
               <ion-input type="text" formControlName="nom" placeholder="Non de l'entreprise"></ion-input>
             </ion-item>
@@ -65,7 +74,10 @@
             <ion-item>
               <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
             </ion-item>
-              <ion-button type="submit" color="tertiary" [disabled]="!proFormEdit.valid">Modifier</ion-button>
+            <ion-button type="submit" color="tertiary" [disabled]="!proFormEdit.valid">Modifier</ion-button>
           </form>
-        </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

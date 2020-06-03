@@ -23,7 +23,7 @@
       <ion-col *ngIf="message.from !== nickname" class="message" [ngClass]="{'my_message': message.from === nickname, 'other_message': message.from !== nickname}">
         <div>
           <span class="user_name">{{ message.from }}:</span>
-          <span class="time">{{message.created | date:'dd/MM hh:MM'}}</span>
+          <span class="time">{{message.created | date:'dd/MM hh:mm'}}</span>
         </div>
         <p class="text">{{ message.text }}</p>
       </ion-col>
@@ -31,11 +31,18 @@
       <ion-col *ngIf="message.from === nickname" class="message" [ngClass]="{'my_message': message.from === nickname, 'other_message': message.from !== nickname}">
         <div>
           <span class="user_name">{{ message.from }}:</span>
-          <span class="time">{{message.created | date:'dd/MM hh:MM'}}</span>
+          <span class="time">{{message.created | date:'dd/MM hh:mm'}}</span>
         </div>
         <p class="text">{{ message.text }}</p>
       </ion-col>
 
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid fixed>
+    <ion-row class="eof">
+      <ion-col size="12">
+      </ion-col>
     </ion-row>
   </ion-grid>
 

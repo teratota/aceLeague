@@ -43,7 +43,7 @@ module.exports = {
           res.status(404).json({ 'error': 'wrong token' });
         }else{
           let nom = req.body.data;
-          sequelize.query('Select id, nom From pro WHERE ref_id_user = $userId',
+          sequelize.query('Select id, nom, image, description, type From pro WHERE ref_id_user = $userId',
             { bind: { userId: userId }, type: sequelize.QueryTypes.SELECT }
           ).then(function(pro) {
             if (pro) {

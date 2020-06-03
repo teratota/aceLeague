@@ -161,14 +161,14 @@ export class ProComponent implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Modification',
       buttons: [{
-        text: 'Modifié profil du Pro',
+        text: 'Modifier profil du Pro',
         icon: 'create-outline',
         handler: () => {
           this.editingPro();
         }
       }, {
-        text: "Modifié l'image de profil du Pro",
-        icon: 'create-outline',
+        text: "Modifier l'image de profil du Pro",
+        icon: 'image-outline',
         handler: () => {
           this.editingProImage();
         }

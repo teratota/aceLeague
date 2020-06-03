@@ -140,3 +140,9 @@ ion-button {
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {  }
+
+@media (prefers-color-scheme: dark) { 
+    .background {
+        background-image: url(../../assets/pictures/background-light.svg);
+    }
+}

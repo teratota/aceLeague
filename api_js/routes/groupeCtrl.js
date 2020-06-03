@@ -267,9 +267,11 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 1',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      if (groupe.image != null) { 
-        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
-        groupe.image = file
+      for (let index = 0; index < groupe.length; index++) {
+        if (groupe[index].image != null) { 
+          let file = fs.readFileSync ('./files/groupe/' + groupe[index].image,  'utf8' );
+          groupe[index].image = file
+        }
       }
       if (groupe) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
@@ -291,9 +293,11 @@ module.exports = {
     sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 0',
       { bind: { id: userId }, type: sequelize.QueryTypes.SELECT }
     ).then(function(groupe) {
-      if (groupe.image != null) { 
-        let file = fs.readFileSync ('./files/groupe/' + groupe.image,  'utf8' );
-        groupe.image = file
+      for (let index = 0; index < groupe.length; index++) {
+        if (groupe[index].image != null) { 
+          let file = fs.readFileSync ('./files/groupe/' + groupe[index].image,  'utf8' );
+          groupe[index].image = file
+        }
       }
       if (groupe) {
         res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
@@ -301,6 +305,8 @@ module.exports = {
         res.status(404).json({ 'error': 'friend not found' });
       }
     }).catch(function(err) {      
+      console.log(err);
+      
       res.status(500).json({ 'error': 'cannot fetch friends' });
     })
   }

@@ -2,10 +2,7 @@
   <ion-grid fixed>
     <ion-row class="rowHeader">
       <div class="headerProfil">
-        <!-- <div class="profilePic"
-          style="background-image:url('{{user.image}}')">
-        </div> -->
-        <img src='{{pro.image}}'>
+        <div class="profilePic" [style.background-image]="'url('+pro.image+')'"></div>
 
         <div class="username">
           <p class="name">{{ pro.nom }}</p>
@@ -16,57 +13,51 @@
           </div>
         </div>
         <div *ngIf="isAuthor">
-        <div (click)="choiceAction()" class="settingsIcon">
-          <ion-icon name="settings-outline"></ion-icon>
+          <div (click)="choiceAction()" class="settingsIcon">
+            <ion-icon name="settings-outline"></ion-icon>
+          </div>
         </div>
-      </div>
       </div>
     </ion-row>
 
     <ion-row class="rowFriends">
       <ion-col size="6">
-        <div class=" col-md-6 details-clubs"><p><span class="emph primary-color">{{ abonnement }}</span> Abonnées</p></div>
+        <div class=" col-md-6 details-clubs">
+          <p><span class="emph primary-color">{{ abonnement }}</span> Abonnés</p>
+        </div>
       </ion-col>
-      <div *ngIf='isNotJoin'>
-        <ion-col size="6"(click)='joinPro()'>
-          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color" ><ion-icon name="add-outline"></ion-icon></span> S'abonnées</p></div>
-        </ion-col>
-      </div>
-      <div *ngIf='isJoin'>
-        <ion-col size="6">
-          <div class=" col-md-6 details-clubs"><p><span class="emph primary-color"><ion-icon name="checkmark-outline"></ion-icon></span> Abonnées</p></div>
-        </ion-col>
-      </div>
+      <ion-col size="6" (click)='joinPro()' *ngIf='isNotJoin'>
+        <div class=" col-md-6 details-clubs">
+          <p><span class="emph primary-color">
+              <ion-icon name="add-outline"></ion-icon>
+            </span> S'abonner</p>
+        </div>
+      </ion-col>
+      <ion-col size="6" *ngIf='isJoin'>
+        <div class=" col-md-6 details-clubs">
+          <p><span class="emph primary-color">
+              <ion-icon name="checkmark-outline"></ion-icon>
+            </span> Abonnés</p>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
-  
+
 
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
         <div *ngFor="let publications of publication">
           <ion-card class="publicationCard">
+
             <ion-card-header>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="2">
-                    <div class="profilePic"
-                      style="background-image:url('https://pbs.twimg.com/profile_images/786860907091595264/2WgDSgT2_400x400.jpg')">
-                    </div>
-                  </ion-col>
-                  <ion-col size="9">
-                    <ion-card-title><span>{{ publications.nom }}</span></ion-card-title>
-                    <ion-card-subtitle><span>{{ publications.createdAt | date:'dd.MM.yyyy' }}</span></ion-card-subtitle>
-                  </ion-col>
-                  <ion-col size="1">
-                    <div class="button" (click)="moreOptions()">
-                      <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
-                    </div>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+              <div class="profilePicFriends" [style.background-image]="'url('+pro.image+')'"></div>
+              <div class="headerCard">
+                <ion-card-title><span>{{ publications.nom }}</span></ion-card-title>
+                <ion-card-subtitle><span>{{ publications.createdAt | date:'dd/MM/yyyy' }}</span></ion-card-subtitle>
+              </div>
             </ion-card-header>
-      
+
             <ion-card-content>
               <p>{{ publications.description }}</p>
             </ion-card-content>
@@ -90,13 +81,13 @@
                       </ion-col>
                     </div>
                   </div>
-                    <div *ngIf="publications.like == true">
-                      <div class="button" (click)="publicationDislike(publications.id)">
-                        <ion-col size="1">
-                          <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
-                          <span>{{publications.likeMax}}</span>
-                        </ion-col>
-                      </div>
+                  <div *ngIf="publications.like == true">
+                    <div class="button" (click)="publicationDislike(publications.id)">
+                      <ion-col size="1">
+                        <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
+                      </ion-col>
+                    </div>
                   </div>
                   <div class="button" (click)="commentaireModal(publications.id)">
                     <ion-col size="1">
@@ -104,12 +95,6 @@
                       <span>{{publications.commentaireMax}}</span>
                     </ion-col>
                   </div>
-
-                  <!-- <div class="button" (click)="sharing()">
-                    <ion-col size="1">
-                      <ion-icon name="share-social-outline" size="large"></ion-icon>
-                    </ion-col>
-                  </div> -->
                 </ion-row>
               </ion-grid>
             </div>
@@ -118,6 +103,14 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  
+
+  <ion-grid fixed>
+    <ion-row class="eof">
+      <ion-col size="12">
+        <p *ngIf="profileTab">Fin des publications</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 
 </ion-content>

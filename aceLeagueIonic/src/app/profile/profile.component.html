@@ -32,12 +32,12 @@
           <p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p>
         </div>
       </ion-col>
-      <div *ngIf='isNotFriend'>
+      <div *ngIf='isNotFriend || isCurrentUser'>
         <ion-col size="6" (click)='addFriend()'>
           <div class=" col-md-6 details-clubs">
             <p><span class="emph primary-color">
                 <ion-icon name="person-add-outline"></ion-icon>
-              </span>Demandée en amie</p>
+              </span>Demander en ami</p>
           </div>
         </ion-col>
       </div>
@@ -88,7 +88,7 @@
 
                 <ion-card>
                   <ion-card-header>
-                    <div class="profilePicFriends" [style.background-image]="'url('+user.image+')'"></div>
+                    <div class="profilePicFriends" [style.background-image]="'url('+friend.image+')'"></div>
                     <div class="cardHeadContent">
                       <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
                       <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
@@ -96,7 +96,7 @@
                   </ion-card-header>
 
                   <ion-card-content>
-                    <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
+                    <ion-button color="tertiary" (click)="goToUser(friend.ref_id_user_friend)" expand="block" fill="outline" shape="round">
                       Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                     </ion-button>
                   </ion-card-content>
@@ -110,27 +110,78 @@
     </ion-row>
 
     <ion-row>
+      <ion-col size="12" *ngIf="groupsTab">
+        <div class="lists">
+
+          <ion-grid fixed *ngIf="privateGroups && isOtherUser" class="groups">
+            <p>Mes groupes Privés</p>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let group of privateGroups">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+group.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ group.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ group.description }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+          <ion-grid fixed *ngIf="publicGroups" class="groups">
+            <p *ngIf="isOtherUser" >Mes groupes Publique</p>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let group of publicGroups">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+group.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ group.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ group.description }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
       <ion-col size="12" *ngIf="prosTab">
         <div class="lists">
 
           <ion-grid fixed>
             <ion-row>
-              <ion-col size="12" size-md="6" *ngFor="let friend of friends">
+              <ion-col size="12" size-md="6" *ngFor="let pro of pros">
                 <ion-card>
                   <ion-card-header>
-                    <div class="profilePicFriends" [style.background-image]="'url('+user.image+')'"></div>
+                    <div class="profilePicFriends" [style.background-image]="'url('+pro.image+')'"></div>
                     <div class="cardHeadContent">
-                      <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
-                      <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
+                      <ion-card-title class="cardContent"><span>{{ pro.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ pro.description }}</span></ion-card-subtitle>
                     </div>
                   </ion-card-header>
 
                   <ion-card-content>
-                    <ion-button color="tertiary" (click)="onClick()" expand="block" fill="outline" shape="round">
-                      <span>
-                        Profil
-                      </span>
-                      <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    <ion-button color="tertiary" (click)="goToPro(pro.id)" expand="block" fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                     </ion-button>
                   </ion-card-content>
                 </ion-card>
@@ -152,10 +203,7 @@
               <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
               <div class="headerCard">
                 <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
-                <ion-card-subtitle><span>{{ publications.createdAt | date:'dd.MM.yyyy' }}</span></ion-card-subtitle>
-              </div>
-              <div class="button options" (click)="moreOptions()">
-                <ion-icon name="ellipsis-vertical-outline" size="large" class="more-settings"></ion-icon>
+                <ion-card-subtitle><span>{{ publications.createdAt | date:'dd/MM/yyyy' }}</span></ion-card-subtitle>
               </div>
             </ion-card-header>
             <ion-card-content>
@@ -195,11 +243,6 @@
                       <span>{{publications.commentaireMax}}</span>
                     </ion-col>
                   </div>
-                  <!-- <div class="button" (click)="sharing()">
-                    <ion-col size="1">
-                      <ion-icon name="share-social-outline" size="large"></ion-icon>
-                    </ion-col>
-                  </div> -->
                 </ion-row>
               </ion-grid>
             </div>
