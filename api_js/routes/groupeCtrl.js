@@ -324,7 +324,7 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 1', {
+      sequelize.query('Select groupe.* From groupe2user inner join groupe on groupe2user.ref_id_groupe = groupe.id WHERE groupe2user.ref_id_user = $id and groupe.private = 1', {
         bind: {
           id: userId
         },
@@ -357,7 +357,7 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Select * From groupe WHERE ref_id_user = $id and private = 0', {
+      sequelize.query('Select groupe.* From groupe2user inner join groupe on groupe2user.ref_id_groupe = groupe.id WHERE groupe2user.ref_id_user = $id and groupe.private = 0', {
         bind: {
           id: userId
         },
