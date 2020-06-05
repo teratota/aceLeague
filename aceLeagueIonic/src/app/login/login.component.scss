@@ -1,134 +1,153 @@
-ion-title{
-    color: white;
+ion-title {
+  color: white;
 }
 
 ion-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 ion-row {
-    width: 100%;
-    height: 100%;
-}
-
-.background {
-    display: none;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-image: url(../../assets/pictures/background.svg);
-    background-position: left;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
-.background .back{
-    position: absolute;
-    height: 70%;
-    width: 40%;
-    background-image: url(../../assets/pictures/girl-running.svg);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    top: 15%;
-    margin-left: 25px;
-}
-
-.card-login {
-    background-color: #003542;
-    padding: 30px 50px;
-    position: relative;
-}
-
-.card-login:after {
-    position: absolute;
-    content: "";
-    height: 100%;
-    width: 100%;
-    background-image: url(../../assets/pictures/background-box.svg);
-    background-position: center;
-    background-size: cover;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    opacity: 0.5;
-}
-
-.card-login .title {
-    color: white;
-    text-align: center;
-    font-family: 'Bebas Neue';
-    font-size: 40px;
-    margin-top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 ion-item {
-    margin-bottom: 20px;
-    color: white;
-    font-size: 16px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+
+.background {
+  display: none;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-image: url(../../assets/pictures/background.svg);
+  background-position: left;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.background .back {
+  position: absolute;
+  height: 70%;
+  width: 40%;
+  background-image: url(../../assets/pictures/girl-running.svg);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: 15%;
+  margin-left: 25px;
+}
+
+.card-login {
+  background-color: #003542;
+  padding: 30px 50px;
+  position: relative;
+  margin-bottom: 55px;
+}
+
+.card-login:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  background-image: url(../../assets/pictures/background-box.svg);
+  background-position: center;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.card-login .title {
+  color: white;
+  text-align: center;
+  font-family: 'Bebas Neue';
+  font-size: 40px;
+  margin-top: 0;
+}
+
+ion-item {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 16px;
 }
 
 ion-button {
-    width: 100%;
-    font-family: 'Montserrat';
-    font-weight: bold;
+  width: 100%;
+  font-family: 'Montserrat';
+  font-weight: bold;
 }
 
-.inscription { 
-    text-align: center;
+.inscription {
+  text-align: center;
+  color: white;
 }
 
 .inscription a {
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
 }
 
 .content {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(100% - 55px);
 }
 
 // Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) {  }
+@media (min-width: 576px) {}
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: 768px) { 
-    .background {
-        display: block;
-    }
+@media (min-width: 768px) {
+  .background {
+    display: block;
+  }
 
-    ion-grid {
-        justify-content: flex-end;
-        padding: 5px;
-        margin: unset;
-        width: unset;
-        margin-right: 5%;
-    }
+  ion-grid {
+    justify-content: flex-end;
+    padding: 5px;
+    margin: unset;
+    width: unset;
+    margin-right: 5%;
+  }
 
-    ion-row {
-        width: unset;
-        height: unset;
-        min-width: 390px;
-    }
+  ion-row {
+    width: unset;
+    height: unset;
+    min-width: 390px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 
-    .card-login {
-        border-radius: 10px;
-    }
+  .card-login {
+    border-radius: 10px;
+  }
 
-    .card-login:after {
-        border-radius: 10px;
-    }
- }
+  .card-login:after {
+    border-radius: 10px;
+  }
+}
 
 // Large devices (desktops, 992px and up)
-@media (min-width: 992px) {  }
+@media (min-width: 992px) {}
 
 // Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {  }
+@media (min-width: 1200px) {}
+
+@media (prefers-color-scheme: dark) {
+  .background {
+    background-image: url(../../assets/pictures/background-light.svg);
+  }
+}

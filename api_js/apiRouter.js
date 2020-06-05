@@ -1,38 +1,40 @@
 // Imports
-var express      = require('express');
-var usersCtrl    = require('./routes/usersCtrl');
+var express = require('express');
+var usersCtrl = require('./routes/usersCtrl');
 var commentaireCtrl = require('./routes/commentaireCtrl');
-var likesCtrl    = require('./routes/likesCtrl');
-var proCtrl    = require('./routes/proCtrl');
-var groupeCtrl    = require('./routes/groupeCtrl');
-var publicationCtrl    = require('./routes/publicationCtrl');
-var friendCtrl    = require('./routes/friendCtrl');
-var chatCtrl    = require('./routes/chatCtrl');
+var likesCtrl = require('./routes/likesCtrl');
+var proCtrl = require('./routes/proCtrl');
+var groupeCtrl = require('./routes/groupeCtrl');
+var publicationCtrl = require('./routes/publicationCtrl');
+var friendCtrl = require('./routes/friendCtrl');
+var chatCtrl = require('./routes/chatCtrl');
 var groupe2userCtrl = require('./routes/groupe2userCtrl');
 
 
 // Router
-exports.router = (function() {
+exports.router = (function () {
   var apiRouter = express.Router();
 
   // Users routes
   apiRouter.route('/users/register/').post(usersCtrl.register);
   apiRouter.route('/users/login/').post(usersCtrl.login);
   apiRouter.route('/users/me/').post(usersCtrl.getUserProfile);
-  apiRouter.route('/users/me/').put(usersCtrl.updateUserProfile);
   apiRouter.route('/users/test/').post(usersCtrl.testConnection);
   apiRouter.route('/users/getlist/').post(usersCtrl.getlist);
   apiRouter.route('/users/update').post(usersCtrl.updateUser);
   apiRouter.route('/users/update/image').post(usersCtrl.updateUserImage);
-  
-  
+  apiRouter.route('/users/isCurrentUser').post(usersCtrl.isCurrentUser);
+
+
+
   // Friends
   apiRouter.route('/users/friend/').post(friendCtrl.getUserFriend);
   apiRouter.route('/users/newfriend/').post(friendCtrl.addNewUserFriend);
   apiRouter.route('/users/validatefriend/').post(friendCtrl.ValidateNewUserFriend);
   apiRouter.route('/users/listvalidatefriend/').post(friendCtrl.getListValidateNewUserFriend);
+  apiRouter.route('/users/friend/check/').post(friendCtrl.checkFriend);
 
-  
+
   // Publications
   apiRouter.route('/publication/me/').post(publicationCtrl.getUserPublication);
   apiRouter.route('/publication/upload/').post(publicationCtrl.uploadPublication);
@@ -43,8 +45,8 @@ exports.router = (function() {
   apiRouter.route('/publication/groupe/').post(publicationCtrl.getGroupePublications);
 
   // Commentaire
-  apiRouter.route('/commentaire/new/').post(commentaireCtrl.addCommentaire);
-  apiRouter.route('/commentaire/').get(commentaireCtrl.listCommentaire);
+  apiRouter.route('/commentaire/add/').post(commentaireCtrl.addCommentaire);
+  apiRouter.route('/commentaire').post(commentaireCtrl.listCommentaire);
 
   // Likes
   apiRouter.route('/like/publication').post(likesCtrl.likePublication);
@@ -63,7 +65,7 @@ exports.router = (function() {
   apiRouter.route('/pro/add/abonnement').post(proCtrl.addAbonnement);
   apiRouter.route('/pro/check/abonnement').post(proCtrl.checkAbonnement);
   apiRouter.route('/pro/check/author').post(proCtrl.checkProAuthor);
-  
+
 
   // Groupe
   apiRouter.route('/groupe/getlist').post(groupeCtrl.getList);
@@ -74,7 +76,9 @@ exports.router = (function() {
   apiRouter.route('/groupe/add').post(groupeCtrl.addGroupe)
   apiRouter.route('/groupe/update/image').post(groupeCtrl.updateGroupeImage)
   apiRouter.route('/groupe/update').post(groupeCtrl.updateGroupe)
-
+  apiRouter.route('/groupe/update').post(groupeCtrl.updateGroupe)
+  apiRouter.route('/groupe/me/prive').post(groupeCtrl.getMyGroupePrive)
+  apiRouter.route('/groupe/me/public').post(groupeCtrl.getMyGroupePublic)
 
   // Groupe2User
   apiRouter.route('/groupe2user/getlist').post(groupe2userCtrl.getListGroup2User);
@@ -82,10 +86,13 @@ exports.router = (function() {
   apiRouter.route('/groupe2user/check').post(groupe2userCtrl.checkGroupe2User)
   apiRouter.route('/groupe2user/delete').post(groupe2userCtrl.deleteGroupe2user)
   apiRouter.route('/groupe2user/number/user').post(groupe2userCtrl.groupe2userNumberUser)
+  apiRouter.route('/groupe2user/list/user').post(groupe2userCtrl.getListUserInGroupe2User)
+  apiRouter.route('/groupe2user/list/userfriend/isnot').post(groupe2userCtrl.getListUserInGroupe2UserIsNot)
 
   //Chat
   apiRouter.route('/chat/add').post(chatCtrl.addChat);
   apiRouter.route('/chat/get').post(chatCtrl.getChat);
+  apiRouter.route('/chat/get/message').post(chatCtrl.getChatMessage);
 
   return apiRouter;
 })();

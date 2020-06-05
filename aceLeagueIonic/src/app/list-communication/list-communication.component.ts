@@ -28,14 +28,22 @@ export class ListCommunicationComponent implements OnInit {
 
   getData(){
     this.chatService.getChat().subscribe(response => {
-      this.chat=response
-      console.log(response);
+      this.chat=JSON.parse(this.securityService.decode(response))
+      console.log(this.chat)
       return this.chat;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
     this.UserService.getInfosUser(this.userId).subscribe(response => {
-      this.user = response[0];
-      console.log(this.user);
+      this.user = JSON.parse(this.securityService.decode(response))[0];
+      console.log(this.user)
       return this.user;
+    },err => {
+      if(err.error.error == "wrong token"){
+        this.securityService.presentToast()
+      }
     });
   }
 
@@ -48,7 +56,7 @@ export class ListCommunicationComponent implements OnInit {
      let token = this.securityService.getToken();
      this.socket.emit('join', {nom:nom,token:token});
      this.socket.emit('set-nickname', {nickname:this.user.username,room:nom,token:token});
-     this.router.navigate(['chat'], {state: {data:this.user.username}});
+     this.router.navigate(['chat'], {state: {data:this.user.username, room:nom}});
   }
 
 }

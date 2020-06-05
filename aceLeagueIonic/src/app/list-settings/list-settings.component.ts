@@ -1,6 +1,7 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-list-settings',
@@ -23,13 +24,11 @@ export class ListSettingsComponent implements OnInit {
     secondOption: false,
   };
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activeRoute: ActivatedRoute,private securityService: SecurityService) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(history);
       this.option = history.state.data['option'];
-      console.log(this.option);
     });
   }
 
@@ -38,8 +37,6 @@ export class ListSettingsComponent implements OnInit {
   }
 
   validateOptions(event, name) {
-    console.log(event.detail.checked);
-    console.log(name);
   }
 
 }

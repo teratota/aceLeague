@@ -170,3 +170,7 @@
 ::ng-deep ion-content {
     top: 55px;
 }
+
+::ng-deep ion-content.modals{
+    top: 0;
+}

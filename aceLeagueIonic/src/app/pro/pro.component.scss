@@ -58,22 +58,22 @@ ion-title{
 // Profil picture
 .profilePic{
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid var(--ion-color-dark);
     overflow: hidden;
     width: $profilePicture-size;
     height: $profilePicture-size;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 .profilePicFriends{
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid white;
     overflow: hidden;
     width: $profilePictureFriends-size;
     height: $profilePictureFriends-size;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -134,3 +134,64 @@ ion-card-content {
     padding: 30px 0;
 }
 
+// Publications
+/// Header
+.headerCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+}
+
+// Options
+.options {
+    margin-left: auto;
+}
+
+// Cards
+ion-card{
+    width: 100%;
+    margin: 0;
+}
+
+ion-card-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.cardHeadContent {
+    padding-left: 20px;
+}
+
+.cardContent {
+    text-align: left;
+}
+
+.arrow {
+    margin-left: 5px;
+}
+
+.publicationCard {
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.publicationPic {
+    text-align: center;
+}
+
+ion-card-title,
+ion-card-subtitle,
+ion-card-content {
+    color: var(--ion-color-text-light);
+}
+
+.more-settings {
+    color: var(--ion-color-text-light);
+}
+
+// EOF
+.eof {
+    padding: 0 0 55px;
+    text-align: center;
+}

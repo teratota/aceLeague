@@ -1,20 +1,33 @@
-
-
 <ion-content>
-<!-- <ion-input class="form-control" type="text" placeholder="Search" name="search" ></ion-input> -->
-<ion-searchbar showCancelButton="focus" (change)="search($event)"></ion-searchbar>
 
-<p>User</p>
-<div *ngFor="let user of users">
-  <ion-item><ion-label><span>{{ user.username }}</span></ion-label><ion-button (click)='goToUser(user.id)'>Voir Plus</ion-button></ion-item>
-</div>
-<p>Groupe</p>
-<div *ngFor="let groupe of groupes">
-  <ion-item><ion-label><span>{{ groupe.nom }}</span></ion-label><ion-button (click)='goToGroupe(groupe.id)'>Voir Plus</ion-button></ion-item>
-</div>
-<p>Pro</p>
-<div *ngFor="let pro of pros">
-  <ion-item><ion-label><span>{{ pro.nom }}</span></ion-label><ion-button (click)='goToPro(pro.id)'>Voir Plus</ion-button></ion-item>
-</div>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar showCancelButton="never" animated debounce="500" search-icon="undefined" (change)="search($event)" placeholder="Recherche... "></ion-searchbar>
+
+        <p class="section-title">Utilisateurs</p>
+        <div *ngFor="let user of users" class="searchResult">
+          <ion-item>
+            <ion-label><span>{{ user.username }}</span></ion-label>
+            <ion-button (click)='goToUser(user.id)'>Voir Profil <ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+          </ion-item>
+        </div>
+        <p class="section-title">Groupes</p>
+        <div *ngFor="let groupe of groupes" class="searchResult">
+          <ion-item>
+            <ion-label><span>{{ groupe.nom }}</span></ion-label>
+            <ion-button (click)='goToGroupe(groupe.id)'>Voir Groupe <ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+          </ion-item>
+        </div>
+        <p class="section-title">Pros</p>
+        <div *ngFor="let pro of pros" class="searchResult">
+          <ion-item>
+            <ion-label><span>{{ pro.nom }}</span></ion-label>
+            <ion-button (click)='goToPro(pro.id)'>Voir Pro <ion-icon name="arrow-forward-outline"></ion-icon></ion-button>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
-

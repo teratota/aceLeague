@@ -1,0 +1,42 @@
+ion-content {
+  top: 0
+}
+
+.title-ctn {
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-family: "Bebas Neue";
+  text-align: center;
+  font-size: 30px;
+  margin: 10px 0;
+  letter-spacing: 2px;
+}
+
+.closeModal {
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  margin: 0;
+  font-size: 28px;
+}
+
+// Commentaires 
+.comments {
+  padding: 10px 0;
+}
+
+.comments > span{
+  display: block;
+}
+
+.comments > .message {
+  font-weight: 200;
+}
+
+.formEdit {
+  display: flex;
+  color: white;
+}

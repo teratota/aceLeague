@@ -35,6 +35,10 @@ import { GroupeComponent } from './groupe/groupe.component';
 import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
 import { EditProComponent } from './edit-pro/edit-pro.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
+import { CommentaireComponent } from './commentaire/commentaire.component';
+import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
+import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
+import {NgxImageCompressService} from 'ngx-image-compress';
 const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
 
 @NgModule({
@@ -63,13 +67,17 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     GroupeComponent,
     EditGroupeComponent,
     EditProComponent,
-    UploadPictureComponent
+    UploadPictureComponent,
+    CommentaireComponent,
+    ListUnvalidateFriendComponent,
+    EditUserGroupeComponent
   ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],
   providers: [
     StatusBar,
     SplashScreen,
+    NgxImageCompressService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

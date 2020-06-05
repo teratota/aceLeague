@@ -22,10 +22,19 @@ import { GroupeComponent } from './groupe/groupe.component';
 import { EditProComponent } from './edit-pro/edit-pro.component';
 import { EditGroupeComponent } from './edit-groupe/edit-groupe.component';
 import { UploadPictureComponent } from './upload-picture/upload-picture.component';
+import { CommentaireComponent } from './commentaire/commentaire.component';
+import { ListUnvalidateFriendComponent } from './list-unvalidate-friend/list-unvalidate-friend.component';
+import { EditUserGroupeComponent } from './edit-user-groupe/edit-user-groupe.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HeaderComponent } from './header/header.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   { path : '', component : LoginComponent},
+  { path : 'app', component : AppComponent},
   { path : 'register', component : RegisterComponent},
+  { path : 'navbar', component : NavbarComponent},
+  { path : 'header', component : HeaderComponent},
   { path : 'chat', component : ChatComponent},
   { path : 'listChatMessage', component : ListChatMessageComponent},
   { path : 'listCommunication', component : ListCommunicationComponent},
@@ -33,19 +42,26 @@ const routes: Routes = [
   { path : 'listPublication', component : ListPublicationComponent},
   { path : 'notification', component : NotificationComponent},
   { path : 'profile', component : ProfileComponent},
+  { path : 'profileReload', component : ProfileComponent},
   { path : 'publication', component : PublicationComponent},
   { path : 'search', component : SearchComponent},
   { path : 'sendChatMessage', component : SendChatMessageComponent},
   { path : 'settings', component : SettingsComponent},
   { path : 'newsfeed', component : NewsFeedComponent},
+  { path : 'newsfeedReload', component : NewsFeedComponent},
   { path : 'edit', component : EditProfileComponent},
   { path : 'listSetting', component : ListSettingsComponent},
   { path : 'editCommunication', component : EditCommunicationComponent},
   { path : 'pro', component : ProComponent},
+  { path : 'proReload', component : ProComponent},
   { path : 'groupe', component : GroupeComponent},
+  { path : 'groupeReload', component : GroupeComponent},
   { path : 'editPro', component : EditProComponent},
   { path : 'editGroupe', component : EditGroupeComponent},
-  { path : 'uploadPicture', component : UploadPictureComponent}
+  { path : 'uploadPicture', component : UploadPictureComponent},
+  { path : 'commentaire', component : CommentaireComponent},
+  { path : 'listfriendnotvalidate', component : ListUnvalidateFriendComponent},
+  { path : 'editusergroupe', component : EditUserGroupeComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'})],

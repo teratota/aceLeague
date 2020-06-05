@@ -1,0 +1,38 @@
+ion-content {
+    top: 0
+}
+
+.title-ctn {
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    font-family: "Bebas Neue";
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+}
+
+.closeModal {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    margin: 0;
+    font-size: 28px;
+}
+
+ion-select {
+    padding-left: 0;
+}
+
+// Edit
+.formEdit {
+    
+}
+
+.formEdit ion-item {
+    margin: 10px 0;
+    border-radius: 5px;
+}

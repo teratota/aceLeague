@@ -23,7 +23,7 @@
               <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
               <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
             </ion-item>
-            <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+            <ion-button (click)="next()">Suivant</ion-button>
             </div>
             <div *ngIf="secondView">
               <ion-item>
@@ -33,30 +33,28 @@
               <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
             </div>
             <div *ngIf="thirdView">
-              <ion-item>
+              <div class="likeItem">
                 <ion-label>Pratiquez-vous un sport ?</ion-label>
-              </ion-item>
+              </div>
               <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
-                <ion-item>
+                <ion-item class="noBorder">
                   <ion-label>Oui</ion-label>
-                  <ion-radio slot="start" value="oui"></ion-radio>
+                  <ion-radio slot="start" color="tertiary" value="oui"></ion-radio>
                 </ion-item>
-                <ion-item>
+                <ion-item class="noBorder">
                   <ion-label>Non</ion-label>
-                  <ion-radio slot="start" value="non"></ion-radio>
+                  <ion-radio slot="start" color="tertiary" value="non"></ion-radio>
                 </ion-item>
               </ion-radio-group>
               <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
               <ion-button color="tertiary" (click)="nextThree()">Suivant</ion-button>
             </div>
-              <!-- <ion-input type="radio" formControlName="question" value='oui' (ionChange)='changeSport($event.target.value)'></ion-input><span>Oui</span>
-              <ion-input type="radio" formControlName="question" value='non' (ionChange)='changeSport($event.target.value)'></ion-input><span>Non</span> -->
             <div *ngIf="foorView">
-            <ion-item>
+            <ion-item class="noBorder">
               <ion-input type="texte" formControlName="sport" placeholder="Votre sport"></ion-input>
             </ion-item>
-            <ion-item>
-              <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider" >
+            <ion-item class="noBorder">
+              <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider" placeholder="Votre niveau">
                 <ion-select-option value ='Amateur'>Amateur</ion-select-option>
                 <ion-select-option value ='Semi-Professionnel'>Semi-Professionnel</ion-select-option>
                 <ion-select-option value ='Professionnel'>Professionnel</ion-select-option>
@@ -69,39 +67,23 @@
             <ion-button color="tertiary" (click)="nextFour()">Suivant</ion-button>
           </div>
             <div *ngIf="fiveView">
-              <ion-fab>
-                <div *ngIf='isPC'>
-                  <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
+              <p class="infos">Vous pouvez changer l'image <br/> en cliquant dessus</p>
+                <div class="previewPic">                  
+                  <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
+                    (click)="showActionSheetElectron(photo, position)">
+                  </div>
+                  <div class="popopo" *ngIf="!isImagePc">
+                    <div class="upload-btn-wrapper">
+                      <div class="uploadBtnPc">
+                        <ion-button (click)="onChange()">Choisir <br/>mon image</ion-button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div *ngIf='isMobile'>
-                  <ion-fab-button (click)="photo()">
-                    <ion-icon name="camera"></ion-icon>
-                  </ion-fab-button>
-                </div>
-              </ion-fab>
-
-              <div *ngIf='isImagePc'>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="6">
-                      <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </div>
-              
-              <div *ngIf='isImageMobile'>
-                <ion-grid>
-                  <ion-row>
-                  <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-                    <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
-                  </ion-col>
-                  </ion-row>
-                </ion-grid> 
-              </div>
               <ion-button color="tertiary" (click)="lastFour()">Précédent</ion-button>
-              <ion-button type="submit" color="tertiary">Inscrire</ion-button>
+              <ion-button type="submit" color="tertiary" [disabled]="!registerForm.valid">Inscrire</ion-button>
             </div>
+
           </form>
           <p class="connexion">
             Vous avez déjà un compte ? <br />
