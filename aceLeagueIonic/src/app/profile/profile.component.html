@@ -109,6 +109,12 @@
     </div>
 
     <ion-row class="row-friends" *ngIf="friendsTab">
+      <div class="friendRequest" *ngIf="isOtherUser">
+        <p class="title">Mes demandes</p>
+        <div class="friendContent">
+          <app-list-unvalidate-friend></app-list-unvalidate-friend>
+        </div>
+      </div>
       <ion-col size="12">
         <div class="lists">
           <ion-grid fixed>
@@ -142,7 +148,6 @@
     <ion-row>
       <ion-col size="12" *ngIf="groupsTab">
         <div class="lists">
-
           <ion-grid fixed *ngIf="privateGroups && isOtherUser" class="groups">
             <p>Mes groupes Privés</p>
             <ion-row>

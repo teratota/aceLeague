@@ -153,7 +153,32 @@ ion-title{
     padding: 5px;
 }
 
+// Friends
+.friendRequest {
+    padding: 25px;
+    margin: 20px 15px;
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 10px;
+    position: relative;
+}
 
+.friendRequest .friendContent {
+    max-width: 500px;
+    min-width: 300px;
+}
+
+.title {
+    font-family: "Bebas Neue";
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+    position: absolute;
+    top: -25px;
+    background-color: var(--ion-background-color);
+    padding: 0 10px;
+}
+  
 // Dark Theme
 @media (prefers-color-scheme: dark) {
     .profileTab:hover {
