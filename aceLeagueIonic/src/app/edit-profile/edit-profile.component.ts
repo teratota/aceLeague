@@ -23,8 +23,7 @@ export class EditProfileComponent implements OnInit {
     [
       Validators.required,
       Validators.maxLength(50),
-      Validators.minLength(1),
-      Validators.pattern('^[a-zA-Z]+(([ -][a-zA-Z ])?[a-zA-Z]*)*$')
+      Validators.minLength(1)
     ]),
     bio: new FormControl('',
     [

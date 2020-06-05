@@ -1,20 +1,31 @@
-<ion-content>
-<p class="title">Commentaire</p>
-<p class="closeModal" (click)="closeModal()">
-  <ion-icon name="close-outline"></ion-icon>
-</p>
-<div *ngFor="let commentaires of commentaire">
-  <ion-item>
-    <span>{{commentaires.username}} :</span>
-    <span> {{commentaires.message}}</span>
-  </ion-item>
-</div>
+<ion-content [scrollEvents]="true">
+  <div class="title-ctn">
+    <p class="title">Commentaire</p>
+    <p class="closeModal" (click)="closeModal()">
+      <ion-icon name="close-outline"></ion-icon>
+    </p>
+  </div>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <div class="comments" *ngFor="let commentaires of commentaire">
+          <span class="user">{{commentaires.username}}</span>
+          <span class="message"> {{commentaires.message}}</span>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
 <ion-footer>
-  <form [formGroup]="commentaireFormEdit" (ngSubmit)="checkData()">
-    <ion-item>
-      <ion-input  type="email" formControlName="message" name="message" id="message" placeholder="Message"></ion-input>
-    </ion-item>
-      <ion-button type="submit" [disabled]="!commentaireFormEdit.valid">Envoyer</ion-button>
-  </form>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12">
+        <form [formGroup]="commentaireFormEdit" (ngSubmit)="checkData()" class="formEdit">
+            <ion-input  type="email" formControlName="message" name="message" id="message" placeholder="Message"></ion-input>
+            <ion-button type="submit" [disabled]="!commentaireFormEdit.valid">Envoyer</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-footer>

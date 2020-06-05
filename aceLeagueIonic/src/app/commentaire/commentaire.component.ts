@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PublicationService } from '../service/publication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SecurityService } from '../service/security.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonContent } from '@ionic/angular';
 import { Location } from '@angular/common';
 
 @Component({
@@ -11,15 +11,17 @@ import { Location } from '@angular/common';
   templateUrl: './commentaire.component.html',
   styleUrls: ['./commentaire.component.scss'],
 })
-export class CommentaireComponent implements OnInit {
+export class CommentaireComponent implements OnInit, AfterViewChecked {
+
+  @ViewChild(IonContent, {read: IonContent, static: true}) content: IonContent;
 
   @Input() param: number;
   @Input() data: number;
 
   commentaireFormEdit = new FormGroup({
-    message:new FormControl('',[
+    message: new FormControl('', [
       Validators.required
-    ]),                                                                
+    ]),
   });
 
   commentaire: object;
@@ -28,9 +30,18 @@ export class CommentaireComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(this.data)
+      console.log(this.data);
       this.getData();
     });
+  }
+
+
+  ScrollToBottom() {
+    this.content.scrollToBottom(0);
+  }
+
+  ngAfterViewChecked()	{
+    this.ScrollToBottom();
   }
 
   getData(){
@@ -45,13 +56,19 @@ export class CommentaireComponent implements OnInit {
   }
 
   checkData(){
-    this.PublicationService.addCommentaire(this.param,this.commentaireFormEdit.value).subscribe(response => {
-      this.getData();
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
+    if (this.commentaireFormEdit.value.message != '') {
+      this.PublicationService.addCommentaire(this.param,this.commentaireFormEdit.value).subscribe(response => {
+        this.getData();
+        this.commentaireFormEdit.patchValue({
+          message: ''
+        });
+        this.ScrollToBottom();
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+    }
   }
 
   public async closeModal() {

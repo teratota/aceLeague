@@ -57,6 +57,7 @@ export class ProfileComponent implements OnInit {
   userBio;
   userId: number = null;
   isOtherUser = false;
+  abonnement: number;
 
   // Tabs
   friendsTab = false;

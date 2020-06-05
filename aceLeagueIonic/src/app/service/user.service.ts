@@ -49,10 +49,10 @@ export class UserService {
     file = this.securityService.encode(JSON.stringify(file))
     return this.http.post(this.configUrl+"users/update/image",{file: file,token: token});
   }
-  
+
   isCurrentUser(user){
     let token = this.securityService.getToken();
     user = this.securityService.encode(JSON.stringify(user))
-    return this.http.post(this.configUrl+"users/update/image",{user: user,token: token});
+    return this.http.post(this.configUrl+"users/isCurrentUser",{user: user,token: token});
   }
 }

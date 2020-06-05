@@ -1,25 +1,54 @@
 <ion-content>
   <ion-grid fixed>
     <ion-row class="rowHeader">
-      <div class="headerProfil">
-        <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
+      <ion-col size="12">
+        <div class="headerProfil">
+          <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
 
-        <div class="username">
-          <p class="name">{{ user.username }}</p>
-          <div class="description">
+          <div class="detailsProfile">
+            <p class="name">{{ user.username }}</p>
+            <div class="description">
+              <p>
+                {{ user.bio }}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="isOtherUser">
+            <div (click)="choiceAction()" class="settingsIcon">
+              <ion-icon color="dark" name="settings-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="descriptionResp">
+          <p>{{ user.bio }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="user.sport != null" class="sportRow">
+      <ion-col size="12" class="sportDetails">
+        <div>
+          <ion-icon name="medal-outline"></ion-icon>
+          <div class="mySport">
             <p>
-              {{ user.bio }}
+              {{ user.sport }}
+            </p>
+            <p>
+              {{ user.sportDescription }}
             </p>
           </div>
         </div>
-        <div *ngIf="isOtherUser">
-          <div (click)="choiceAction()" class="settingsIcon">
-            <ion-icon color="dark" name="settings-outline"></ion-icon>
+        <div>
+          <ion-icon name="speedometer-outline"></ion-icon>
+          <div>
+            <p>
+              {{ user.level }}
+            </p>
           </div>
-        </div>
-      </div>
+        </div>        
+      </ion-col>
     </ion-row>
-
 
     <ion-row class="rowFriends">
       <ion-col size="6">
@@ -32,7 +61,7 @@
           <p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p>
         </div>
       </ion-col>
-      <div *ngIf='isNotFriend || isCurrentUser'>
+      <div *ngIf='isNotFriend && isCurrentUser'>
         <ion-col size="6" (click)='addFriend()'>
           <div class=" col-md-6 details-clubs">
             <p><span class="emph primary-color">
@@ -96,7 +125,8 @@
                   </ion-card-header>
 
                   <ion-card-content>
-                    <ion-button color="tertiary" (click)="goToUser(friend.ref_id_user_friend)" expand="block" fill="outline" shape="round">
+                    <ion-button color="tertiary" (click)="goToUser(friend.ref_id_user_friend)" expand="block"
+                      fill="outline" shape="round">
                       Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                     </ion-button>
                   </ion-card-content>
@@ -127,7 +157,8 @@
                   </ion-card-header>
 
                   <ion-card-content>
-                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline" shape="round">
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline"
+                      shape="round">
                       Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                     </ion-button>
                   </ion-card-content>
@@ -135,9 +166,9 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          
+
           <ion-grid fixed *ngIf="publicGroups" class="groups">
-            <p *ngIf="isOtherUser" >Mes groupes Publique</p>
+            <p *ngIf="isOtherUser">Mes groupes Publique</p>
             <ion-row>
               <ion-col size="12" size-md="6" *ngFor="let group of publicGroups">
                 <ion-card>
@@ -150,7 +181,8 @@
                   </ion-card-header>
 
                   <ion-card-content>
-                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline" shape="round">
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline"
+                      shape="round">
                       Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
                     </ion-button>
                   </ion-card-content>

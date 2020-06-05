@@ -34,6 +34,7 @@ module.exports = {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
     var user = JSON.parse(cryptoUtils.decrypt(req.body.user));
+    
     if (userId < 0) {
       res.status(404).json({
         'error': 'wrong token'

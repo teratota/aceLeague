@@ -23,33 +23,36 @@ export class SearchComponent implements OnInit {
   }
 
   search(event) {
-    this.GroupeService.getlist(event.target.value)
-    .subscribe(response => {
-      this.groupes = JSON.parse(this.securityService.decode(response));
-      return this.groupes;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
-    this.UserService.getlist(event.target.value)
-    .subscribe(response => {
-      this.users = JSON.parse(this.securityService.decode(response));
-      return this.users;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
-    this.ProService.getlist(event.target.value)
-    .subscribe(response => {
-      this.pros = JSON.parse(this.securityService.decode(response));
-      return this.pros;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
+    if (event.target.value != '') {
+      this.GroupeService.getlist(event.target.value)
+      .subscribe(response => {
+        this.groupes = JSON.parse(this.securityService.decode(response));
+        return this.groupes;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+      this.UserService.getlist(event.target.value)
+      .subscribe(response => {
+        this.users = JSON.parse(this.securityService.decode(response));
+        return this.users;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+      this.ProService.getlist(event.target.value)
+      .subscribe(response => {
+        this.pros = JSON.parse(this.securityService.decode(response));
+        return this.pros;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+    }
+
   }
 
   goToPro(idPro){

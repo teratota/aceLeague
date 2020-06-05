@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewChecked } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs/Observable';
-import { ToastController } from '@ionic/angular';
+import { ToastController, IonContent } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SecurityService } from '../service/security.service';
 import { ChatService } from '../service/chat.service';
@@ -12,7 +12,9 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, AfterViewChecked {
+  
+@ViewChild(IonContent, {read: IonContent, static: true}) content: IonContent;
 
   messages = [];
   nickname = '';
@@ -23,21 +25,20 @@ export class ChatComponent implements OnInit {
       Validators.required
     ])
   });
-  chat : any;
-  room : string;
+  chat: any;
+  room: string;
 
-  ngOnInit() { 
+  ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.messages =[];
       this.ChatService.getChatMessage(this.room).subscribe(response => {
-        this.chat =response;
-        this.chat=JSON.parse(this.chat)
+        this.chat = response;
+        this.chat = JSON.parse(this.chat);
         if(this.chat != []){
           for (let index = 0; index < this.chat.length; index++) {
             this.chat[index].message = this.securityService.decode(this.chat[index].message)
           }
         }
-        console.log(this.chat)
         return this.chat;
       },err => {
         if(err.error.error == "wrong token"){
@@ -46,6 +47,11 @@ export class ChatComponent implements OnInit {
       });
     });
   }
+
+  ngAfterViewChecked()	{
+    this.ScrollToBottom();
+  }
+
 
   constructor(private socket: Socket,  private toastCtrl: ToastController, private securityService: SecurityService, private ChatService: ChatService, private activeRoute: ActivatedRoute) { 
   this.nickname = history.state.data;
@@ -68,21 +74,32 @@ export class ChatComponent implements OnInit {
 }
 
 sendMessage() {
-  this.socket.emit('add-message', { text: this.securityService.encode(this.chatForm.value.message) });
-  this.message = '';
+  if (this.chatForm.value.message != '') {
+    this.socket.emit('add-message', { text: this.securityService.encode(this.chatForm.value.message) });
+    this.message = '';
+    this.chatForm.patchValue({
+      message: ''
+    });
+
+    this.ScrollToBottom();
+  }
+}
+
+ScrollToBottom() {
+  this.content.scrollToBottom(0);
 }
 
 getMessages() {
   let observable = new Observable(observer => {
     this.socket.on('message', (data) => {
-      let texte = this.securityService.decode(data.text)
+      let texte = this.securityService.decode(data.text);
       if(texte != ''){
         data.text = texte
       }
       observer.next(data);
+      this.ScrollToBottom();
     });
   })
-  console.log(observable)
   return observable;
 }
 

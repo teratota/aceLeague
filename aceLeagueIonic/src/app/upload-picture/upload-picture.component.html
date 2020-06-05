@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-button (click)="onChange()">upload</ion-button>
+    
 
   <p class="title">Modifier mon image</p>
 
@@ -10,11 +10,10 @@
     </div>
 
     <div class="popopo" *ngIf="!isImagePc">
-      <div class="uploadBtnPc">
-              <div class="upload-btn-wrapper">
-                <button class="btn">Sélectionner mon image</button>
-                <input type='file' #fileInput (change)="onChange(fileInput.files[0])">
-              </div>
+      <div class="upload-btn-wrapper">
+        <div class="uploadBtnPc">
+          <ion-button (click)="onChange()">Sélectionner mon image</ion-button>
+        </div>
       </div>
     </div>
 

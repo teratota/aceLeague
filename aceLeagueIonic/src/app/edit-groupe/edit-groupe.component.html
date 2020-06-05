@@ -1,5 +1,4 @@
 <ion-content>
-      <ion-button (click)="onChange()">upload</ion-button>
   <div class="title-ctn">
     <p class="title">Mon groupe</p>
     <p class="closeModal" (click)="closeModal()">
@@ -10,78 +9,81 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12">
-        
+
         <div *ngIf="addView">
-        <p class="title">Inscription Groupe</p>
-        <form [formGroup]="groupeForm" (ngSubmit)="checkData()">
-          <div *ngIf="firstView">
-          <div>
-            <ion-input type="text" formControlName="nom" placeholder="Non du groupe"></ion-input>
-          </div>
-          <div>
-            <ion-select formControlName="private" multiple="false" interface="popover" placeholder='Public ou Privé'>
-              <ion-select-option value = 0 >Public</ion-select-option>
-              <ion-select-option value = 1 >Privé</ion-select-option>
-            </ion-select>
-          </div>
-          <ion-item>
-            <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
-          </ion-item>
-          <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
-          </div>
-          <div *ngIf="secondView">
-            <ion-fab>
-              <div *ngIf='isPC'>
-                <input  type='file' #fileInput (change)="onChange(fileInput.files[0])"formControlName="image"><ion-icon name="camera"></ion-icon>
-              </div>
-              <div *ngIf='isMobile'>
-                <ion-fab-button (click)="photo()">
+          <form [formGroup]="groupeForm" (ngSubmit)="checkData()" class="formEdit">
+            <div *ngIf="firstView">
+              <ion-item>
+                <ion-input type="text" formControlName="nom" placeholder="Nom du groupe"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-select formControlName="private" multiple="false" interface="popover"
+                  placeholder='Public ou Privé'>
+                  <ion-select-option value=0>Public</ion-select-option>
+                  <ion-select-option value=1>Privé</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+              </ion-item>
+              <ion-button color="tertiary" (click)="next()">Suivant</ion-button>
+            </div>
+            <div *ngIf="secondView">
+              <ion-fab>
+                <div *ngIf='isPC'>
+                  <input type='file' #fileInput (change)="onChange(fileInput.files[0])" formControlName="image">
                   <ion-icon name="camera"></ion-icon>
-                </ion-fab-button>
+                </div>
+                <div *ngIf='isMobile'>
+                  <ion-fab-button (click)="photo()">
+                    <ion-icon name="camera"></ion-icon>
+                  </ion-fab-button>
+                </div>
+              </ion-fab>
+
+              <div *ngIf='isImagePc'>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="6">
+                      <ion-img id='image' src="{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)">
+                      </ion-img>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
               </div>
-            </ion-fab>
-      
-            <div *ngIf='isImagePc'>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="6">
-                    <ion-img  id = 'image' src = "{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)"></ion-img>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
+
+              <div *ngIf='isImageMobile'>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
+                      <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}"
+                        (click)="showActionSheet(photo, position)"></ion-img>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+              <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
+              <ion-button type="submit" color="tertiary" [disabled]="!groupeForm.valid">Créer</ion-button>
             </div>
-            
-            <div *ngIf='isImageMobile'>
-              <ion-grid>
-                <ion-row>
-                <ion-col size="6" *ngFor="let photo of photoService.photos; index as position">
-                  <ion-img src="{{ photo.base64 ? photo.base64 : photo.webviewPath }}" (click)="showActionSheet(photo, position)"></ion-img>
-                </ion-col>
-                </ion-row>
-              </ion-grid> 
-            </div>
-            <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
-            <ion-button type="submit" color="tertiary" [disabled]="!groupeForm.valid">Créer</ion-button>
-          </div>
-        </form>
+          </form>
         </div>
-      
+
         <div *ngIf="editView">
-        <form [formGroup]="groupeFormEdit" (ngSubmit)="checkDataEdit()" class="formEdit">
-          <ion-item>
-            <ion-input type="text" formControlName="nom" placeholder="Nom du groupe"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-select formControlName="private" multiple="false" interface="popover" placeholder='Public ou Privé'>
-              <ion-select-option value = 0 >Public</ion-select-option>
-              <ion-select-option value = 1 >Privé</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
-          </ion-item>
-          <ion-button type="submit" color="tertiary" [disabled]="!groupeFormEdit.valid">Valider</ion-button>
-        </form>
+          <form [formGroup]="groupeFormEdit" (ngSubmit)="checkDataEdit()" class="formEdit">
+            <ion-item>
+              <ion-input type="text" formControlName="nom" placeholder="Nom du groupe"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-select formControlName="private" multiple="false" interface="popover" placeholder='Public ou Privé'>
+                <ion-select-option value=0>Public</ion-select-option>
+                <ion-select-option value=1>Privé</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
+            </ion-item>
+            <ion-button type="submit" color="tertiary" [disabled]="!groupeFormEdit.valid">Valider</ion-button>
+          </form>
         </div>
 
       </ion-col>

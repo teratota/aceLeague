@@ -21,12 +21,16 @@
     padding: 3px 0;
 }
 
+.myChat:last-child {
+    padding-bottom: 50px;
+}
+
 .formChat {
     display: flex;
 }
 
 .formChat ion-icon {
-    color: white;
+    color: var(--ion-color-primary);
 }
 
 .formChat ion-input {

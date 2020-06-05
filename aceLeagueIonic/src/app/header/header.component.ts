@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getNotif(){
-    this.router.navigate(['listNotification']);
+    this.router.navigate(['listCommunication']);
   }
 
   refreshHeader(){

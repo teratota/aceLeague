@@ -63,7 +63,6 @@ ion-slide img {
 .upload-btn-wrapper .btn {
   color: #fff;
   background-color: #007b99;
-  padding: 10px 20px;
   border-radius: 5px;
   font-size: 14px;
   font-weight: bold;
@@ -78,6 +77,11 @@ ion-slide img {
   left: 0;
   top: 0;
   opacity: 0;
+}
+
+ion-item {
+  margin: 10px 0;
+  border-radius: 5px;
 }
 
 // Img
@@ -96,5 +100,4 @@ ion-img.imgPreview {
 
 ::ng-deep ion-radio{
   --color: #fff;
-
 }

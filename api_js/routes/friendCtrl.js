@@ -5,6 +5,7 @@ var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
+const fs = require('fs');
 
 // Constants
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -30,7 +31,7 @@ module.exports = {
       console.log(userId)
       asyncLib.waterfall([
           function (done) {
-            sequelize.query('Select user.username, user.bio, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1', {
+            sequelize.query('Select user.username, user.bio, user.image, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1', {
               bind: {
                 id: userId
               },
@@ -44,7 +45,7 @@ module.exports = {
             })
           },
           function (friend, done) {
-            sequelize.query('Select user.username, user.bio, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1', {
+            sequelize.query('Select user.username, user.bio, user.image, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1', {
               bind: {
                 id: userId,
                 idFriend: req.body.user
@@ -57,8 +58,15 @@ module.exports = {
                   friend[friend.length] = {
                     ref_id_user_friend: friendP[index].ref_id_user_principal,
                     username: friendP[index].username,
-                    bio: friendP[index].bio
+                    bio: friendP[index].bio,
+                    image: friendP[index].image
                   }
+                }
+              }
+              for (let index = 0; index < friend.length; index++) {
+                if (friend[index].image != null) {
+                  let file = fs.readFileSync('./files/user/' + friend[index].image, 'utf8');
+                  friend[index].image = file
                 }
               }
               done(friend)

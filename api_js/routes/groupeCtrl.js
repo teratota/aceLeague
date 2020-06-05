@@ -330,17 +330,19 @@ module.exports = {
         },
         type: sequelize.QueryTypes.SELECT
       }).then(function (groupe) {
-        if (groupe.image != null) {
-          let file = fs.readFileSync('./files/groupe/' + groupe.image, 'utf8');
-          groupe.image = file
+        for (let index = 0; index < groupe.length; index++) {
+          if (groupe[index].image != null) {
+            let file = fs.readFileSync('./files/groupe/' + groupe[index].image, 'utf8');
+            groupe[index].image = file
+          }
         }
-        if (groupe) {
-          res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
-        } else {
-          res.status(404).json({
-            'error': 'friend not found'
-          });
-        }
+          if (groupe) {
+            res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));
+          } else {
+            res.status(404).json({
+              'error': 'friend not found'
+            });
+          }
       }).catch(function (err) {
         res.status(500).json({
           'error': 'cannot fetch friends'
@@ -363,9 +365,11 @@ module.exports = {
         },
         type: sequelize.QueryTypes.SELECT
       }).then(function (groupe) {
-        if (groupe.image != null) {
-          let file = fs.readFileSync('./files/groupe/' + groupe.image, 'utf8');
-          groupe.image = file
+        for (let index = 0; index < groupe.length; index++) {
+          if (groupe[index].image != null) {
+            let file = fs.readFileSync('./files/groupe/' + groupe[index].image, 'utf8');
+            groupe[index].image = file
+          }
         }
         if (groupe) {
           res.status(201).json(cryptoUtils.encrypt(JSON.stringify(groupe)));

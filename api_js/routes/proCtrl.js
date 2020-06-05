@@ -54,12 +54,18 @@ module.exports = {
       });
     } else {
       let nom = req.body.data;
-      sequelize.query('Select id, nom From pro WHERE ref_id_user = $userId', {
+      sequelize.query('Select id, nom, image, description From pro WHERE ref_id_user = $userId', {
         bind: {
           userId: userId
         },
         type: sequelize.QueryTypes.SELECT
       }).then(function (pro) {
+        for (let index = 0; index < pro.length; index++) {
+          if (pro[index].image != null) {
+            let file = fs.readFileSync('./files/pro/' + pro[index].image, 'utf8');
+            pro[index].image = file
+          }
+        }
         if (pro) {
           res.status(201).json(cryptoUtils.encrypt(JSON.stringify(pro)));
         } else {
@@ -93,31 +99,73 @@ module.exports = {
       if (file != '') {
         nameFile = r;
       }
-      sequelize.query('INSERT INTO pro (ref_id_user,nom,type,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$type,$description,$image,NOW(),NOW())', {
-          bind: {
-            ref_id_user: userId,
-            nom: form.nom,
-            type: form.type,
-            description: form.description,
-            image: nameFile
-          },
-          type: sequelize.QueryTypes.INSERT
-        })
-        .then(function (newUser) {
-          if (file != '') {
-            fs.writeFile('./files/pro/' + r, file, function (err) {
-              res.status(201).json(true);
+      asyncLib.waterfall([
+        function (done) {
+          sequelize.query('INSERT INTO pro (ref_id_user,nom,type,description,image,createdAt,updatedAt) VALUES ($ref_id_user,$nom,$type,$description,$image,NOW(),NOW())', {
+              bind: {
+                ref_id_user: userId,
+                nom: form.nom,
+                type: form.type,
+                description: form.description,
+                image: nameFile
+              },
+              type: sequelize.QueryTypes.INSERT
+            })
+            .then(function (newUser) {
+              if (file != '') {
+                fs.writeFile('./files/pro/' + r, file, function (err) {});
+              }
+              done(null)
+            })
+            .catch(function (err) {
+              console.log(err);
+              return res.status(500).json({
+                'error': 'cannot add pro'
+              });
             });
-          } else {
-            res.status(201).json(true);
-          }
-        })
-        .catch(function (err) {
-          console.log(err);
+        },
+        function (done) {
+          sequelize.query('Select id From pro WHERE nom = $nom AND description = $description AND type = $type', {
+            bind: {
+              nom: form.nom,
+              type: form.type,
+              description: form.description
+            },
+            type: sequelize.QueryTypes.SELECT
+          }).then(function (pro) {
+            done(null, pro)
+          }).catch(function (err) {
+            res.status(500).json({
+              'error': 'cannot fetch pro'
+            });
+          })
+        },
+        function (pro, done) {
+          sequelize.query('INSERT INTO abonnement (ref_id_user,ref_id_pro) VALUES ($ref_id_user,$ref_id_pro)', {
+              bind: {
+                ref_id_user: userId,
+                ref_id_pro: pro[0].id
+              },
+              type: sequelize.QueryTypes.INSERT
+            })
+            .then(function (proAbonnement) {
+              done(pro)
+            })
+            .catch(function (err) {
+              return res.status(500).json({
+                'error': 'cannot add abonnement'
+              });
+            });
+        },
+      ], function (pro) {
+        if (pro) {
+          return res.status(201).json(true);
+        } else {
           return res.status(500).json({
-            'error': 'cannot add user'
+            'error': 'cannot update user profile'
           });
-        });
+        }
+      });
     }
   },
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

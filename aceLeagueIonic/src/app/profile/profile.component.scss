@@ -41,18 +41,18 @@ ion-title{
     align-self: auto;
 }
 
-.headerProfil .profilePic {
-
-}
-
-.headerProfil .username {
+.headerProfil .detailsProfile {
     padding-left: 20px;
     flex-grow: 1;
 }
 
-.headerProfil .username .name {
+.headerProfil .detailsProfile .name {
     font-size: 24px;
     margin-bottom: 0;
+}
+
+.descriptionResp {
+    display: none;
 }
 
 // Profil picture
@@ -80,6 +80,34 @@ ion-title{
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+// Sport row
+.sportRow .sportDetails {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.sportRow .sportDetails > div {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.sportRow .sportDetails > div > div{
+    padding-left: 20px;
+}
+
+.sportRow .sportDetails ion-icon {
+    font-size: 28px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 50%;
+}
+
+.sportRow .mySport {
+    line-height: 0.8;
 }
 
 // TABS
@@ -225,6 +253,14 @@ ion-card-content {
         min-width: $profilePictureFriends-size;
         min-height: $profilePictureFriends-size;
         align-self: center;
+    }
+    
+    .headerProfil .description {
+        display: none;
+    }
+
+    .descriptionResp {
+        display: block;
     }
     
     // NavBar Profile

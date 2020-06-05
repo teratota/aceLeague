@@ -11,7 +11,8 @@
             <ion-card-header>
 
               <div class="profilePic">
-                <div [style.background-image]="'url('+publication.profilePic+')'" ></div>
+                <div [style.background-image]="'url('+publication.profilePic+')'" *ngIf="publication.profilePic != null"></div>
+                <div [style.background-image]="'url('+publication.proPic+')'" *ngIf="publication.proPic != null"></div>
               </div>
 
               <div class="userInfos">
