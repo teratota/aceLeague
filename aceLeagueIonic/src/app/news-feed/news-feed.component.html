@@ -28,7 +28,7 @@
             </ion-card-header>
 
             <ion-card-content>
-              {{ publication.description }}
+              <p>{{ publication.description }}</p>
             </ion-card-content>
             <ion-grid fixed>
               <ion-row>
@@ -55,7 +55,7 @@
                   <div *ngIf="publication.like == true">
                     <div class="button" (click)="publicationDislike(publication.id)">
                       <ion-col size="1">
-                        <ion-icon color="danger" name="heart-outline" size="large"></ion-icon>
+                        <ion-icon color="danger" name="heart" size="large"></ion-icon>
                         <span class="publicationReact">{{publication.likeMax}}</span>
                       </ion-col>
                     </div>
@@ -85,7 +85,8 @@
       <ion-col size="4" style="position: relative;">
           
           <div class="sideBarStyle">
-            <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse commodi exercitationem natus nihil quos? Vitae quaerat laboriosam doloremque accusantium iure esse, perferendis laborum quas, a unde quae, consequatur totam non.</span>
+            <p class="title">Demande d'ami</p>
+            <app-list-unvalidate-friend></app-list-unvalidate-friend>
           </div>
 
       </ion-col>

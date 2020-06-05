@@ -72,8 +72,17 @@ ion-icon {
     border-radius: 5px;
     border: 2px solid var(--ion-color-primary);
     padding: 20px 10px;
+    padding-top: 10px;
     margin-top: 10px;
-    flex: 0 0 calc(calc(4 / var(--ion-grid-columns, 12)) * 100%);
-    width: calc(calc(4 / var(--ion-grid-columns, 12)) * 100%);
-    max-width: calc(calc(4 / var(--ion-grid-columns, 12)) * 100%);
+    flex: 0 0 calc(calc(4 / var(--ion-grid-columns, 12)) * 100% - 10px);
+    width: calc(calc(4 / var(--ion-grid-columns, 12)) * 100% - 10px);
+    max-width: calc(calc(4 / var(--ion-grid-columns, 12)) * 100% - 10px);
+}
+
+.title {
+    font-family: "Bebas Neue";
+  text-align: center;
+  font-size: 30px;
+  margin: 10px 0;
+  letter-spacing: 2px;
 }

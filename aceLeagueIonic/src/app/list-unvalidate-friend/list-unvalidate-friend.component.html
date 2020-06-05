@@ -1,9 +1,16 @@
-<ion-content>
+<div *ngIf="friends">
   <div *ngFor="let friend of friends">
-    <ion-item>
-      <span>{{friend.username}} vous a demandé en ami</span>
-      <ion-button (click)="accepted(friend.id)">Valider</ion-button>
-      <ion-button (click)="refused(friend.id)">Refuser</ion-button>
-    </ion-item>
+    <div class="choiceCtn">
+      <span class="choiceTxt">
+        {{friend.username}}
+        <span (click)="goToProfil(friend.ref_id_user_principal)" class="btnValidate"><ion-icon name="person"></ion-icon></span>
+      </span>
+      <div (click)="accepted(friend.id)" class="btnValidate valid"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+      <div (click)="refused(friend.id)" class="btnValidate unvalid"><ion-icon name="close-circle-outline"></ion-icon></div>
+    </div>
   </div>
-</ion-content>
+</div>
+
+<div *ngIf="friendsExist">
+  <p>Vous n'avez pas de demande en ce moment</p>
+</div>

@@ -1,0 +1,48 @@
+.choiceCtn {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.btnValidate {
+    border-radius: 50px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.choiceTxt {
+    padding-right: 10px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.choiceTxt > .btnValidate {
+    margin-left: 5px;
+}
+
+.choiceTxt > .btnValidate > ion-icon {
+    color: var(--ion-color-primary);
+    font-size: 20px;
+}
+
+.btnValidate ion-icon {
+    font-size: 30px;
+}
+
+.btnValidate:hover {
+    cursor: pointer;
+}
+
+.btnValidate.valid {
+    color: green;
+    margin-right: 3px;
+}
+
+.btnValidate.unvalid {
+    color: red;
+}
