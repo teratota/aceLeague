@@ -2,14 +2,6 @@
     padding: 15px 0;
 }
 
-.message > div {
-
-}
-
-.message .user_name {
-
-}
-
 .message .time {
     font-size: 12px;
     opacity: 0.4;
@@ -41,4 +33,12 @@
 .eof {
     padding: 0 0 55px;
     text-align: center;
+}
+
+::ng-deep ion-input,
+::ng-deep ion-textarea,
+::ng-deep ion-select,
+::ng-deep ion-select-option,
+::ng-deep ion-label {
+  color: white !important;
 }

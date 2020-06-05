@@ -1,7 +1,11 @@
 <ion-content>
-    
 
-  <p class="title">Modifier mon image</p>
+  <div class="title-ctn">
+    <p class="title">Modifier mon image</p>
+    <p class="closeModal" (click)="closeModal()">
+      <ion-icon name="close-outline"></ion-icon>
+    </p>
+  </div>
 
   <div class="previewPic">
     
@@ -20,7 +24,7 @@
   </div>
 
   <div class="submitBtn">
-    <ion-button type="submit" color="tertiary" (click)='checkData()'>Changer l'image de profil</ion-button>
+    <ion-button type="submit" color="dark" (click)='checkData()'>Changer l'image de profil</ion-button>
   </div>
 
 </ion-content>
