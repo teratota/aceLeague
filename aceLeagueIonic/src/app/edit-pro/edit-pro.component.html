@@ -24,21 +24,19 @@
               <ion-button color="primary" (click)="next()">Suivant</ion-button>
             </div>
             <div *ngIf="secondView">
-              <ion-fab>
-                <div>
-                  <ion-button (click)="onChange()">upload <ion-icon name="camera"></ion-icon>
-                  </ion-button>
+              <div class="previewPic">
+                <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
+                  (click)="showActionSheetElectron(photo, position)">
                 </div>
-              </ion-fab>
-              <div>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="6">
-                      <ion-img id='image' src="{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)">
-                      </ion-img>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
+            
+                <div class="popopo" *ngIf="!isImagePc">
+                  <div class="upload-btn-wrapper">
+                    <div class="uploadBtnPc">
+                      <ion-button (click)="onChange()">Sélectionner mon image</ion-button>
+                    </div>
+                  </div>
+                </div>
+            
               </div>
 
               <ion-button color="primary" (click)="last()">Précédent</ion-button>
