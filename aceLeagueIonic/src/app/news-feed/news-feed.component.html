@@ -1,0 +1,97 @@
+<ion-content>
+
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" size-md="8">
+
+          <!-- <app-publication></app-publication> VOIR POUR METTRA CE COMPONENT ICI -->
+
+        <div *ngFor="let publication of publications">
+          <ion-card>
+            <ion-card-header>
+
+              <div class="profilePic">
+                <div [style.background-image]="'url('+publication.profilePic+')'" *ngIf="publication.profilePic != null"></div>
+                <div [style.background-image]="'url('+publication.proPic+')'" *ngIf="publication.proPic != null"></div>
+              </div>
+
+              <div class="userInfos">
+                <div *ngIf='publication.username != null'>
+                  <ion-card-title>{{ publication.username }}</ion-card-title>
+                </div>
+                <div *ngIf='publication.username == null'>
+                  <ion-card-title>{{ publication.nom }}</ion-card-title>
+                </div>
+                <ion-card-subtitle>{{ publication.createdAt | date:'dd/MM/yyyy' }}</ion-card-subtitle>
+              </div>
+
+            </ion-card-header>
+
+            <ion-card-content>
+              <p>{{ publication.description }}</p>
+            </ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <div *ngIf="publication.image" class="publicationPic">
+                    
+                    <img src="{{publication.image}}" alt="">
+
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div class="button-bottom">
+              <ion-grid>
+                <ion-row>
+                  <div *ngIf="publication.like == false">
+                    <div class="button" (click)="publicationLike(publication.id)">
+                      <ion-col size="1">
+                        <ion-icon name="heart-outline" size="large"></ion-icon>
+                        <span class="publicationReact">{{publication.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div *ngIf="publication.like == true">
+                    <div class="button" (click)="publicationDislike(publication.id)">
+                      <ion-col size="1">
+                        <ion-icon color="danger" name="heart" size="large"></ion-icon>
+                        <span class="publicationReact">{{publication.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div class="button" (click)="commentaireModal(publication.id)">
+                    <ion-col size="1">
+                      <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                      <span class="publicationReact">{{publication.commentaireMax}}</span>
+                    </ion-col>
+                  </div>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-card>
+        </div>
+
+        <ion-grid fixed>
+          <ion-row class="eof">
+            <ion-col size="12">
+              <p>Fin des publications</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-col>
+
+      <ion-col size="0" size-md="4" style="position: relative;">
+          
+          <div class="sideBarStyle">
+            <p class="title">Demande d'ami</p>
+            <app-list-unvalidate-friend></app-list-unvalidate-friend>
+          </div>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

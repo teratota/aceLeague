@@ -1,0 +1,56 @@
+<ion-content [scrollEvents]="true" id="myIonContent">
+  <ion-grid>
+    <ion-row *ngFor="let chats of chat" class="myChat">
+      
+      <ion-col class="message">
+        <div>
+          <span class="user_name">{{ chats.user }}</span>
+          <span class="time">{{chats.time | date:'dd/MM hh:MM'}}</span>
+        </div>
+        <p class="text">{{ chats.message }}</p>
+      </ion-col>
+
+    </ion-row> 
+
+    <ion-row *ngFor= "let message of messages" class="myChat">
+      
+      <ion-col *ngIf="message.from !== nickname" class="message" [ngClass]="{'my_message': message.from === nickname, 'other_message': message.from !== nickname}">
+        <div>
+          <span class="user_name">{{ message.from }}</span>
+          <span class="time">{{message.created | date:'dd/MM hh:mm'}}</span>
+        </div>
+        <p class="text">{{ message.text }}</p>
+      </ion-col>
+
+      <ion-col *ngIf="message.from === nickname" class="message" [ngClass]="{'my_message': message.from === nickname, 'other_message': message.from !== nickname}">
+        <div>
+          <span class="user_name">{{ message.from }}:</span>
+          <span class="time">{{message.created | date:'dd/MM hh:mm'}}</span>
+        </div>
+        <p class="text">{{ message.text }}</p>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+  <!-- <ion-grid fixed>
+    <ion-row class="eof">
+      <ion-col size="12">
+      </ion-col>
+    </ion-row>
+  </ion-grid> -->
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row class="message_row">
+      <ion-col col-9>
+        <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="formChat">
+          <ion-input  type="texte" formControlName="message" name="texte" placeholder="message"></ion-input>
+          <ion-button color="tertiary" type="submit" [disabled]="!chatForm.valid"><ion-icon name="paper-plane-outline"></ion-icon></ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

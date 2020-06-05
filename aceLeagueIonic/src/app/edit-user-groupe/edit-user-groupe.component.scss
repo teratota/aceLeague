@@ -1,0 +1,57 @@
+ion-content {
+    top: 0
+}
+
+.title-ctn {
+    text-align: center;
+    position: relative;
+}
+
+.title {
+    font-family: "Bebas Neue";
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+    color: var(--ion-color-dark);
+}
+
+.closeModal {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+    margin: 0;
+    font-size: 28px;
+}
+
+ion-select {
+    padding-left: 0;
+}
+
+// User list
+.userList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.userList:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+// Add User to group
+.formSend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+ion-select-option, ion-select {
+    color: white;
+}
+
+.myFriends {
+    display: none;
+}

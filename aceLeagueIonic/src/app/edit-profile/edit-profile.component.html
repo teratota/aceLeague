@@ -1,0 +1,38 @@
+ <ion-content>
+   <div class="title-ctn">
+     <p class="title">Mon profil</p>
+     <p class="closeModal" (click)="closeModal()">
+       <ion-icon name="close-outline"></ion-icon>
+     </p>
+   </div>
+
+   <ion-grid fixed>
+     <ion-row>
+       <ion-col size="12">
+         <form [formGroup]="profileForm" (ngSubmit)="checkData()" class="formEdit">
+           <ion-item>
+             <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
+           </ion-item>
+           <ion-item>
+             <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
+           </ion-item>
+           <ion-item>
+             <ion-textarea formControlName="sport" placeholder="Sport"></ion-textarea>
+           </ion-item>
+           <ion-item>
+             <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider"
+               placeholder='Votre niveau'>
+               <ion-select-option value='Amateur' default>Amateur</ion-select-option>
+               <ion-select-option value='Semi-Professionnel'>Semi-Professionnel</ion-select-option>
+               <ion-select-option value='Professionnel'>Professionnel</ion-select-option>
+             </ion-select>
+           </ion-item>
+           <ion-item>
+             <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
+           </ion-item>
+           <ion-button class="btn btn-success" type="submit" [disabled]="!profileForm.valid">Modifier</ion-button>
+         </form>
+       </ion-col>
+     </ion-row>
+   </ion-grid>
+ </ion-content>

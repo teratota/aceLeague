@@ -1,0 +1,302 @@
+//Variables
+$profilePicture-size: 120px;
+$profilePictureFriends-size: 70px;
+
+ion-title{
+    color: white;
+}
+
+// Typo style
+.emph{
+    font-weight: 700;
+    color: var(--ion-color-primary);
+}
+
+// Content
+.content {
+    border-left: 1px #3c3c3c solid;
+    border-right: 1px #3c3c3c solid;
+}
+
+// Header
+.rowHeader {
+    padding-top: 30px;
+}
+
+.headerProfil {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100%;
+}
+
+.headerProfil > div {
+    order: 0;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+}
+
+.headerProfil .detailsProfile {
+    padding-left: 20px;
+    flex-grow: 1;
+}
+
+.headerProfil .detailsProfile .name {
+    font-size: 24px;
+    margin-bottom: 0;
+}
+
+.descriptionResp {
+    display: none;
+}
+
+.settingsIcon {
+    color: var(--ion-color-dark);
+}
+
+// Profil picture
+.publicationCard .profilePic {
+    border-color: white;
+}
+
+.profilePic{
+    border-radius: 50%;
+    border: 1px solid var(--ion-color-dark);
+    overflow: hidden;
+    width: $profilePicture-size;
+    height: $profilePicture-size;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.profilePicFriends{
+    border-radius: 50%;
+    border: 1px solid white;
+    overflow: hidden;
+    width: $profilePictureFriends-size;
+    height: $profilePictureFriends-size;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+// Sport row
+.sportRow .sportDetails {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.sportRow .sportDetails > div {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.sportRow .sportDetails > div > div{
+    padding-left: 20px;
+}
+
+.sportRow .sportDetails ion-icon {
+    font-size: 28px;
+    border: 2px solid var(--ion-color-dark);
+    padding: 10px;
+    border-radius: 50%;
+    color: var(--ion-color-dark);
+}
+
+.sportRow .mySport {
+    line-height: 0.8;
+}
+
+// TABS
+.profileTabs {
+    display: flex;
+    justify-content: space-around;
+}
+
+.profileTab {
+    border-bottom: 0px solid transparent;
+    padding: 10px 30px;
+    border-radius: 10px;
+    background-color: rgba(0, 53, 66, 1);
+    color: white;
+    width: 100%;
+    margin: 0 5px;
+    text-align: center;
+    transition: 0.3s;
+    font-weight: bold;
+    border: 2px solid transparent;
+}
+
+.profileTab:hover {
+    // background-color: rgba(0, 53, 66, 0.5);
+    border: 2px solid rgba(0, 53, 66, 1);
+    background-color: transparent;
+    color: rgba(0, 53, 66, 1);
+}
+
+.profileTab.active {
+    width: 100%;
+    color: #007B99;
+    border: 2px solid #007B99;
+    background-color: transparent;
+}
+
+// Groups
+.groups {
+    padding: 20px 5px;
+}
+
+.groups:first-child {
+    padding: 5px;
+}
+
+// Friends
+.friendRequest {
+    padding: 25px;
+    margin: 20px 15px;
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 10px;
+    position: relative;
+}
+
+.friendRequest .friendContent {
+    max-width: 500px;
+    min-width: 300px;
+}
+
+.title {
+    font-family: "Bebas Neue";
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+    position: absolute;
+    top: -25px;
+    background-color: var(--ion-background-color);
+    padding: 0 10px;
+    color: var(--ion-color-dark);
+}
+  
+// Dark Theme
+@media (prefers-color-scheme: dark) {
+    .profileTab:hover {
+        border: 2px solid #007B99;
+        background-color: transparent;
+        color: #007B99;
+    }
+}
+
+// Publications
+/// Header
+.headerCard {
+    padding-left: 20px;
+}
+
+// Options
+.options {
+    margin-left: auto;
+}
+
+// Cards
+ion-card{
+    width: 100%;
+    margin: 0;
+}
+
+ion-card-header{
+    display: flex;
+    flex-direction: row;
+}
+
+.cardHeadContent {
+    padding-left: 20px;
+}
+
+.cardContent {
+    text-align: left;
+}
+
+.arrow {
+    margin-left: 5px;
+}
+
+.publicationCard {
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.publicationPic {
+    text-align: center;
+}
+
+ion-card-title,
+ion-card-subtitle,
+ion-card-content {
+    color: var(--ion-color-text-light);
+}
+
+.more-settings {
+    color: var(--ion-color-text-light);
+}
+
+// Settings 
+.settingsIcon ion-icon{
+    font-size: 36px;
+    transition: 1s;
+}
+
+.settingsIcon ion-icon:hover {
+    transform: rotate(120deg);
+    transition: 1s;
+}
+
+//Row Friend
+.rowFriends {
+    padding: 30px 0;
+}
+
+// EOF
+.eof {
+    padding: 0 0 55px;
+    text-align: center;
+}
+
+// Button Social 
+.button-bottom .button {
+    color: white;
+}
+
+// RESPONSIVE
+@media (max-width: 575.98px) {
+    
+    // PROFILE PIC
+    .headerProfil .profilePic {
+        width: $profilePictureFriends-size;
+        height: $profilePictureFriends-size;
+        min-width: $profilePictureFriends-size;
+        min-height: $profilePictureFriends-size;
+        align-self: center;
+    }
+    
+    .headerProfil .description {
+        display: none;
+    }
+
+    .descriptionResp {
+        display: block;
+    }
+    
+    // NavBar Profile
+    .profileTab {
+        padding: 10px;
+    }
+
+}

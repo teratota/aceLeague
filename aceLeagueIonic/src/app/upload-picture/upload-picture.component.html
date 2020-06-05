@@ -1,0 +1,30 @@
+<ion-content>
+
+  <div class="title-ctn">
+    <p class="title">Modifier mon image</p>
+    <p class="closeModal" (click)="closeModal()">
+      <ion-icon name="close-outline"></ion-icon>
+    </p>
+  </div>
+
+  <div class="previewPic">
+    
+    <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
+      (click)="showActionSheetElectron(photo, position)">
+    </div>
+
+    <div class="popopo" *ngIf="!isImagePc">
+      <div class="upload-btn-wrapper">
+        <div class="uploadBtnPc">
+          <ion-button (click)="onChange()">Sélectionner mon image</ion-button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="submitBtn">
+    <ion-button type="submit" color="dark" (click)='checkData()'>Changer l'image de profil</ion-button>
+  </div>
+
+</ion-content>

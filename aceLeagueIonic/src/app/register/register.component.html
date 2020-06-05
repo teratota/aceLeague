@@ -1,0 +1,96 @@
+<ion-content>
+  <div class="background">
+    <div class="back"></div>
+  </div>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="12" class="card-register">
+        <div class="content">
+          <p class="title">Inscription</p>
+          <form [formGroup]="registerForm" (ngSubmit)="checkData()">
+            <div *ngIf="firstView">
+            <ion-item>
+              <ion-input type="text" formControlName="username" placeholder="Username"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="email" formControlName="email" placeholder="Email"></ion-input>
+              <p *ngIf="password" style="color: red">Cette email est déja utlisé</p>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" formControlName="password" placeholder="password"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" formControlName="password2" placeholder="password Identique"></ion-input>
+              <p *ngIf="password" style="color: red">Les mots de passes ne son pas identique</p>
+            </ion-item>
+            <ion-button (click)="next()">Suivant</ion-button>
+            </div>
+            <div *ngIf="secondView">
+              <ion-item>
+                <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
+              </ion-item>
+              <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
+              <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
+            </div>
+            <div *ngIf="thirdView">
+              <div class="likeItem">
+                <ion-label>Pratiquez-vous un sport ?</ion-label>
+              </div>
+              <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
+                <ion-item class="noBorder">
+                  <ion-label>Oui</ion-label>
+                  <ion-radio slot="start" color="tertiary" value="oui"></ion-radio>
+                </ion-item>
+                <ion-item class="noBorder">
+                  <ion-label>Non</ion-label>
+                  <ion-radio slot="start" color="tertiary" value="non"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+              <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
+              <ion-button color="tertiary" (click)="nextThree()">Suivant</ion-button>
+            </div>
+            <div *ngIf="foorView">
+            <ion-item class="noBorder">
+              <ion-input type="texte" formControlName="sport" placeholder="Votre sport"></ion-input>
+            </ion-item>
+            <ion-item class="noBorder">
+              <ion-select formControlName="level" multiple="false" cancelText="Annuler" okText="Valider" placeholder="Votre niveau">
+                <ion-select-option value ='Amateur'>Amateur</ion-select-option>
+                <ion-select-option value ='Semi-Professionnel'>Semi-Professionnel</ion-select-option>
+                <ion-select-option value ='Professionnel'>Professionnel</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
+            </ion-item>
+            <ion-button color="tertiary" (click)="lastThree()">Précédent</ion-button>
+            <ion-button color="tertiary" (click)="nextFour()">Suivant</ion-button>
+          </div>
+            <div *ngIf="fiveView">
+              <p class="infos">Vous pouvez changer l'image <br/> en cliquant dessus</p>
+                <div class="previewPic">                  
+                  <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
+                    (click)="showActionSheetElectron(photo, position)">
+                  </div>
+                  <div class="popopo" *ngIf="!isImagePc">
+                    <div class="upload-btn-wrapper">
+                      <div class="uploadBtnPc">
+                        <ion-button (click)="onChange()">Choisir <br/>mon image</ion-button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <ion-button color="tertiary" (click)="lastFour()">Précédent</ion-button>
+              <ion-button type="submit" color="tertiary" [disabled]="!registerForm.valid">Inscrire</ion-button>
+            </div>
+
+          </form>
+          <p class="connexion">
+            Vous avez déjà un compte ? <br />
+            <a (click)="login()">Connexion</a>
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,44 @@
+.message{
+    padding: 15px 0;
+}
+
+.message .time {
+    font-size: 12px;
+    opacity: 0.4;
+    padding-left: 10px;
+}
+
+.message .text {
+    margin: 0;
+    padding: 3px 0;
+}
+
+.myChat:last-child {
+    padding-bottom: 50px;
+}
+
+.formChat {
+    display: flex;
+}
+
+.formChat ion-icon {
+    color: var(--ion-color-primary);
+}
+
+.formChat ion-input {
+    padding-right: 10px !important;
+}
+
+// EOF
+.eof {
+    padding: 0 0 55px;
+    text-align: center;
+}
+
+::ng-deep ion-input,
+::ng-deep ion-textarea,
+::ng-deep ion-select,
+::ng-deep ion-select-option,
+::ng-deep ion-label {
+  color: white !important;
+}

@@ -1,0 +1,24 @@
+
+<ion-tabs *ngIf="displayNavbar">
+  <div *ngIf="isConnect">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button (click)="home()">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="search()">
+        <ion-icon name="search-outline"></ion-icon>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="publication()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-tab-button>
+
+      <ion-tab-button (click)="profil()">
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </div>
+</ion-tabs>
+
+

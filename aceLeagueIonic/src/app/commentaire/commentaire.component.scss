@@ -1,0 +1,53 @@
+ion-content {
+  top: 0
+}
+
+.title-ctn {
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  font-family: "Bebas Neue";
+  text-align: center;
+  font-size: 30px;
+  margin: 10px 0;
+  letter-spacing: 2px;
+  color: var(--ion-color-dark);
+}
+
+.closeModal {
+  position: absolute;
+  right: 20px;
+  top: 5px;
+  margin: 0;
+  font-size: 28px;
+}
+
+// ion-input
+ion-input {
+  color: var(--ion-color-dark);
+}
+
+// Commentaires 
+.comments {
+  padding: 10px 0;
+  color: var(--ion-color-dark);
+}
+
+.comments > span{
+  display: block;
+}
+
+.comments > .message {
+  font-weight: 400;
+}
+
+.comments > .user {
+  font-weight: 600;
+}
+
+.formEdit {
+  display: flex;
+  color: white;
+}

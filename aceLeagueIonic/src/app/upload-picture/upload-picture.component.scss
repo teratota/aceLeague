@@ -1,0 +1,102 @@
+ion-content {
+    top: 0
+}
+
+.title {
+    font-family: "Bebas Neue";
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+    letter-spacing: 2px;
+    color: var(--ion-color-dark);
+}
+
+.closeModal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    margin: 0;
+    font-size: 28px;
+}
+
+// BUTTONS
+.uploadBtn {
+    margin-top: -100px;
+}
+
+.uploadBtnPc {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    margin: auto;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-btn-wrapper .btn {
+    color: #fff;
+    background-color: #007b99;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 4px 2px;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.uploadBtn ion-fab-button {
+    margin: auto;
+    margin-left: -10px;
+}
+
+// PREVIEW PICTURES
+.previewPic {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border: var(--ion-color-dark) 2px solid;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.previewPic > div{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+}
+
+.popopo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// SUBMIT BTN
+.submitBtn {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 30px;
+}
+

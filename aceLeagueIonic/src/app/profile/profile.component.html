@@ -1,0 +1,301 @@
+<ion-content>
+  <ion-grid fixed>
+    <ion-row class="rowHeader">
+      <ion-col size="12">
+        <div class="headerProfil">
+          <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
+
+          <div class="detailsProfile">
+            <p class="name">{{ user.username }}</p>
+            <div class="description">
+              <p>
+                {{ user.bio }}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="isOtherUser">
+            <div (click)="choiceAction()" class="settingsIcon">
+              <ion-icon class="settingsIcon" name="settings-outline"></ion-icon>
+            </div>
+          </div>
+        </div>
+
+        <div class="descriptionResp">
+          <p>{{ user.bio }}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="user.sport != null" class="sportRow">
+      <ion-col size="12" class="sportDetails">
+        <div>
+          <ion-icon name="medal-outline"></ion-icon>
+          <div class="mySport">
+            <p>
+              {{ user.sport }}
+            </p>
+            <p>
+              {{ user.sportDescription }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <ion-icon name="speedometer-outline"></ion-icon>
+          <div>
+            <p>
+              {{ user.level }}
+            </p>
+          </div>
+        </div>        
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="rowFriends">
+      <ion-col size="6">
+        <div class=" col-md-6 details-friends">
+          <p> <span class="emph primary-color">{{ friendsNumber }}</span> Amis</p>
+        </div>
+      </ion-col>
+      <ion-col size="6">
+        <div class=" col-md-6 details-clubs">
+          <p><span class="emph primary-color">{{ abonnement }}</span> Abonnement</p>
+        </div>
+      </ion-col>
+      <div *ngIf='isNotFriend && isCurrentUser'>
+        <ion-col size="6" (click)='addFriend()'>
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="person-add-outline"></ion-icon>
+              </span> Demander en ami</p>
+          </div>
+        </ion-col>
+      </div>
+      <div *ngIf='isFriendCours'>
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="person-add-outline"></ion-icon>
+              </span> Demande en cours</p>
+          </div>
+        </ion-col>
+      </div>
+      <div *ngIf='isFriend'>
+        <ion-col size="6">
+          <div class=" col-md-6 details-clubs">
+            <p><span class="emph primary-color">
+                <ion-icon name="checkmark-outline"></ion-icon>
+              </span> Amie</p>
+          </div>
+        </ion-col>
+      </div>
+    </ion-row>
+
+    <div class="profileTabs">
+      <div class="profileTab active" (click)="goTo('profile', $event)">
+        Profil
+      </div>
+
+      <div class="profileTab" (click)="goTo('friends', $event)">
+        Amis
+      </div>
+
+      <div class="profileTab" (click)="goTo('groups', $event)">
+        Groupe
+      </div>
+
+      <div class="profileTab" (click)="goTo('pros', $event)">
+        Pros
+      </div>
+    </div>
+
+    <ion-row class="row-friends" *ngIf="friendsTab">
+      <div class="friendRequest" *ngIf="isOtherUser">
+        <p class="title">Mes demandes</p>
+        <div class="friendContent">
+          <app-list-unvalidate-friend></app-list-unvalidate-friend>
+        </div>
+      </div>
+      <ion-col size="12">
+        <div class="lists">
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let friend of friends">
+
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+friend.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ friend.username }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ friend.bio }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToUser(friend.ref_id_user_friend)" expand="block"
+                      fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" *ngIf="groupsTab">
+        <div class="lists">
+          <ion-grid fixed *ngIf="privateGroups && isOtherUser" class="groups">
+            <p>Mes groupes Privés</p>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let group of privateGroups">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+group.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ group.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ group.description }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline"
+                      shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          <ion-grid fixed *ngIf="publicGroups" class="groups">
+            <p *ngIf="isOtherUser">Mes groupes Publique</p>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let group of publicGroups">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+group.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ group.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ group.description }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToGroupe(group.id)" expand="block" fill="outline"
+                      shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </div>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" *ngIf="prosTab">
+        <div class="lists">
+
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="12" size-md="6" *ngFor="let pro of pros">
+                <ion-card>
+                  <ion-card-header>
+                    <div class="profilePicFriends" [style.background-image]="'url('+pro.image+')'"></div>
+                    <div class="cardHeadContent">
+                      <ion-card-title class="cardContent"><span>{{ pro.nom }}</span></ion-card-title>
+                      <ion-card-subtitle class="cardContent"><span>{{ pro.description }}</span></ion-card-subtitle>
+                    </div>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    <ion-button color="tertiary" (click)="goToPro(pro.id)" expand="block" fill="outline" shape="round">
+                      Profil <ion-icon name="arrow-forward-outline" class="arrow"></ion-icon>
+                    </ion-button>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid fixed *ngIf="profileTab">
+    <ion-row>
+      <ion-col size="12">
+        <div *ngFor="let publications of publication">
+          <ion-card class="publicationCard">
+            <ion-card-header>
+              <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
+              <div class="headerCard">
+                <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
+                <ion-card-subtitle><span>{{ publications.createdAt | date:'dd/MM/yyyy' }}</span></ion-card-subtitle>
+              </div>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{ publications.description }}</p>
+            </ion-card-content>
+            <ion-grid fixed>
+              <ion-row>
+                <ion-col size="12">
+                  <div *ngIf="publications.image != 'undefined'" class="publicationPic">
+                    <img src="{{publications.image}}" alt="">
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div class="button-bottom">
+              <ion-grid>
+                <ion-row>
+                  <div *ngIf="publications.like == false">
+                    <div class="button" (click)="publicationLike(publications.id)">
+                      <ion-col size="1">
+                        <ion-icon name="heart-outline" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div *ngIf="publications.like == true">
+                    <div class="button" (click)="publicationDislike(publications.id)">
+                      <ion-col size="1">
+                        <ion-icon color="danger" name="heart" size="large"></ion-icon>
+                        <span>{{publications.likeMax}}</span>
+                      </ion-col>
+                    </div>
+                  </div>
+                  <div class="button" (click)="commentaireModal(publications.id)">
+                    <ion-col size="1">
+                      <ion-icon name="chatbubble-outline" size="large"></ion-icon>
+                      <span>{{publications.commentaireMax}}</span>
+                    </ion-col>
+                  </div>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-card>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid fixed>
+    <ion-row class="eof">
+      <ion-col size="12">
+        <p *ngIf="profileTab">Fin des publications</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
