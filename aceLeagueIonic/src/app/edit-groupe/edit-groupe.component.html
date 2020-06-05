@@ -28,23 +28,23 @@
               </ion-item>
               <ion-button color="primary" (click)="next()">Suivant</ion-button>
             </div>
-            <div *ngIf="secondView">
-              <ion-fab>
-                <div>
-                  <input type='file' #fileInput (change)="onChange(fileInput.files[0])" formControlName="image">
-                  <ion-icon name="camera"></ion-icon>
-                </div>
-              </ion-fab>
 
-              <div>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col size="6">
-                      <ion-img id='image' src="{{previewImagePath}}" (click)="showActionSheetElectron(photo, position)">
-                      </ion-img>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
+            <div *ngIf="secondView">
+
+              <div class="previewPic">
+    
+                <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
+                  (click)="showActionSheetElectron(photo, position)">
+                </div>
+            
+                <div class="popopo" *ngIf="!isImagePc">
+                  <div class="upload-btn-wrapper">
+                    <div class="uploadBtnPc">
+                      <ion-button (click)="onChange()">Sélectionner mon image</ion-button>
+                    </div>
+                  </div>
+                </div>
+            
               </div>
 
               <ion-button color="primary" (click)="last()">Précédent</ion-button>

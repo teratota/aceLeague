@@ -82,7 +82,18 @@ export class EditGroupeComponent implements OnInit {
     "https://bulma.io/images/placeholders/480x480.png";
   fileName: string = "No file selected";
 
-  constructor(private ValidationService: ValidationService, private GroupeService: GroupeService, private router: Router, private photoService: PhotoService, public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute, private securityService: SecurityService, private modalCtrl: ModalController, private location: Location, private imageCompress: NgxImageCompressService) {
+  constructor(
+    private ValidationService: ValidationService,
+    private GroupeService: GroupeService,
+    private router: Router,
+    private photoService: PhotoService,
+    public actionSheetController: ActionSheetController,
+    public platform: Platform,
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService,
+    private modalCtrl: ModalController,
+    private location: Location,
+    private imageCompress: NgxImageCompressService) {
     this.confirmation = true;
   }
 
@@ -173,7 +184,7 @@ export class EditGroupeComponent implements OnInit {
   }
 
   onChange() {
-    this.isImagePc = true
+    this.isImagePc = true;
     this.imageCompress.uploadFile().then(({
       image,
       orientation
@@ -184,7 +195,7 @@ export class EditGroupeComponent implements OnInit {
           result => this.previewImagePath = result
         );
       } else {
-        this.previewImagePath = image
+        this.previewImagePath = image;
       }
     });
   }
