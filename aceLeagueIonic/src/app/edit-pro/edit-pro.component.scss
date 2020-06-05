@@ -8,6 +8,7 @@ ion-content {
     font-size: 30px;
     margin: 10px 0;
     letter-spacing: 2px;
+    color: var(--ion-color-dark);
 }
 
 .closeModal {
@@ -20,6 +21,14 @@ ion-content {
 
 ion-select {
     padding-left: 0;
+}
+
+::ng-deep ion-input,
+::ng-deep ion-textarea,
+::ng-deep ion-select,
+::ng-deep ion-select-option,
+::ng-deep ion-label {
+  color: white !important;
 }
 
 // Edit

@@ -8,6 +8,15 @@ ion-content {
     font-size: 30px;
     margin: 10px 0;
     letter-spacing: 2px;
+    color: var(--ion-color-dark);
+}
+
+.closeModal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    margin: 0;
+    font-size: 28px;
 }
 
 // BUTTONS
@@ -64,7 +73,7 @@ ion-content {
     position: relative;
     width: 280px;
     height: 280px;
-    border: white 2px solid;
+    border: var(--ion-color-dark) 2px solid;
     border-radius: 50%;
     margin: auto;
 }
