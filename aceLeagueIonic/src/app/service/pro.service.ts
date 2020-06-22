@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProService {
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
   constructor(private http: HttpClient, private securityService: SecurityService) { }
   getlist(value)
   {

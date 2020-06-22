@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SecurityService } from './security.service';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { SecurityService } from './security.service';
 export class UserService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
+  
 
   connection(data) {
     data = this.securityService.encode(JSON.stringify(data))

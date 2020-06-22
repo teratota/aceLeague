@@ -435,8 +435,6 @@ module.exports = {
     if (typeof pro == 'string') {
       pro = JSON.parse(pro)
     }
-    console.log('bnsdcnjkxwbnjbnxwc')
-    console.log(pro)
     if (userId < 0) {
       res.status(404).json({
         'error': 'wrong token'

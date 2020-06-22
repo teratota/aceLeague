@@ -24,11 +24,9 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      console.log(OtherUser)
       if (OtherUser != 'null' && OtherUser != '') {
         userId = OtherUser
       }
-      console.log(userId)
       asyncLib.waterfall([
           function (done) {
             sequelize.query('Select user.username, user.bio, user.image, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1', {

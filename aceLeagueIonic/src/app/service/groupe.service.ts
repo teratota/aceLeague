@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupeService {
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
   constructor(private http: HttpClient, private securityService: SecurityService) { }
   getlist(value)
   {
@@ -60,7 +61,6 @@ export class GroupeService {
     return this.http.post(this.configUrl+"groupe2user/getlist",{token: token});
   }
   groupe2UserAdd(groupe,user=null){
-    console.log(groupe)
     let token = this.securityService.getToken();
     user = this.securityService.encode(JSON.stringify(user))
     groupe = this.securityService.encode(JSON.stringify(groupe))

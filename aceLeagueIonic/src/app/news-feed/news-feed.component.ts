@@ -34,8 +34,6 @@ export class NewsFeedComponent implements OnInit {
   getPublications() {
     this.PublicationService.getAllPublications().subscribe(response => {
       this.publications = JSON.parse(this.securityService.decode(response));
-      console.log(this.publications);
-      
       return this.publications;
     },err => {
       if(err.error.error == "wrong token"){

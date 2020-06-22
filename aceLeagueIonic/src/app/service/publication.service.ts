@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PublicationService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
 
   getPublications(user) {
     let token = this.securityService.getToken();

@@ -71,8 +71,6 @@ export class GroupeComponent implements OnInit {
     
     this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
       this.publication = JSON.parse(this.securityService.decode(response));
-      console.log(this.publication);
-      
       return this.publication;
     },err => {
       if(err.error.error == "wrong token"){
