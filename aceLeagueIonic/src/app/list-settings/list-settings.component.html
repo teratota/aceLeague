@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start" (click)="goBack()">
-      <ion-icon name="arrow-back-outline" ></ion-icon>
+      <ion-icon name="arrow-back-outline"></ion-icon>
       <span class="back">Retour</span>
     </ion-buttons>
   </ion-toolbar>
@@ -10,38 +10,337 @@
 
   <ion-grid fixed>
     <ion-row *ngIf=" option === 'p1'">
-      <ion-col class="ion-align-self-center" size-md="6" size-xs="12">
-        <ion-item color="secondary">
-          <ion-label>Toggle</ion-label>
-          <ion-toggle slot="end" checked="{{settingStorage.firstOption}}" (ionChange)="validateOptions($event, 'firstOption')"></ion-toggle>
-        </ion-item>
+      <ion-col class="ion-align-self-center" size="12">
+        <div>
+          <h2>Politique de confidentialité</h2>
+          <h3>Préambule</h3>
+          <p>
+            Cette Politique de confidentialité s’adresse à vous, en votre qualité d’utilisateur du site internet
+            [Nom de domaine] (Ci-après le « SITE ») et a pour objectif de vous informer de la manière dont
+            vos informations personnelles peuvent le cas échéant être collectées et traitées par la société ACELEAGUE.
+          </p>
+          <p>ACELEAGUE, société par action simplifiées, enregistrée au Registre du Commerce et des sociétés de
+            Créteil, sous le numéro 493 503 882, dont le siège social est situé au [Mettre adresse], est spécialisée dans l’organisation événementielle.</p>
+          <p>Le respect de votre vie privée et de vos données à caractère personnel étant une priorité pour ACELEAGUE, la présente Politique de confidentialité a pour objet de présenter la teneur des traitements de
+            données à caractère personnel mis en œuvre sur le SITE.</p>
+          <ul>
+            <li>Vous restez maître de vos données à caractère personnel.</li>
+            <li>Vos données sont traitées de manière transparente, confidentielle et sécurisée.</li>
+          </ul>
+          <p>Les traitements de données à caractère personnel sont régis :</p>
+          <ul>
+            <li>Par la loi n°78-17 du 6 janvier 1978 relative à l’informatique, aux fichiers et aux libertés (ci-après «
+              loi IEL »).</li>
+            <li>Par le règlement (UE) 2016/679 du parlement européen et du conseil du 27 avril 2016 (ci-après « RGPD »).
+            </li>
+          </ul>
+
+          <h3>Définitions</h3>
+          <p><b>INSCRIT </b>: désigne un UTILISATEUR du SITE qui bénéficie des SERVICES d’ACELEAGUE.</p>
+          <p><b>CLIENT </b>: désigne les clients d’ACELEAGUE bénéficiant de services de conseils en organisation
+            événementielle.</p>
+          <p><b>ACELEAGUE </b>: désigne l’opérateur qui met à disposition des UTILISATEURS les SERVICES
+            disponibles sur le SITE.</p>
+          <p><b>RESPONSABLE DE TRAITEMENT </b>: désigne l’entité qui, seule ou conjointement avec une autre, détermine
+            les moyens et les finalités d’un traitement de données à caractère personnel.</p>
+          <p><b>SERVICES </b>: désigne l’ensemble des services fournis par ACELEAGUE dans le cadre de son
+            activité.</p>
+          <p><b>SITE </b>: désigne le SITE internet accessible à l’adresse [Nom de domaine], le SITE
+            regroupe l’ensemble des pages web, services et fonctionnalités qui vous sont proposés en tant
+            qu’UTILISATEUR, INSCRIT ou CLIENT d’ACELEAGUE.</p>
+          <p><b>SOUS-TRAITANT </b>: désigne la personne traitant des données à caractère personnel pour le compte du
+            RESPONSABLE DU TRAITEMENT, qui agit sous l’autorité du RESPONSABLE DU TRAITEMENT et sur instruction de
+            celui-ci.</p>
+          <p><b>UTILISATEUR </b>: désigne toute personne qui accède et navigue sur le SITE soit en tant que simple
+            internaute soit en tant qu’INSCRIT ou CLIENT.</p>
+
+          <h3>1. Registre des traitements</h3>
+          <p>Le traitement de vos données à caractère personnel fait l’objet de fiches de traitements qui sont insérées
+            dans le registre des traitements d’ACELEAGUE.</p>
+
+          <h3>2. Finalités du traitement</h3>
+          <p>Vos différentes données sont susceptibles d’être collectées par ACELEAGUE afin de :</p>
+          <ul>
+            <li>assurer la gestion de vos consentements et autorisations concernant l’utilisation de vos données
+              personnelles en particulier pour pouvoir vous proposer une opportunité professionnelle.</li>
+            <li>permettre une adéquation de votre profil aux besoins de nos CLIENTS.</li>
+            <li>vous permettre de bénéficier des SERVICES d’ACELEAGUE.</li>
+            <li>gérer les communications et le suivi de nos échanges notamment dans le cadre d’éventuels litiges.</li>
+            <li>gérer vos demandes liées à l’exercice des droits notamment d’accès, de rectification, d’effacement, de
+              limitation des traitements vous concernant, de portabilité, de définir le sort de vos données après votre
+              décès et d’opposition, dont vous bénéficiez en application de la réglementation sur les données
+              personnelles.</li>
+            <li>de tracer et administrer les preuves qu’ACELEAGUE doit rapporter en application de ses obligations
+              légales ou réglementaires ou pour des besoins liés à la gestion du contentieux.</li>
+            <li>de respecter nos obligations légales ou réglementaires applicables à l’activité d’ACELEAGUE
+              pour vous envoyer des messages d’information personnalisés ou non, par voie postale ou électronique, selon
+              votre profil.
+            </li>
+          </ul>
+          <p><b>Ces finalités sont détaillées au sein des articles 4, 5 de la présente politique de confidentialité.</b>
+          </p>
+          <p>En tout état de cause, et pour chaque finalité définie, ACELEAGUE mettra tous les moyens en sa
+            possession pour assurer la sécurité et la confidentialité des données à caractère personnel qui lui sont
+            confiées, dans le respect des lois et règlements en vigueur.</p>
+          <h2>3. Accès au site</h2>
+          <h3>3.1. Identité du responsable de traitement</h3>
+          <p>Dans le cadre de la mise à disposition du SITE, ACELEAGUE doit être considérée comme responsable de
+            traitement.</p>
+          <p><b>Pour plus d’information :</b></p>
+          <p>Pour toute question relative à la gestion et à l’utilisation faite de vos données à caractère personnel,
+            vous pouvez nous joindre :</p>
+          <ul>
+            <li>Soit par email, à
+              <a href="mailto:contact@aceleague.com">contact@aceleague.com</a>
+            </li>
+            <li>Soit par courrier, à ACELEAGUE, à l’adresse [METTRE L'ADRESSE].</li>
+          </ul>
+          <h3>3.2. Collecte et traitement des données personnelles</h3>
+          <p>Dans le cadre de l’exploitation du SITE, ACELEAGUE est susceptible de collecter des données à
+            caractère personnel relatives aux UTILISATEURS du SITE. Ces données sont traitées conformément aux finalités
+            prévues lors de la collecte.</p>
+          <p>En particulier, ACELEAGUE est susceptible de collecter des données à caractère personnel :</p>
+          <ul>
+            <li>Lors de votre visite du SITE</li>
+            <li>Lors de votre inscription</li>
+            <li>Lors de votre demande de contact auprès d’ACELEAGUE</li>
+          </ul>
+          <p>Quel que soit le mode de collecte, ACELEAGUE s’engage à vous informer des finalités du traitement, du
+            caractère obligatoire ou facultatif des réponses à apporter, des conséquences éventuelles, à son égard, d’un
+            défaut de réponse, des destinataires des données, de l’existence et des modalités d’exercice de ses droits
+            tels que décrits à l’article 7 de la présente politique de confidentialité.</p>
+          <p>Lorsque cela est nécessaire au regard de la Loi Informatique et Libertés et du RGPD, ACELEAGUE
+            s’engage, selon les cas, à recueillir votre consentement et/ou à vous permettre de vous opposer à
+            l’utilisation de vos données pour certaines finalités.</p>
+          <h3>3.3. Consentement</h3>
+          <p>En tant que responsable de traitement, ACELEAGUE doit obtenir le consentement des UTILISATEURS du
+            SITE pour collecter et traiter leur donnés personnelles.</p>
+          <p>Conformément aux dispositions en vigueur, le consentement de l’UTILISATEUR doit être libre, donné pour
+            chaque finalité désignée, éclairé et non équivoque. Il est donné par une déclaration ou par une action
+            positive, qui vaut accord de l’UTILISATEUR pour le traitement des données à caractère personnel le
+            concernant.</p>
+          <p>En l’occurrence, tout UTILISATEUR dont les données sont collectées pour les finalités précitées a :</p>
+          <ul>
+            <li>Soit donné son consentement lors de l‘inscription.</li>
+            <li>Soit donné son consentement lors d’une demande de contact avec ACELEAGUE.</li>
+          </ul>
+          <p>Pour plus d'informations:</p>
+          <p>Lors de votre navigation sur le SITE, vous remplissez divers formulaires et communiquez différentes données
+            à caractère personnel vous concernant pour bénéficier de l’ensemble des SERVICES proposés par ACELEAGUE.
+            L’ensemble des données vous concernant sont collectées uniquement directement auprès de vous, lors de
+            votre inscription, de vos connexions et de nos différents échanges.</p>
+          <p>Dans tous les cas, vous êtes informés des finalités pour lesquelles vos données sont collectées par nos
+            soins via les différents formulaires de collecte de données en ligne.</p>
+          <p>Lorsque cela est nécessaire, ACELEAGUE s’engage, selon les cas, à recueillir votre consentement et/ou
+            à vous permettre de vous opposer à l’utilisation de vos données pour certaines finalités, comme par exemple,
+            la possibilité de vous adresser de la prospection commerciale ou de déposer des cookies tiers sur vos
+            terminaux (téléphone mobile, ordinateur, tablette) à des fins de mesure d’audience de notre site et pour
+            vous proposer des offres commerciales en fonction de vos centres d’intérêts.</p>
+
+          <h2>4. Fourniture des services</h2>
+          <h3>4.1. Finalités du traitement opéré par ACELEAGUE</h3>
+          <p>Dans le cadre de la fourniture des SERVICES, vos différentes données sont collectées pour :</p>
+          <ul>
+            <li>permettre une adéquation de votre profil aux besoins de nos CLIENTS dans le cadre d’une politique
+              commerciale.</li>
+            <li>vous proposer une opportunité.</li>
+            <li>vous permettre de bénéficier des SERVICES d’ACELEAGUE.</li>
+            <li>gérer les communications et le suivi de nos échanges.</li>
+            <li>gérer vos demandes liées à l’exercice des droits dont vous bénéficiez en application de la
+              réglementation sur les données personnelles.</li>
+            <li>tracer et administrer les preuves qu’ACELEAGUE doit rapporter en application de ses obligations
+              légales ou réglementaires ou pour des besoins liés à la gestion du contentieux (ex : les preuves
+              nécessaires concernant l’exercice de vos droits, preuves relatives à vos commandes).</li>
+            <li>respecter nos obligations légales ou réglementaires applicables à l’activité de ACELEAGUE.</li>
+            <li>vous envoyer des messages d’information personnalisés ou non, par voie postale ou électronique, selon
+              votre profil.</li>
+          </ul>
+          <h3>4.2. Identité du responsable de traitement</h3>
+          <p>Dans le cadre des finalités précitées, ACELEAGUE aura la qualité de RESPONSABLE DE TRAITEMENT. En
+            effet ACELEAGUE sera nécessairement amenée à collecter et traiter les données à caractère personnel
+            des INSCRITS et des UTILISATEURS du SITE pour l’exécution de ses SERVICES.</p>
+          <p>A ce titre, ACELEAGUE garantit aux INSCRITS et aux UTILISATEURS qu’elle traite ses données dans le
+            respect des droits et obligations issus de la loi « Informatique et Libertés » et du RGPD.</p>
+          <p>Il est donc expressément convenu entre les parties que ACELEAGUE, en tant que RESPONSABLE DU
+            TRAITEMENT, mettra tous les moyens en sa possession pour assurer la sécurité et la confidentialité des
+            données à caractère personnel qui lui sont confiées.</p>
+          <p><b>Pour plus d'information :</b></p>
+          <p>Pour vous permettre de bénéficier des SERVICES d’ACELEAGUE</p>
+          <p>Les données susceptibles d'être traitées sont les suivantes :</p>
+          <ul>
+            <li>Données relatives à votre identité : nom, prénoms, adresse postale, numéro de téléphone portable,
+              adresse email.</li>
+            <li>Données relatives à votre vie personnelle.</li>
+            <li>Données relatives à votre vie professionnelle.</li>
+          </ul>
+          <p>Pour la gestion de vos demandes des droits et la gestion du contentieux</p>
+          <ul>
+            <li>Données relatives à votre identité : nom, prénoms, adresse, numéro de téléphone, adresses email.</li>
+            <li>Données relatives à votre navigation sur notre site via les cookies.</li>
+          </ul>
+          <p>Pour vous envoyer des messages d’information personnalisées ou non, selon votre profil</p>
+          <ul>
+            <li>Données relatives à votre identité : nom, prénoms, adresse postale, adresses email.</li>
+            <li>Données relatives à votre vie professionnelle.</li>
+            <li>Données relatives à votre navigation sur notre site via les cookies.</li>
+          </ul>
+          <h3>4.3. Consentement</h3>
+          <p>En tant que responsable de traitement, ACELEAGUE doit obtenir le consentement des UTILISATEURS du
+            SITE pour collecter et traiter leur donnés personnelles.</p>
+          <p>Conformément aux dispositions en vigueur, le consentement de l’UTILISATEUR doit être libre, donné pour
+            chaque finalité désignée, éclairé et non équivoque. Il est donné par une déclaration ou par une action
+            positive, qui vaut accord de l’UTILISATEUR pour le traitement des données à caractère personnel.</p>
+          <p>En l’occurrence, tout UTILISATEUR dont les données sont collectées pour les finalités précitées a :</p>
+          <ul>
+            <li>Soit donné son consentement lorsqu’il a s’est inscrit.</li>
+            <li>Soit donné son consentement lors de la demande de contact.</li>
+            <li>Accepté la Charte de gestion des cookies par le bandeau cookies correspondant.</li>
+          </ul>
+          <h2>Destinataires des données</h2>
+          <p>Seules les personnes mentionnées ci-dessous pourront avoir accès aux données personnelles des INSCRITS :
+          </p>
+          <ul>
+            <li>Les SOUS-TRAITANTS auxquels ACELEAGUE peut faire appel dans le cadre de l’exécution du SERVICE.
+            </li>
+            <li>Le personnel habilité des différents services de ACELEAGUE.</li>
+            <li>Les CLIENTS de la société ACELEAGUE auxquelles les données des INSCRITS sont transmises.</li>
+            <li>Les tiers (réseaux sociaux) susceptibles de déposer des cookies sur vos terminaux (ordinateurs,
+              tablettes, téléphones portables…) lorsque vous y consentez (Pour plus de détail, consulter l’Article 9).
+            </li>
+          </ul>
+          <p>Seules les personnes mentionnées ci-dessous pourront avoir accès aux données des UTILISATEURS :</p>
+          <ul>
+            <li>Le personnel habilité des différents services de ACELEAGUE.</li>
+            <li>Les sociétés chargées de la gestion du SITE.</li>
+            <li>Les tiers (réseaux sociaux) susceptibles de déposer des cookies sur vos terminaux (ordinateurs,
+              tablettes, téléphones portables…) lorsque vous y consentez (Pour plus de détail, voir Article 9).</li>
+          </ul>
+          <p>Vos données personnelles ne sont communiquées, échangées, vendues ou louées à aucune autre personne que
+            celles mentionnées ci-dessus.</p>
+
+          <h2>Durée de conservation des données</h2>
+          <p>ACELEAGUE s’engage à ce que les données collectées soient conservées sous une forme permettant votre
+            identification pendant une durée qui n'excède pas la durée nécessaire aux finalités pour lesquelles ces
+            données sont collectées et traitées.</p>
+          <p>Cependant, le traitement des données est possible pour la preuve d’un droit ou d’un contrat. Ces données
+            peuvent également être conservées dans l’objectif de respecter une obligation légale ou gardées dans des
+            fichiers conformément aux règlements et lois applicables.</p>
+          <p>Les données relatives à l’identité, les coordonnées et la vie professionnelle des INSCRITS sont conservées
+            par ACELEAGUE pendant une durée de deux (2) ans à compter de votre dernier contact avec ACELEAGUE.</p>
+          <p>Les données collectées ou traitées pour la gestion du contentieux sont conservées par ACELEAGUE
+            pendant cinq (5) ans dans un objectif de preuve.
+            Par ailleurs, ACE LEAGUE pourra archiver les données à caractère personnel collectées pour satisfaire
+            à ses obligations légales ou afin de disposer des éléments nécessaires pour faire valoir ses droits, dans
+            les conditions prévues par la réglementation.
+          </p>
+          <p>S’agissant des cookies visés à l’article 9 de la présente Politique de confidentialité, il est précisé que
+            les informations stockées dans votre terminal (ex : cookies) ou tout autre élément utilisé pour vous
+            identifier à des fins de statistiques d’audience ne sont pas conservées au-delà d’une période de six (6)
+            mois. Au-delà de ce délai, les données de fréquentation brutes associées à un identifiant sont soit
+            supprimées soit anonymisées.</p>
+          <p>Enfin, afin d’assurer le bon fonctionnement et l’amélioration permanente du SITE et de ses fonctionnalités,
+            les données de fréquentation brutes associées à un identifiant sont conservées pendant une durée de treize
+            (13) mois. Au-delà de ce délai, elles sont supprimées ou anonymisées.</p>
+          <p>ACELEAGUE conserve les données personnelles des INSCRITS pour une durée qui n’excède pas le temps
+            nécessaire à la réalisation de la finalité poursuivie.</p>
+          <p><b>Pour plus d'information :</b></p>
+          <p>Pour la gestion du contentieux</p>
+          <ul>
+            <li>Vos données sont stockées pendant cinq (5) ans dans un objectif de preuve à compter.</li>
+            <li>Si vous êtes UTILISATEUR : à compter de votre dernière connexion sur le SITE.</li>
+            <li>Si vous êtes INSCRIT : à compter de notre dernier contact.</li>
+          </ul>
+          <p>Pour les mesures d’audience et de statistiques</p>
+          <ul>
+            <li>6 mois, puis vos données sont supprimées ou anonymisées.</li>
+          </ul>
+          <ul>
+            <li>13 mois, puis vos données sont supprimées ou anonymisées.</li>
+          </ul>
+          <h2>Vos droits</h2>
+          <p>Conformément à la Loi Informatique et Libertés et au RGPD, vous disposez des droits suivants :</p>
+          <p>Droit d’accès (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article15">article 15
+              RGPD</a>), de rectification (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article16">article 16
+              RGPD</a>), de mise à jour, de complétude de vos données (<a target="_blank"
+              href="https://www.cnil.fr/fr/les-droits-pour-maitriser-vos-donnees-personnelles">en savoir plus</a>)</p>
+          <p>Droit de verrouillage ou d’effacement de vos données à caractère personnel (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article17">article 17
+              RGPD</a>), lorsqu’elles sont inexactes, incomplètes, équivoques, périmées, ou dont la collecte,
+            l'utilisation, la communication ou la conservation est interdite (<a target="_blank"
+              href="https://www.legifrance.gouv.fr/affichTexteArticle.do;jsessionid=F99FCEDCD62590E5C611B9152B030E99.tplgfr21s_2?idArticle=LEGIARTI000033219719&amp;cidTexte=LEGITEXT000006068624&amp;dateTexte=20180207">en
+              savoir plus</a>)</p>
+          <p>Droit de retirer à tout moment votre consentement (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article13">article 13-2c
+              RGPD</a>)</p>
+          <p>Droit à la limitation du traitement de vos données (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article18">article 18
+              RGPD</a>)</p>
+          <p>Droit d’opposition au traitement de vos données (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article21">article 21
+              RGPD</a>) (<a target="_blank"
+              href="https://www.cnil.fr/fr/les-droits-pour-maitriser-vos-donnees-personnelles">en savoir plus</a>)</p>
+          <p>Droit à la portabilité des données que vous nous avez fournies, lorsque vos données font l’objet de
+            traitements automatisés fondés sur votre consentement ou sur un contrat (<a target="_blank"
+              href="https://www.cnil.fr/fr/reglement-europeen-protection-donnees/chapitre3#Article20">article 20
+              RGPD</a>)</p>
+          <p>Droit de définir le sort de vos données après votre mort et de choisir que nous communiquions (ou non) vos
+            données à un tiers que vous aurez préalablement désigné (<a target="_blank"
+              href="https://www.cnil.fr/fr/ce-que-change-la-loi-pour-une-republique-numerique-pour-la-protection-des-donnees-personnelles#mortnumerique">en
+              savoir plus</a>).</p>
+          <p>En cas de décès et à défaut d’instructions de votre part, nous nous engageons à détruire vos données, sauf
+            leur conservation s’avère nécessaire à des fins probatoires ou pour répondre à une obligation légale.</p>
+          <p>Ces droits peuvent être exercés, par simple demande par courrier électronique à l’adresse <a
+                href="mailto:contact@aceleague.com">contact@aceleague.com</a>
+            , ou par courrier à l’adresse ACELEAGUE - Politique de confidentialité, à l’adresse 2, rue de
+            la Pléiade – 94240 L’Hay Les Roses en indiquant ses coordonnées (nom, prénom, adresse) et d’un motif
+            légitime lorsque celui-ci est exigé par la loi (notamment en cas d’opposition au traitement).
+            En cas de communication de copie de pièce d’identité pour justifier de votre identité, nous la conserverons
+            un (1) an ou trois (3) lorsque cette communication est effectuée dans le cadre de l’exercice d’un droit
+            d’opposition. Pour mieux connaître vos droits, vous pouvez également consulter le site de la Commission
+            Nationale de l’Informatique et des Libertés, accessible à l’adresse suivante : <a target="_blank"
+              href="http://cnil.fr/">http://cnil.fr</a>.
+          </p>
+          <h2>Cellule « Droit des personnes »</h2>
+          <p>Notre référent « Informatique et Libertés » est là pour répondre à toutes vos demandes, y compris
+            d’exercice de droits, relatifs à vos données à caractère personnel.</p>
+          <p>Vous pouvez le joindre :</p>
+          <p>par mail à <a href="mailto:contact@aceleague.com">contact@aceleague.com</a>
+            <br>ou par courrier à ACELEAGUE - Politique de confidentialité, à l’adresse [METTRE L'ADRESSE]
+          </p>
+          <h2>Sécurité</h2>
+          <p>ACELEAGUE et ses éventuels SOUS-TRAITANTS s’engagent à mettre en œuvre toutes les mesures techniques
+            et organisationnelles afin d’assurer la sécurité de ses traitements de données à caractère personnel et la
+            confidentialité de vos données, en application de la Loi informatique et Libertés, du Règlement européen sur
+            la protection des données (RGPD) et de la loi n°2018-133 du 26 février 2018 « portant diverses dispositions
+            d’adaptation au droit de l’Union européenne dans le domaine de la sécurité ».</p>
+          <p>A ce titre, ACELEAGUE prend les précautions utiles, au regard de la nature de vos données et des
+            risques présentés par ses traitements, pour préserver la sécurité des données et, notamment, empêcher
+            qu’elles soient déformées, endommagées, ou que des tiers non autorisés y aient accès (protection physique
+            des locaux, procédé d’authentification des INSCRITS avec accès personnel et sécurisé via des identifiants et
+            mots de passe confidentiels, journalisation des connexions, chiffrement de certaines données,…etc.).</p>
+          <h2>Transferts hors UE</h2>
+          <p>ACELEAGUE s’engage à ne pas transférer les données des UTILISATEURS en dehors de l’Union Européenne.
+            Dans l’hypothèse où ACELEAGUE devrait le faire, elle en informerait les UTILISATEURS en indiquant les
+            mesures prises afin de contrôler ce transfert et s’assurer du respect de la confidentialité de leurs
+            données.</p>
+        </div>
       </ion-col>
-      <ion-col class="ion-align-self-center" size-md="6" size-xs="12">
-        <ion-item color="secondary">
-          <ion-label>Toggle 2</ion-label>
-          <ion-toggle slot="end" checked="{{settingStorage.secondOption}}" (ionChange)="validateOptions($event, 'secondOption')"></ion-toggle>
-        </ion-item>
+    </ion-row>
+
+    <ion-row *ngIf=" option === 'p2'">
+      <ion-col class="ion-align-self-center" size="12">
+        <h2>A propos de Ace League</h2>
+        <h3>Open source</h3>
+        <p>Ace League est un logiciel open source, il peut être retrouvé sur <a href="https://github.com/teratota/aceLeague">Github</a>.</p>
+        <p>Toute contribution est la bienvenue !</p>
+        <br>
+        <h3>Version</h3>
+        <p>Ace League est actuellement en version 1.0</p>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <!-- <form [formGroup]="settingForm" (ngSubmit)="validateOptions()">
-    <ion-grid>
-      <ion-row color="primary" justify-content-center>
-        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-          <div padding>
-            <ion-item color="primary">
-              <ion-label>Toggle</ion-label>
-              <ion-toggle slot="end" formControlName="test01" name="test01"></ion-toggle>
-            </ion-item>
-          </div>
-          <div padding>
-            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Validate</ion-button>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form> -->
-  
 
 </ion-content>
