@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SecurityService } from './security.service';
 import { HttpClient } from '@angular/common/http';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class ChatService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
 
   addChat(data){
     let token = this.securityService.getToken();

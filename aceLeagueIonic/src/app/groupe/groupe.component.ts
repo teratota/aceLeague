@@ -71,8 +71,6 @@ export class GroupeComponent implements OnInit {
     
     this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
       this.publication = JSON.parse(this.securityService.decode(response));
-      console.log(this.publication);
-      
       return this.publication;
     },err => {
       if(err.error.error == "wrong token"){
@@ -105,6 +103,24 @@ export class GroupeComponent implements OnInit {
     });
     
   }
+
+  deletePublication(id){
+    this.PublicationService.deletePublication(id).subscribe(response => {
+      this.PublicationService.getGroupePublication(this.groupeId).subscribe(response => {
+        this.publication = JSON.parse(this.securityService.decode(response));
+        return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+  }
+
 
   joinGroupe(){
     this.GroupeService.groupe2UserAdd(this.groupeId).subscribe(response => {
@@ -185,6 +201,20 @@ export class GroupeComponent implements OnInit {
         icon: 'people-outline',
         handler: () => {
           this.editingUserGroupe();
+        }
+      },
+      {
+        text: "Supression du Groupe",
+        icon: 'trash-outline',
+        handler: () => {
+          console.log(this.groupeId)
+          this.GroupeService.deleteGroupe(this.groupeId).subscribe(response => {
+            this.router.navigate(['profile']);
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
+          });
         }
       }
     ]

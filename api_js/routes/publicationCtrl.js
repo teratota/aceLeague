@@ -435,8 +435,6 @@ module.exports = {
     if (typeof pro == 'string') {
       pro = JSON.parse(pro)
     }
-    console.log('bnsdcnjkxwbnjbnxwc')
-    console.log(pro)
     if (userId < 0) {
       res.status(404).json({
         'error': 'wrong token'
@@ -799,5 +797,28 @@ module.exports = {
         'error': 'cannot fetch publications'
       });
     })
-  }
+  },
+  deletePublication: function (req, res) {
+    var headerAuth = cryptoUtils.decrypt(req.body.token);
+    var userId = jwtUtils.getUserId(headerAuth);
+    var id = cryptoUtils.decrypt(req.body.id);
+    if (userId < 0) {
+      res.status(404).json({
+        'error': 'wrong token'
+      });
+    } else {
+      sequelize.query('Delete from publication where id = $id', {
+        bind: {
+          id: id
+        },
+        type: sequelize.QueryTypes.DELETE
+      }).then(function (publication) {
+          res.status(201).json(true);
+      }).catch(function (err) {
+        res.status(500).json({
+          'error': 'cannot delete groupe'
+        });
+      })
+    }
+  },
 }

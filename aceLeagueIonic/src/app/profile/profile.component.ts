@@ -113,7 +113,6 @@ export class ProfileComponent implements OnInit {
   getDataProfile() {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
-      console.log(this.user)
       return this.user;
     }, err => {
       if (err.error.error == 'wrong token') {
@@ -132,6 +131,7 @@ export class ProfileComponent implements OnInit {
 
     this.FriendService.getFriendList(this.userId).subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
+      console.log(this.friends)
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
     }, err => {
@@ -176,6 +176,40 @@ export class ProfileComponent implements OnInit {
       }
     });
 
+  }
+
+  deletePublication(id){
+    this.PublicationService.deletePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = JSON.parse(this.securityService.decode(response));
+        return this.publication;
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+  }
+  deleteFriend(id){
+    this.FriendService.deleteFriend(id).subscribe(response => {
+      this.FriendService.getFriendList(this.userId).subscribe(response => {
+        this.friends = JSON.parse(this.securityService.decode(response));
+        this.friendsNumber = Object.keys(this.friends).length;
+        return this.friends;
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
   }
 
 
@@ -344,9 +378,6 @@ export class ProfileComponent implements OnInit {
   }
 
   goTo(link, event) {
-    console.log(link);
-    console.log();
-
     const Mytabs = document.getElementsByClassName('profileTab');
 
     for (let index = 0; index < Mytabs.length; index++) {

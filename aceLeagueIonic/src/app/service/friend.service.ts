@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class FriendService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
 
   getFriendList(user) {
     let token = this.securityService.getToken();
@@ -35,5 +36,10 @@ export class FriendService {
     let token = this.securityService.getToken();
     user = this.securityService.encode(JSON.stringify(user))
     return this.http.post(this.configUrl+"users/friend/check/",{user:user, token: token});
+  }
+  deleteFriend(id){
+    let token = this.securityService.getToken();
+    id = this.securityService.encode(JSON.stringify(id))
+    return this.http.post(this.configUrl+"users/friend/delete/",{id:id, token: token});
   }
 }

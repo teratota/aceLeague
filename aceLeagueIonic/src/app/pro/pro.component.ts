@@ -42,14 +42,12 @@ export class ProComponent implements OnInit {
     this.activeRoute.params.subscribe(routeParams => {
       this.isAuthor = false;
       this.proId = history.state.data;
-      console.log(this.proId);
       this.getData();
     });
   }
   
 
   getData(){
-    console.log(this.proId)
     this.ProService.getInfoPro(this.proId).subscribe(response => {
       this.pro = JSON.parse(this.securityService.decode(response))[0];
       return this.pro;
@@ -98,6 +96,23 @@ export class ProComponent implements OnInit {
     },err => {
       if(err.error.error == "wrong token"){
         this.securityService.presentToast()
+      }
+    });
+  }
+
+  deletePublication(id){
+    this.PublicationService.deletePublication(id).subscribe(response => {
+      this.PublicationService.getProPublication(this.proId).subscribe(response => {
+        this.publication = JSON.parse(this.securityService.decode(response));
+        return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
@@ -160,6 +175,19 @@ export class ProComponent implements OnInit {
         icon: 'image-outline',
         handler: () => {
           this.editingProImage();
+        }
+      },
+      {
+        text: "Supression du pro",
+        icon: 'trash-outline',
+        handler: () => {
+          this.ProService.deletePro(this.proId).subscribe(response => {
+            this.router.navigate(['profile']);
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
+          });
         }
       }
     ]

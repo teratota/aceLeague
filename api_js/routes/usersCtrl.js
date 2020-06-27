@@ -185,7 +185,6 @@ module.exports = {
   login: function (req, res) {
     // Params
     data = cryptoUtils.decrypt(req.body.data)
-    console.log(data);
     data = JSON.parse(data)
     var email = data.email;
     var password = data.password;
@@ -197,7 +196,6 @@ module.exports = {
     }
 
     if (email == null || password == null) {
-      console.log('erreur 404');
       return res.status(400).json({
         'error': 'missing parameters'
       });

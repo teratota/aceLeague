@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SecurityService } from './security.service';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { api_path } from '../includes/api_path.js';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class PublicationService {
 
   constructor(private http: HttpClient, private securityService: SecurityService) { }
 
-  configUrl = 'http://localhost:4444/api/';
+  configUrl = api_path;
 
   getPublications(user) {
     let token = this.securityService.getToken();
@@ -81,5 +82,11 @@ export class PublicationService {
     id = this.securityService.encode(JSON.stringify(id))
     data = this.securityService.encode(JSON.stringify(data))
     return this.http.post(this.configUrl+"commentaire/add", {token: token, publication: id, form:data})
+  }
+  deletePublication(id)
+  {
+    let token = this.securityService.getToken();
+    id = this.securityService.encode(JSON.stringify(id))
+    return this.http.post(this.configUrl+"publication/delete", {token: token, id: id})
   }
 }

@@ -24,7 +24,6 @@ module.exports = {
       });
     } else {
       let nom = Math.random().toString(36).substring(7);
-      console.log(data)
       asyncLib.waterfall([
         function (done) {
           sequelize.query('INSERT INTO chat (nom,createdAt,updateAt,nomvue) VALUES ($nom,NOW(),NOW(),$nomvue)', {

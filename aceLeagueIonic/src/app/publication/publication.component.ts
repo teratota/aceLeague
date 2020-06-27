@@ -124,7 +124,6 @@ export class PublicationComponent implements OnInit {
     } else if (this.publicationForm.value.param == "Pro") {
       this.PublicationService.uploadPublicationPro(this.previewImagePath, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        console.log(this.publicationForm.value.pro)
         let location = this.location.path()
         if (location == "/pro") {
           this.router.navigate(['proReload'], {

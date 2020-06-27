@@ -30,7 +30,6 @@ export class CommentaireComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(this.data);
       this.getData();
     });
   }
@@ -73,8 +72,6 @@ export class CommentaireComponent implements OnInit, AfterViewChecked {
 
   public async closeModal() {
     let location = this.location.path()
-    console.log(location)
-    console.log(this.data)
     if(location == "/profile"){
       this.router.navigate(['profileReload']);
     }else if(location == "/profileReload"){

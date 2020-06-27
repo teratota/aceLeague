@@ -1,0 +1,1 @@
+export const api_path = 'http://localhost:4444/api/'

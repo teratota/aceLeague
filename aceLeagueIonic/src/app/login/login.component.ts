@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
         }
       },err => {
       });
-      console.log('login')
       this.navBarComponent.refreshNavbar()
      // this.headerComponent.refreshHeader()
       this.messageMail = false;
@@ -71,7 +70,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/profile']);
       return this.config;
     },err => {
-      console.log(err.error)
     });
   }
 

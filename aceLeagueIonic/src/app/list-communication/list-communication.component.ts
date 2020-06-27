@@ -29,7 +29,6 @@ export class ListCommunicationComponent implements OnInit {
   getData(){
     this.chatService.getChat().subscribe(response => {
       this.chat=JSON.parse(this.securityService.decode(response))
-      console.log(this.chat)
       return this.chat;
     },err => {
       if(err.error.error == "wrong token"){
@@ -38,7 +37,6 @@ export class ListCommunicationComponent implements OnInit {
     });
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
-      console.log(this.user)
       return this.user;
     },err => {
       if(err.error.error == "wrong token"){
