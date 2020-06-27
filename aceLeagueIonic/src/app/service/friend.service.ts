@@ -37,4 +37,9 @@ export class FriendService {
     user = this.securityService.encode(JSON.stringify(user))
     return this.http.post(this.configUrl+"users/friend/check/",{user:user, token: token});
   }
+  deleteFriend(id){
+    let token = this.securityService.getToken();
+    id = this.securityService.encode(JSON.stringify(id))
+    return this.http.post(this.configUrl+"users/friend/delete/",{id:id, token: token});
+  }
 }

@@ -131,6 +131,7 @@ export class ProfileComponent implements OnInit {
 
     this.FriendService.getFriendList(this.userId).subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
+      console.log(this.friends)
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
     }, err => {
@@ -175,6 +176,40 @@ export class ProfileComponent implements OnInit {
       }
     });
 
+  }
+
+  deletePublication(id){
+    this.PublicationService.deletePublication(id).subscribe(response => {
+      this.PublicationService.getPublications(this.userId).subscribe(response => {
+        this.publication = JSON.parse(this.securityService.decode(response));
+        return this.publication;
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+  }
+  deleteFriend(id){
+    this.FriendService.deleteFriend(id).subscribe(response => {
+      this.FriendService.getFriendList(this.userId).subscribe(response => {
+        this.friends = JSON.parse(this.securityService.decode(response));
+        this.friendsNumber = Object.keys(this.friends).length;
+        return this.friends;
+      }, err => {
+        if (err.error.error == 'wrong token') {
+          this.securityService.presentToast();
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
   }
 
 

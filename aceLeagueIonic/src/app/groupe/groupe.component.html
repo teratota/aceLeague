@@ -49,6 +49,9 @@
                   <span>{{ publications.createdAt | date:'dd/MM/yyyy' }}</span>
                 </ion-card-subtitle>
               </div>
+              <div class="delete" *ngIf="isAuthor">
+                <ion-icon name="trash-outline" size="large" (click)="deletePublication(publications.id)"></ion-icon>
+              </div>
             </ion-card-header>
       
             <ion-card-content>

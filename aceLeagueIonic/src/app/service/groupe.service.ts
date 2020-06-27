@@ -18,6 +18,7 @@ export class GroupeService {
   deleteGroupe(groupe)
   {
     let token = this.securityService.getToken();
+    console.log(groupe)
     groupe = this.securityService.encode(JSON.stringify(groupe))
     return this.http.post(this.configUrl+"groupe/delete",{groupe: groupe, token: token});
   }

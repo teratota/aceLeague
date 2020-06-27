@@ -29,7 +29,7 @@ module.exports = {
       }
       asyncLib.waterfall([
           function (done) {
-            sequelize.query('Select user.username, user.bio, user.image, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1', {
+            sequelize.query('Select friend.id, user.username, user.bio, user.image, friend.ref_id_user_friend From friend INNER Join user ON friend.ref_id_user_friend = user.id WHERE friend.ref_id_user_principal = $id AND friend.validate = 1', {
               bind: {
                 id: userId
               },
@@ -43,7 +43,7 @@ module.exports = {
             })
           },
           function (friend, done) {
-            sequelize.query('Select user.username, user.bio, user.image, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1', {
+            sequelize.query('Select friend.id, user.username, user.bio, user.image, friend.ref_id_user_principal From friend INNER Join user ON friend.ref_id_user_principal = user.id WHERE friend.ref_id_user_friend = $id AND friend.validate = 1', {
               bind: {
                 id: userId,
                 idFriend: req.body.user
@@ -54,6 +54,7 @@ module.exports = {
               if (friendP.lenght != 0) {
                 for (let index = 0; index < friendP.length; index++) {
                   friend[friend.length] = {
+                    id: friendP[index].id,
                     ref_id_user_friend: friendP[index].ref_id_user_principal,
                     username: friendP[index].username,
                     bio: friendP[index].bio,
@@ -257,5 +258,31 @@ module.exports = {
           }
         });
     }
-  }
+  },
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  deleteFriend: function (req, res) {
+    //update or delete
+    var headerAuth = cryptoUtils.decrypt(req.body.token);
+    var userId = jwtUtils.getUserId(headerAuth);
+    var id = cryptoUtils.decrypt(req.body.id);
+    console.log(id)
+    if (userId < 0) {
+      res.status(404).json({
+        'error': 'wrong token'
+      });
+    } else {
+        sequelize.query('Delete from friend where id = $id', {
+          bind: {
+            id: id
+          },
+          type: sequelize.QueryTypes.DELETE
+        }).then(function (friend) {
+          res.status(201).json(true);
+        }).catch(function (err) {
+          res.status(500).json({
+            'error': 'cannot fetch friends'
+          });
+        })
+      }
+  },
 }

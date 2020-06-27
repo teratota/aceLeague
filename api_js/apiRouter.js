@@ -33,6 +33,7 @@ exports.router = (function () {
   apiRouter.route('/users/validatefriend/').post(friendCtrl.ValidateNewUserFriend);
   apiRouter.route('/users/listvalidatefriend/').post(friendCtrl.getListValidateNewUserFriend);
   apiRouter.route('/users/friend/check/').post(friendCtrl.checkFriend);
+  apiRouter.route('/users/friend/delete/').post(friendCtrl.deleteFriend);
 
 
   // Publications
@@ -43,6 +44,7 @@ exports.router = (function () {
   apiRouter.route('/publication/all-publication/').post(publicationCtrl.getAllPublications);
   apiRouter.route('/publication/pro/').post(publicationCtrl.getProPublications);
   apiRouter.route('/publication/groupe/').post(publicationCtrl.getGroupePublications);
+  apiRouter.route('/publication/delete/').post(publicationCtrl.deletePublication);
 
   // Commentaire
   apiRouter.route('/commentaire/add/').post(commentaireCtrl.addCommentaire);

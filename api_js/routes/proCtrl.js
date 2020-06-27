@@ -318,7 +318,7 @@ module.exports = {
   deletePro: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    var pro = cryptoUtils.decrypt(req.body.id);
+    var pro = cryptoUtils.decrypt(req.body.pro);
     if (typeof pro == 'string') {
       pro = JSON.parse(pro)
     }
@@ -327,20 +327,14 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Delete pro groupe where id = $id and ref_id_user = $userId', {
+      sequelize.query('Delete from pro where id = $id and ref_id_user = $userId', {
         bind: {
           userId: userId,
           id: pro
         },
-        type: sequelize.QueryTypes.SELECT
+        type: sequelize.QueryTypes.DELETE
       }).then(function (pro) {
-        if (pro) {
           res.status(201).json(true);
-        } else {
-          res.status(404).json({
-            'error': 'pro not found'
-          });
-        }
       }).catch(function (err) {
         res.status(500).json({
           'error': 'cannot delete pro'

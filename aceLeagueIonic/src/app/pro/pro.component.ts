@@ -100,6 +100,23 @@ export class ProComponent implements OnInit {
     });
   }
 
+  deletePublication(id){
+    this.PublicationService.deletePublication(id).subscribe(response => {
+      this.PublicationService.getProPublication(this.proId).subscribe(response => {
+        this.publication = JSON.parse(this.securityService.decode(response));
+        return this.publication;
+      },err => {
+        if(err.error.error == "wrong token"){
+          this.securityService.presentToast()
+        }
+      });
+    }, err => {
+      if (err.error.error == 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+  }
+
   joinPro(){
     this.ProService.abonnementUserAdd(this.proId).subscribe(response => {
       if(response == true){
@@ -158,6 +175,19 @@ export class ProComponent implements OnInit {
         icon: 'image-outline',
         handler: () => {
           this.editingProImage();
+        }
+      },
+      {
+        text: "Supression du pro",
+        icon: 'trash-outline',
+        handler: () => {
+          this.ProService.deletePro(this.proId).subscribe(response => {
+            this.router.navigate(['profile']);
+          },err => {
+            if(err.error.error == "wrong token"){
+              this.securityService.presentToast()
+            }
+          });
         }
       }
     ]

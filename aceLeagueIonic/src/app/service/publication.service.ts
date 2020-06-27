@@ -83,4 +83,10 @@ export class PublicationService {
     data = this.securityService.encode(JSON.stringify(data))
     return this.http.post(this.configUrl+"commentaire/add", {token: token, publication: id, form:data})
   }
+  deletePublication(id)
+  {
+    let token = this.securityService.getToken();
+    id = this.securityService.encode(JSON.stringify(id))
+    return this.http.post(this.configUrl+"publication/delete", {token: token, id: id})
+  }
 }
