@@ -26,17 +26,19 @@ export class ProComponent implements OnInit {
     private securityService: SecurityService
     ) { }
 
-    pro:object = {
-      nom:'',
-      image:'',
+    pro: any = {
+      nom: null,
+      image: null,
+      description: null
     };
 
     isJoin: boolean = false;
     isNotJoin: boolean = true;
-    publication:object;
-    abonnement:number;
-    proId:number;
+    publication: object;
+    abonnement: number;
+    proId: number;
     isAuthor: boolean = false;
+    profileTab: object;
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {

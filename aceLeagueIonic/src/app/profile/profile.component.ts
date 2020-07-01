@@ -22,6 +22,7 @@ import { Location } from '@angular/common';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
+
 export class ProfileComponent implements OnInit {
 
   // Header & NavBar
@@ -48,10 +49,15 @@ export class ProfileComponent implements OnInit {
   privateGroups: object;
 
   // Infos
-  user: object = {
-    username: 'toto',
-    bio: 'blablabla'
+  user: any = {
+    username: null,
+    bio: null,
+    sport: null,
+    sportDescription: null,
+    level: null,
+    image: null,
   };
+
   userPicture;
   userName;
   userBio;
@@ -82,6 +88,8 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit() {
+    this.user.username = null;
+
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
       if(this.userId != null){

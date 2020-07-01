@@ -33,6 +33,8 @@ export class RegisterComponent implements OnInit {
   isImagePc: boolean = false
   isImageMobile: boolean = false
 
+  position: object;
+
   registerForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,

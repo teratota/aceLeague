@@ -78,6 +78,9 @@ export class EditProComponent implements OnInit {
   proEdit: any;
 
   publication: any;
+  photo: any;
+  position: any;
+
 
   imageUrl: string | ArrayBuffer =
     "https://bulma.io/images/placeholders/480x480.png";

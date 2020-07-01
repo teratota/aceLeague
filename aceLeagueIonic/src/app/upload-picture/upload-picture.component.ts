@@ -36,9 +36,11 @@ export class UploadPictureComponent implements OnInit {
   cardImageBase64: string;
   previewImagePath: any
 
-  publication : any;
+  publication: any;
 
   file: File;
+
+  position: any;
 
   imageUrl: string | ArrayBuffer =
     "https://bulma.io/images/placeholders/480x480.png";

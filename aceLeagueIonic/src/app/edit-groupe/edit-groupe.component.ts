@@ -73,9 +73,12 @@ export class EditGroupeComponent implements OnInit {
 
   imageError: string;
   isImageSaved: boolean;
-  previewImagePath: any
+  previewImagePath: any;
 
   publication: any;
+
+  photo: any;
+  position: any;
 
 
   imageUrl: string | ArrayBuffer =

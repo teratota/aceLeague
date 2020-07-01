@@ -49,9 +49,10 @@ export class PublicationComponent implements OnInit {
 
   imageError: string;
   isImageSaved: boolean;
-  previewImagePath: any
+  previewImagePath: any;
 
   publication: any;
+  position: object;
 
   imageUrl: string | ArrayBuffer =
     "https://bulma.io/images/placeholders/480x480.png";

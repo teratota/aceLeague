@@ -25,21 +25,23 @@ export class GroupeComponent implements OnInit {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private securityService: SecurityService
-    ) { }
+  ) { }
 
-    // Modal
+  // Modal
   currentModal = null;
 
-    groupe:object = {
-      nom: '',
-      image: '',
-    };
-    isJoin: boolean = false;
-    isNotJoin: boolean = true;
-    publication: object;
-    abonnement: number;
-    groupeId: number;
-    isAuthor: boolean = false;
+  groupe: any = {
+    nom: null,
+    image: null,
+    description: null,
+  };
+  isJoin: boolean = false;
+  isNotJoin: boolean = true;
+  publication: object;
+  abonnement: number;
+  groupeId: number;
+  isAuthor: boolean = false;
+  profileTab: object;
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
