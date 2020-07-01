@@ -406,7 +406,7 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Select id, username From user WHERE username LIKE $nom', {
+      sequelize.query('Select id, username From user WHERE username LIKE $nom or sport LIKE $nom', {
         bind: {
           nom: '%' + data + '%'
         },
