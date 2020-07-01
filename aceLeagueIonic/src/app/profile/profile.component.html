@@ -103,7 +103,7 @@
         Groupe
       </div>
 
-      <div class="profileTab" (click)="goTo('pros', $event)">
+      <div *ngIf="isOtherUser" class="profileTab" (click)="goTo('pros', $event)">
         Pros
       </div>
     </div>
