@@ -60,6 +60,9 @@ export class RegisterComponent implements OnInit {
     question: new FormControl('', [
       Validators.required
     ]),
+    ville: new FormControl('', [
+      Validators.required
+    ]),
     sport: new FormControl('', []),
     level: new FormControl('', []),
     image: new FormControl('', []),
@@ -109,7 +112,8 @@ export class RegisterComponent implements OnInit {
         sport: '',
         level: '',
         image: '',
-        sportDescription: ''
+        sportDescription: '',
+        ville: ''
       })
     });
   }

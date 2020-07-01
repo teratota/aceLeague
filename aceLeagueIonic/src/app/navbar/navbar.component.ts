@@ -4,6 +4,7 @@ import { Platform, ModalController } from '@ionic/angular';
 import { SecurityService } from '../service/security.service';
 import { UserService } from '../service/user.service';
 import { PublicationComponent } from './../publication/publication.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +21,7 @@ export class NavbarComponent implements OnInit {
 
   isConnect: boolean = true;
 
-  constructor(private router:Router, public platform: Platform, private securityService: SecurityService, private userService: UserService, private activeRoute: ActivatedRoute, private modalController: ModalController) { }
+  constructor(private router:Router, public platform: Platform, private securityService: SecurityService, private userService: UserService, private activeRoute: ActivatedRoute, private modalController: ModalController, private location: Location) { }
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -35,7 +36,15 @@ export class NavbarComponent implements OnInit {
     });
   }
   profil(){
-    this.router.navigate(['profile'])
+    const location = this.location.path();
+    console.log(location)
+    if (location === '/profile') {
+      this.router.navigate(['profileReload']);
+    } else if (location === '/profileReload') {
+      this.router.navigate(['profile']);
+    }else{
+      this.router.navigate(['profile']);
+    }
   }
   async publication(){
     const modal = await this.modalController.create({

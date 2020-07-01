@@ -27,6 +27,9 @@
             </div>
             <div *ngIf="secondView">
               <ion-item>
+                <ion-input type="text" formControlName="ville" placeholder="Ville"></ion-input>
+              </ion-item>
+              <ion-item>
                 <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
               </ion-item>
               <ion-button (click)="last()">Précédent</ion-button>

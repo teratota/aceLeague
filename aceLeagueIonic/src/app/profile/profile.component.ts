@@ -56,6 +56,7 @@ export class ProfileComponent implements OnInit {
     sportDescription: null,
     level: null,
     image: null,
+    ville: null
   };
 
   userPicture;
