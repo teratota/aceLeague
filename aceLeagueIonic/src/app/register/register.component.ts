@@ -63,9 +63,7 @@ export class RegisterComponent implements OnInit {
     sport: new FormControl('', []),
     level: new FormControl('', []),
     image: new FormControl('', []),
-    sportDescription: new FormControl('', [
-      Validators.required
-    ]),
+    sportDescription: new FormControl('', []),
   });
 
   password: boolean;
