@@ -39,6 +39,7 @@ export class UploadPictureComponent implements OnInit {
   publication: any;
 
   file: File;
+  photo: any;
 
   position: any;
 
