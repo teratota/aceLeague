@@ -1,13 +1,13 @@
 <ion-content>
-  <form [formGroup]="chatForm" (ngSubmit)="joinChat()">
+  <form [formGroup]="chatForm" (ngSubmit)="addChat()">
     <ion-item>
-    <ion-select formControlName="friend" multiple="true" cancelText="Annuler" okText="Valider" >
-      <ion-select-option *ngFor="let friend of friends" value="{{ friend.ref_id_user_friend }}">{{ friend.username }}</ion-select-option>
-    </ion-select>
+      <ion-select formControlName="friend" multiple="true" cancelText="Annuler" okText="Valider">
+        <ion-select-option *ngFor="let friend of friends" value="{{ friend.ref_id_user_friend }}">{{ friend.username }}</ion-select-option>
+      </ion-select>
     </ion-item>
     <ion-item>
-      <ion-input type="text" formControlName="nom" ></ion-input>
+      <ion-input type="text" formControlName="nom"></ion-input>
     </ion-item>
-      <ion-button type="submit" [disabled]="!chatForm.valid" >Créer</ion-button>
+    <ion-button type="submit" [disabled]="!chatForm.valid">Créer</ion-button>
   </form>
 </ion-content>

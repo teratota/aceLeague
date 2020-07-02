@@ -22,10 +22,10 @@ export class PublicationComponent implements OnInit {
     initialSlide: 1,
     speed: 400
   };
-  isPC: boolean = false
-  isMobile: boolean = false
-  isImagePc: boolean = false
-  isImageMobile: boolean = false
+  isPC: boolean = false;
+  isMobile: boolean = false;
+  isImagePc: boolean = false;
+  isImageMobile: boolean = false;
   publicationForm = new FormGroup({
     description: new FormControl('', [
       Validators.required
@@ -39,31 +39,46 @@ export class PublicationComponent implements OnInit {
   pro: object = {
     id: null,
     nom: null
-  }
+  };
+
   proActivated: boolean = false;
   groupe: object = {
     id: null,
     nom: null
-  }
+  };
+
   groupeActivated: boolean = false;
 
   imageError: string;
   isImageSaved: boolean;
-  previewImagePath: any
+  previewImagePath: any;
 
   publication: any;
+  position: object;
 
   imageUrl: string | ArrayBuffer =
-    "https://bulma.io/images/placeholders/480x480.png";
-  fileName: string = "No file selected";
+    'https://bulma.io/images/placeholders/480x480.png';
+  fileName: string = 'No file selected';
 
-  constructor(private router: Router, private PublicationService: PublicationService, private photoService: PhotoService, public actionSheetController: ActionSheetController, private ProService: ProService, private GroupeService: GroupeService, public platform: Platform, private activeRoute: ActivatedRoute, private securityService: SecurityService, private modalCtrl: ModalController, private location: Location, private imageCompress: NgxImageCompressService) {}
+  constructor(
+    private router: Router,
+    private publicationService: PublicationService,
+    private photoService: PhotoService,
+    public actionSheetController: ActionSheetController,
+    private proService: ProService,
+    private groupeService: GroupeService,
+    public platform: Platform,
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService,
+    private modalCtrl: ModalController,
+    private location: Location,
+    private imageCompress: NgxImageCompressService) {}
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      let platform = this.platform.platforms()
-      this.photoService.base = null
-      if (platform[0] == 'electron' || platform[0] == 'desktop') {
+      const platform = this.platform.platforms();
+      this.photoService.base = null;
+      if (platform[0] === 'electron' || platform[0] === 'desktop') {
         this.isPC = true;
         this.isImagePc = false;
       } else {
@@ -76,12 +91,13 @@ export class PublicationComponent implements OnInit {
         groupe: '',
         param: 'Moi',
         image: ''
-      })
+      });
     });
   }
 
+  // Apercu de la photo
   onChange() {
-    this.isImagePc = true
+    this.isImagePc = true;
     this.imageCompress.uploadFile().then(({
       image,
       orientation
@@ -92,41 +108,38 @@ export class PublicationComponent implements OnInit {
           result => this.previewImagePath = result
         );
       } else {
-        this.previewImagePath = image
+        this.previewImagePath = image;
       }
     });
   }
 
-  photo() {
-    this.photoService.addNewToGallery()
-  }
-
+  // Envoi de l'image
   send() {
-    this.sendForElectron()
+    this.sendForElectron();
   }
 
+  // Envoi de l'image
   sendForElectron() {
-    if (this.publicationForm.value.param == "Moi") {
-      this.PublicationService.uploadPublication(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+    if (this.publicationForm.value.param === 'Moi') {
+      this.publicationService.uploadPublication(this.previewImagePath, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        let location = this.location.path()
-        if (location == "/profile") {
+        const location = this.location.path();
+        if (location === '/profile') {
           this.router.navigate(['profileReload']);
         } else {
           this.router.navigate(['profile']);
         }
         this.modalCtrl.dismiss();
       }, err => {
-        if (err.error.error == "wrong token") {
-          this.securityService.presentToast()
+        if (err.error.error === 'wrong token') {
+          this.securityService.presentToast();
         }
       });
-    } else if (this.publicationForm.value.param == "Pro") {
-      this.PublicationService.uploadPublicationPro(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+    } else if (this.publicationForm.value.param === 'Pro') {
+      this.publicationService.uploadPublicationPro(this.previewImagePath, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        console.log(this.publicationForm.value.pro)
-        let location = this.location.path()
-        if (location == "/pro") {
+        const location = this.location.path();
+        if (location === '/pro') {
           this.router.navigate(['proReload'], {
             state: {
               data: this.publicationForm.value.pro
@@ -141,15 +154,15 @@ export class PublicationComponent implements OnInit {
         }
         this.modalCtrl.dismiss();
       }, err => {
-        if (err.error.error == "wrong token") {
+        if (err.error.error === 'wrong token') {
           this.securityService.presentToast()
         }
       });
-    } else if (this.publicationForm.value.param == "Groupe") {
-      this.PublicationService.uploadPlublicationGroupe(this.previewImagePath, this.publicationForm.value).subscribe(response => {
+    } else if (this.publicationForm.value.param === 'Groupe') {
+      this.publicationService.uploadPlublicationGroupe(this.previewImagePath, this.publicationForm.value).subscribe(response => {
         this.publication = response;
-        let location = this.location.path()
-        if (location == "/groupe") {
+        const location = this.location.path();
+        if (location === '/groupe') {
           this.router.navigate(['groupeReload'], {
             state: {
               data: this.publicationForm.value.groupe
@@ -164,62 +177,44 @@ export class PublicationComponent implements OnInit {
         }
         this.modalCtrl.dismiss();
       }, err => {
-        if (err.error.error == "wrong token") {
-          this.securityService.presentToast()
+        if (err.error.error === 'wrong token') {
+          this.securityService.presentToast();
         }
       });
     }
   }
 
+  // Recupération de la liste des pro ou des groupes
   getList(value) {
-    if (value == 'Groupe') {
-      this.GroupeService.groupe2UserGetList().subscribe(response => {
+    if (value === 'Groupe') {
+      this.groupeService.groupe2UserGetList().subscribe(response => {
         this.groupe = JSON.parse(this.securityService.decode(response));
         this.groupeActivated = true;
         this.proActivated = false;
         return this.groupe;
       }, err => {
-        if (err.error.error == "wrong token") {
-          this.securityService.presentToast()
+        if (err.error.error === 'wrong token') {
+          this.securityService.presentToast();
         }
       });
-    } else if (value == 'Pro') {
-      this.ProService.getListMe().subscribe(response => {
+    } else if (value === 'Pro') {
+      this.proService.getListMe().subscribe(response => {
         this.pro = JSON.parse(this.securityService.decode(response));
         this.proActivated = true;
         this.groupeActivated = false;
         return this.pro;
       }, err => {
-        if (err.error.error == "wrong token") {
-          this.securityService.presentToast()
+        if (err.error.error === 'wrong token') {
+          this.securityService.presentToast();
         }
       });
-    } else if (value == 'Moi') {
+    } else if (value === 'Moi') {
       this.proActivated = false;
       this.groupeActivated = false;
     }
   }
 
-  public async showActionSheet(photo, position) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          this.photoService.deletePicture(photo, position);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {}
-      }]
-    });
-    await actionSheet.present();
-  }
-
+  // Affichage du popup pour suppression d'image
   public async showActionSheetElectron(photo, position) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
@@ -229,10 +224,10 @@ export class PublicationComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.isImagePc = false;
-          this.previewImagePath = "";
+          this.previewImagePath = '';
           this.publicationForm.patchValue({
             image: ''
-          })
+          });
         }
       }, {
         text: 'Cancel',
@@ -244,6 +239,7 @@ export class PublicationComponent implements OnInit {
     await actionSheet.present();
   }
 
+  // Fermeture du modal
   public async closeModal() {
     await this.modalCtrl.dismiss();
   }

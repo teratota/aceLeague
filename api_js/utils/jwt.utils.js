@@ -15,13 +15,8 @@ module.exports = {
       expiresIn: '172800000'
     })
   },
- /* parseAuthorization: function(authorization) {
-    return (authorization != null) ? authorization.replace('Bearer ', '') : null;
-  },*/
   getUserId: function(token) {
     var userId = -1;
-   // var token = module.exports.parseAuthorization(authorization);
-
     if(token != null) {
       try {
         var jwtToken = jwt.verify(token, JWT_SIGN_SECRET);

@@ -13,19 +13,21 @@ export class PhotoService {
   public photos: Photo[] = [];
   private PHOTO_STORAGE = 'photos';
 
-  public base2 : any;
+  public base2: any;
 
   public image: any;
   public blob: any;
-  public base:any;
+  public base: any;
 
-  constructor( private sanitizer: DomSanitizer,public platform: Platform) { }
+  constructor(
+    private sanitizer: DomSanitizer,
+    public platform: Platform) { }
 
 
 
   public async addNewToGallery(file = null) {
-    
-    this.photos=[]
+
+    this.photos = [];
     const capturedPhoto = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Prompt,
@@ -55,41 +57,39 @@ export class PhotoService {
 
   }
 
-  saveuploadfile(file){
-    var reader = new FileReader();
-   reader.readAsDataURL(file);
-   reader.onload = function () {
+  saveuploadfile(file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
    };
-   reader.onerror = function (error) {
+    reader.onerror = function (error) {
      console.log('Error: ', error);
    };
   }
 
   private async savePicture(cameraPhoto: CameraPhoto) {
-    const base64Data = await this.readAsBase64(cameraPhoto);
-    
+  const base64Data = await this.readAsBase64(cameraPhoto);
 
-    let url = "./"
-    let platform = this.platform.platforms()
-    
-    if(platform[0]=="electron"){
-      const fileName = new Date().getTime() + '.jpeg';
-        const savedFile = await Filesystem.writeFile({
-        path: fileName,
-        data: base64Data,
-        directory: FilesystemDirectory.Documents
-      });
+  const platform = this.platform.platforms();
 
-      return {
-        filepath: fileName,
-        webviewPath: cameraPhoto.webPath
-      };
-    }else {
+  if (platform[0] === 'electron') {
+    const fileName = new Date().getTime() + '.jpeg';
+    const savedFile = await Filesystem.writeFile({
+    path: fileName,
+    data: base64Data,
+    directory: FilesystemDirectory.Documents
+    });
+
+    return {
+      filepath: fileName,
+      webviewPath: cameraPhoto.webPath
+    };
+  } else {
       const fileName = new Date().getTime() + '.jpeg';
-        const savedFile = await Filesystem.writeFile({
-        path: fileName,
-        data: base64Data,
-        directory: FilesystemDirectory.Data
+      const savedFile = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: FilesystemDirectory.Data
       });
       return {
         filepath: fileName,
@@ -117,8 +117,8 @@ export class PhotoService {
   public async loadSaved() {
     const photos = await Storage.get({ key: this.PHOTO_STORAGE });
     this.photos = JSON.parse(photos.value) || [];
-    let platform = this.platform.platforms()
-    if(platform[0]=="electron"){
+    const platform = this.platform.platforms();
+    if (platform[0] === 'electron') {
     for (const photo of this.photos) {
             const readFile = await Filesystem.readFile({
             path: photo.filepath,
@@ -126,7 +126,7 @@ export class PhotoService {
         });
             photo.base64 = `data:image/jpeg;base64,${readFile.data}`;
       }
-    }else{
+    } else {
       for (const photo of this.photos) {
         const readFile = await Filesystem.readFile({
         path: photo.filepath,
@@ -143,15 +143,15 @@ export class PhotoService {
       key: this.PHOTO_STORAGE,
       value: JSON.stringify(this.photos)
     });
-    let platform = this.platform.platforms()
-    if(platform[0]=="electron"){
+    const platform = this.platform.platforms();
+    if (platform[0] === 'electron') {
     const filename = photo.filepath
     .substr(photo.filepath.lastIndexOf('/') + 1);
-      await Filesystem.deleteFile({
-      path: filename,
-      directory: FilesystemDirectory.Documents
+    await Filesystem.deleteFile({
+    path: filename,
+    directory: FilesystemDirectory.Documents
     });
-    }else{
+    } else {
       const filename = photo.filepath
       .substr(photo.filepath.lastIndexOf('/') + 1);
       await Filesystem.deleteFile({
@@ -162,8 +162,6 @@ export class PhotoService {
   }
 
 }
-
-
 
 interface Photo {
   filepath: string;

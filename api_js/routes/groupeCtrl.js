@@ -43,7 +43,6 @@ module.exports = {
       });
     })
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addGroupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -139,7 +138,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateGroupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -173,7 +171,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateGroupeImage: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -245,7 +242,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getGroupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -282,7 +278,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -315,7 +310,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupePrive: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -350,7 +344,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getMyGroupePublic: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -385,11 +378,11 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   deleteGroupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    var id = cryptoUtils.decrypt(req.body.id);
+    var id = cryptoUtils.decrypt(req.body.groupe);
+    console.log(id)
     if (userId < 0) {
       res.status(404).json({
         'error': 'wrong token'
@@ -400,23 +393,17 @@ module.exports = {
           userId: userId,
           id: id
         },
-        type: sequelize.QueryTypes.SELECT
+        type: sequelize.QueryTypes.DELETE
       }).then(function (groupe) {
-        if (groupe) {
           res.status(201).json(true);
-        } else {
-          res.status(404).json({
-            'error': 'groupe not found'
-          });
-        }
       }).catch(function (err) {
+        console.log(err)
         res.status(500).json({
           'error': 'cannot delete groupe'
         });
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkGroupeAuthor: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);

@@ -44,16 +44,9 @@ server.use('/api/', apiRouter);
 
 io.on('connection', (socket) => {
 
-  // socket.on('createRoom', function(){
-  //   console.log(socket)
-  //   socket.join(socket.room);  
-  // });
-
   socket.on('join', function (room) {
-    console.log(socket)
     var headerAuth = cryptoUtils.decrypt(room.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    console.log(userId)
     if (userId > 0) {
       socket.join(room.nom);
     }
@@ -63,7 +56,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', function () {
     var headerAuth = cryptoUtils.decrypt(socket.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    console.log(userId)
     if (userId > 0) {
       io.sockets.in(socket.room).emit('users-changed', {
         user: socket.nickname,
@@ -78,7 +70,6 @@ io.on('connection', (socket) => {
     socket.token = nickname.token;
     var headerAuth = cryptoUtils.decrypt(socket.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    console.log(userId)
     if (userId > 0) {
       socket.join(nickname.room);
       io.sockets.in(socket.room).emit('users-changed', {
@@ -91,7 +82,6 @@ io.on('connection', (socket) => {
   socket.on('add-message', (message) => {
     var headerAuth = cryptoUtils.decrypt(socket.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    console.log(userId)
     if (userId > 0) {
       fs.readFile('./files/chat/' + socket.room + '.json', 'utf8', function readFileCallback(err, data) {
         if (err) {
@@ -118,6 +108,7 @@ io.on('connection', (socket) => {
     }
   });
 });
+
 var port = process.env.PORT || 3001;
 
 http.listen(port, function () {

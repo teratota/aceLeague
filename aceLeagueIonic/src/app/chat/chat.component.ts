@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit, AfterViewChecked {
-  
+
 @ViewChild(IonContent, {read: IonContent, static: true}) content: IonContent;
 
   messages = [];
@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   message = '';
 
   chatForm = new FormGroup({
-    message:new FormControl('',[
+    message: new FormControl('', [
       Validators.required
     ])
   });
@@ -30,19 +30,19 @@ export class ChatComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      this.messages =[];
-      this.ChatService.getChatMessage(this.room).subscribe(response => {
+      this.messages = [];
+      this.chatService.getChatMessage(this.room).subscribe(response => {
         this.chat = response;
         this.chat = JSON.parse(this.chat);
-        if(this.chat != []){
+        if (this.chat !== []) {
           for (let index = 0; index < this.chat.length; index++) {
-            this.chat[index].message = this.securityService.decode(this.chat[index].message)
+            this.chat[index].message = this.securityService.decode(this.chat[index].message);
           }
         }
         return this.chat;
-      },err => {
-        if(err.error.error == "wrong token"){
-          this.securityService.presentToast()
+      }, err => {
+        if (err.error.error === 'wrong token') {
+          this.securityService.presentToast();
         }
       });
     });
@@ -53,18 +53,20 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   }
 
 
-  constructor(private socket: Socket,  private toastCtrl: ToastController, private securityService: SecurityService, private ChatService: ChatService, private activeRoute: ActivatedRoute) { 
+  constructor(
+    private socket: Socket,
+    private toastCtrl: ToastController,
+    private securityService: SecurityService,
+    private chatService: ChatService,
+    private activeRoute: ActivatedRoute) {
   this.nickname = history.state.data;
   this.room = history.state.room;
-
-  
-
   this.getMessages().subscribe(message => {
     this.messages.push(message);
   });
 
   this.getUsers().subscribe(data => {
-    let user = data['user'];
+    const user = data['user'];
     if (data['event'] === 'left') {
       this.showToast('User left: ' + user);
     } else {
@@ -73,8 +75,9 @@ export class ChatComponent implements OnInit, AfterViewChecked {
   });
 }
 
+// Fonction d'envoi de message
 sendMessage() {
-  if (this.chatForm.value.message != '') {
+  if (this.chatForm.value.message !== '') {
     this.socket.emit('add-message', { text: this.securityService.encode(this.chatForm.value.message) });
     this.message = '';
     this.chatForm.patchValue({
@@ -85,26 +88,29 @@ sendMessage() {
   }
 }
 
+// Aller en bas de page
 ScrollToBottom() {
   this.content.scrollToBottom(0);
 }
 
+// Recuperation des messages
 getMessages() {
-  let observable = new Observable(observer => {
+  const observable = new Observable(observer => {
     this.socket.on('message', (data) => {
-      let texte = this.securityService.decode(data.text);
-      if(texte != ''){
-        data.text = texte
+      const texte = this.securityService.decode(data.text);
+      if (texte !== ''){
+        data.text = texte;
       }
       observer.next(data);
       this.ScrollToBottom();
     });
-  })
+  });
   return observable;
 }
 
+// Recuperation des utilisateurs
 getUsers() {
-  let observable = new Observable(observer => {
+  const observable = new Observable(observer => {
     this.socket.on('users-changed', (data) => {
       observer.next(data);
     });
@@ -112,12 +118,14 @@ getUsers() {
   return observable;
 }
 
+// Deconnexion utlisateur
 ionViewWillLeave() {
   this.socket.disconnect();
 }
 
-  async showToast(msg) {
-  let toast = await this.toastCtrl.create({
+// Affichage du popup a la connexion / deconnexion
+async showToast(msg) {
+  const toast = await this.toastCtrl.create({
     message: msg,
     duration: 2000
   });

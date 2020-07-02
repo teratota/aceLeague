@@ -1,35 +1,18 @@
 <ion-content>
   <ion-grid fixed>
     <ion-row>
-      <ion-col size="12">
-
-        <ion-list>
-          <ion-list-header mode="ios">
-            Paramètres
-          </ion-list-header>
-          <ion-item (click)="changeSetting('p1')">
-            <ion-label>Confidentialité et sécurité</ion-label>
-          </ion-item>
-          <ion-item (click)="changeSetting('p2')">
-            <ion-label>Notifications</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Compte</ion-label>
-          </ion-item>
-        </ion-list>
-      
+      <ion-col size="12">     
         <ion-list>
           <ion-list-header mode="ios">
             A propos
           </ion-list-header>
-          <ion-item>
-            <ion-label>Utilisation des données</ion-label>
+          <ion-item lines="none">
+            <ion-label (click)="changeSetting('p1')">Politique de confidentialité</ion-label>
           </ion-item>
-          <ion-item>
-            <ion-label>A propos de Ace League</ion-label>
+          <ion-item lines="none">
+            <ion-label (click)="changeSetting('p2')">A propos de Ace League</ion-label>
           </ion-item>
         </ion-list>
-
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ValidationService } from 'src/app/service/validation.service';
-import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
@@ -28,10 +26,10 @@ export class EditProComponent implements OnInit {
   addView: boolean = true;
   editView: boolean = false;
 
-  isPC: boolean = false
-  isMobile: boolean = false
-  isImagePc: boolean = false
-  isImageMobile: boolean = false
+  isPC: boolean = false;
+  isMobile: boolean = false;
+  isImagePc: boolean = false;
+  isImageMobile: boolean = false;
 
   proForm = new FormGroup({
     nom: new FormControl('', [
@@ -78,21 +76,34 @@ export class EditProComponent implements OnInit {
   proEdit: any;
 
   publication: any;
+  photo: any;
+  position: any;
+
 
   imageUrl: string | ArrayBuffer =
-    "https://bulma.io/images/placeholders/480x480.png";
-  fileName: string = "No file selected";
+    'https://bulma.io/images/placeholders/480x480.png';
+  fileName: string = 'No file selected';
 
-  constructor(private ValidationService: ValidationService, private ProService: ProService, private router: Router, private photoService: PhotoService, public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute, private securityService: SecurityService, private modalCtrl: ModalController, private location: Location, private imageCompress: NgxImageCompressService) {
+  constructor(
+    private proService: ProService,
+    private router: Router,
+    private photoService: PhotoService,
+    public actionSheetController: ActionSheetController,
+    public platform: Platform,
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService,
+    private modalCtrl: ModalController,
+    private location: Location,
+    private imageCompress: NgxImageCompressService) {
     this.confirmation = true;
   }
 
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      let platform = this.platform.platforms()
-      this.photoService.base = null
-      if (platform[0] == 'electron' || platform[0] == 'desktop') {
+      const platform = this.platform.platforms();
+      this.photoService.base = null;
+      if (platform[0] === 'electron' || platform[0] === 'desktop') {
         this.isPC = true;
         this.isImagePc = false;
       } else {
@@ -105,7 +116,7 @@ export class EditProComponent implements OnInit {
           type: '',
           description: '',
           image: '',
-        })
+        });
       } else {
         this.editView = true;
         this.addView = false;
@@ -114,18 +125,20 @@ export class EditProComponent implements OnInit {
     });
   }
 
+  // Creation d'un pro
   checkData() {
-    this.sendForElectron()
+    this.sendForElectron();
   }
 
+  // Mise a jour du pro
   checkDataEdit() {
-    this.ProService.updatePro(this.proFormEdit.value, this.data).subscribe(response => {
+    this.proService.updatePro(this.proFormEdit.value, this.data).subscribe(response => {
       this.firstView = true;
       this.secondView = false;
       this.addView = true;
       this.editView = false;
-      let location = this.location.path()
-      if (location == "/pro") {
+      const location = this.location.path()
+      if (location === '/pro') {
         this.router.navigate(['/proReload'], {
           state: {
             data: this.data
@@ -142,40 +155,44 @@ export class EditProComponent implements OnInit {
       this.modalCtrl.dismiss();
       return this.config;
     }, err => {
-      if (err.error.error == "wrong token") {
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Recuperation des infos pour la mise a jour
   getData() {
-    this.ProService.getInfoPro(this.data).subscribe(response => {
+    this.proService.getInfoPro(this.data).subscribe(response => {
       this.proEdit = JSON.parse(this.securityService.decode(response))[0];
       this.proFormEdit.patchValue({
         nom: this.proEdit.nom,
         type: this.proEdit.type,
         description: this.proEdit.description,
-      })
+      });
       return this.proEdit;
     }, err => {
-      if (err.error.error == "wrong token") {
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Passage a la section suivante du formulaire
   next() {
     this.firstView = false;
     this.secondView = true;
   }
 
+  // Retour en arriere dans le formulaire
   last() {
     this.firstView = true;
     this.secondView = false;
   }
 
+  // Upload de l'image du pro
   onChange() {
-    this.isImagePc = true
+    this.isImagePc = true;
     this.imageCompress.uploadFile().then(({
       image,
       orientation
@@ -186,18 +203,18 @@ export class EditProComponent implements OnInit {
           result => this.previewImagePath = result
         );
       } else {
-        this.previewImagePath = image
+        this.previewImagePath = image;
       }
     });
   }
 
-
+  // Création du pro
   sendForElectron() {
-    this.ProService.newPro(this.proForm.value, this.previewImagePath).subscribe(response => {
+    this.proService.newPro(this.proForm.value, this.previewImagePath).subscribe(response => {
       this.firstView = true;
       this.secondView = false;
-      let location = this.location.path()
-      if (location == "/profile") {
+      const location = this.location.path();
+      if (location === '/profile') {
         this.router.navigate(['profileReload']);
       } else {
         this.router.navigate(['profile']);
@@ -207,6 +224,7 @@ export class EditProComponent implements OnInit {
     });
   }
 
+  // Affichage popup modification image
   public async showActionSheetElectron(photo, position) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
@@ -216,10 +234,10 @@ export class EditProComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.isImagePc = false;
-          this.previewImagePath = "";
+          this.previewImagePath = '';
           this.proForm.patchValue({
             image: ''
-          })
+          });
         }
       }, {
         text: 'Cancel',
@@ -231,26 +249,7 @@ export class EditProComponent implements OnInit {
     await actionSheet.present();
   }
 
-  public async showActionSheet(photo, position) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          this.photoService.deletePicture(photo, position);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {}
-      }]
-    });
-    await actionSheet.present();
-  }
-
+  // Fermeture du modal
   public async closeModal() {
     await this.modalCtrl.dismiss();
   }

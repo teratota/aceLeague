@@ -1,8 +1,5 @@
 // Imports
-
-var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
@@ -10,7 +7,7 @@ const fs = require('fs');
 
 
 module.exports = {
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
   getUserPublication: function (req, res) {
     // Getting auth header
     var headerAuth = cryptoUtils.decrypt(req.body.token);
@@ -152,7 +149,6 @@ module.exports = {
         })
     }
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   uploadPublication: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -166,7 +162,6 @@ module.exports = {
         'error': 'wrong token'
       });
     }
-    //let userId = 15;
     let r = Math.random().toString(36).substring(7);
     let nameFile = null
     if (file != '') {
@@ -194,7 +189,6 @@ module.exports = {
       });
     })
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getAllPublications: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -427,7 +421,6 @@ module.exports = {
       });
     }
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getProPublications: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -435,8 +428,6 @@ module.exports = {
     if (typeof pro == 'string') {
       pro = JSON.parse(pro)
     }
-    console.log('bnsdcnjkxwbnjbnxwc')
-    console.log(pro)
     if (userId < 0) {
       res.status(404).json({
         'error': 'wrong token'
@@ -570,7 +561,6 @@ module.exports = {
       });
     }
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getGroupePublications: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -715,7 +705,6 @@ module.exports = {
       });
     }
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   uploadProPublication: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -756,7 +745,6 @@ module.exports = {
       });
     })
   },
-  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   uploadGroupePublication: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -799,5 +787,28 @@ module.exports = {
         'error': 'cannot fetch publications'
       });
     })
-  }
+  },
+  deletePublication: function (req, res) {
+    var headerAuth = cryptoUtils.decrypt(req.body.token);
+    var userId = jwtUtils.getUserId(headerAuth);
+    var id = cryptoUtils.decrypt(req.body.id);
+    if (userId < 0) {
+      res.status(404).json({
+        'error': 'wrong token'
+      });
+    } else {
+      sequelize.query('Delete from publication where id = $id', {
+        bind: {
+          id: id
+        },
+        type: sequelize.QueryTypes.DELETE
+      }).then(function (publication) {
+          res.status(201).json(true);
+      }).catch(function (err) {
+        res.status(500).json({
+          'error': 'cannot delete groupe'
+        });
+      })
+    }
+  },
 }

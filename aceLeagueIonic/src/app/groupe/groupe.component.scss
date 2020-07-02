@@ -198,6 +198,7 @@ ion-card-content {
 .settingsIcon ion-icon{
     font-size: 36px;
     transition: 1s;
+    color: var(--ion-color-dark);
 }
 
 .settingsIcon ion-icon:hover {
@@ -209,4 +210,17 @@ ion-card-content {
 .eof {
     padding: 0 0 55px;
     text-align: center;
+}
+
+.delete{
+    margin-left: auto;
+}
+
+ion-icon{
+    color: white;
+}
+
+// Button Social 
+.button-bottom .button {
+    color: white;
 }

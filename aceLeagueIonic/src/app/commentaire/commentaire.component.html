@@ -18,12 +18,13 @@
 </ion-content>
 
 <ion-footer>
-  <ion-grid fixed>
+  <ion-grid fixed class="message-ctn">
     <ion-row>
       <ion-col size="12">
         <form [formGroup]="commentaireFormEdit" (ngSubmit)="checkData()" class="formEdit">
-            <ion-input  type="email" formControlName="message" name="message" id="message" placeholder="Message"></ion-input>
-            <ion-button type="submit" [disabled]="!commentaireFormEdit.valid">Envoyer</ion-button>
+          <ion-input type="text" formControlName="message" name="message" id="message" placeholder="Message">
+          </ion-input>
+          <ion-button type="submit" [disabled]="!commentaireFormEdit.valid">Envoyer</ion-button>
         </form>
       </ion-col>
     </ion-row>

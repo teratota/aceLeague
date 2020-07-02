@@ -80,6 +80,7 @@ ion-title{
     border: 1px solid white;
     overflow: hidden;
     width: $profilePictureFriends-size;
+    min-width: $profilePictureFriends-size;
     height: $profilePictureFriends-size;
     background-size: cover;
     background-position: center;
@@ -101,6 +102,7 @@ ion-title{
 
 .sportRow .sportDetails > div > div{
     padding-left: 20px;
+    line-height: 1;
 }
 
 .sportRow .sportDetails ion-icon {
@@ -109,6 +111,7 @@ ion-title{
     padding: 10px;
     border-radius: 50%;
     color: var(--ion-color-dark);
+    min-width: 30px;
 }
 
 .sportRow .mySport {
@@ -237,6 +240,10 @@ ion-card-header{
     text-align: center;
 }
 
+.sportRow .sportDetails > div > div{
+    padding-left: 5px;
+}
+
 ion-card-title,
 ion-card-subtitle,
 ion-card-content {
@@ -274,6 +281,14 @@ ion-card-content {
     color: white;
 }
 
+.delete{
+    margin-left: auto;
+}
+
+.delete ion-icon{
+    color: white;
+}
+
 // RESPONSIVE
 @media (max-width: 575.98px) {
     
@@ -293,10 +308,28 @@ ion-card-content {
     .descriptionResp {
         display: block;
     }
+
+    //User
+    ion-card-title {
+        font-size: 16px;
+    }
+    
+    ion-card-subtitle {
+        font-size: 14px;
+    }
+
+    .headerCard {
+        padding-left: 5px;
+    }
     
     // NavBar Profile
     .profileTab {
         padding: 10px;
+    }
+
+    // Friend
+    .friendRequest .friendContent {
+        min-width: unset;
     }
 
 }

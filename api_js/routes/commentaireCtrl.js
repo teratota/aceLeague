@@ -1,6 +1,4 @@
 // Imports
-var models = require('../models');
-var asyncLib = require('async');
 var jwtUtils = require('../utils/jwt.utils');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
@@ -40,7 +38,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   listCommentaire: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -65,7 +62,6 @@ module.exports = {
       }
     }).catch(function (err) {
       console.log(err);
-      
       res.status(500).json({
         'error': 'cannot fetch commentaire'
       });

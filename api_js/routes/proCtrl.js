@@ -1,15 +1,9 @@
 // Imports
-var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
 const fs = require('fs');
-
-// Constants
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 // Routes
 module.exports = {
@@ -44,7 +38,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListProUser: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -80,7 +73,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addPro: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -168,7 +160,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updatePro: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -203,7 +194,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateProImage: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -277,7 +267,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getPro: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -314,11 +303,10 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   deletePro: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
-    var pro = cryptoUtils.decrypt(req.body.id);
+    var pro = cryptoUtils.decrypt(req.body.pro);
     if (typeof pro == 'string') {
       pro = JSON.parse(pro)
     }
@@ -327,20 +315,14 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Delete pro groupe where id = $id and ref_id_user = $userId', {
+      sequelize.query('Delete from pro where id = $id and ref_id_user = $userId', {
         bind: {
           userId: userId,
           id: pro
         },
-        type: sequelize.QueryTypes.SELECT
+        type: sequelize.QueryTypes.DELETE
       }).then(function (pro) {
-        if (pro) {
           res.status(201).json(true);
-        } else {
-          res.status(404).json({
-            'error': 'pro not found'
-          });
-        }
       }).catch(function (err) {
         res.status(500).json({
           'error': 'cannot delete pro'
@@ -348,7 +330,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getNumberAbonnement: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -378,7 +359,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getNumberAbonnementUser: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -411,7 +391,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addAbonnement: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -441,7 +420,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkAbonnement: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -473,7 +451,6 @@ module.exports = {
       });
     })
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkProAuthor: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);

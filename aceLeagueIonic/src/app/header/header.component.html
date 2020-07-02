@@ -1,6 +1,11 @@
 <ion-header *ngIf="displayHeader">
   <ion-toolbar>
-    <ion-title> <img src="../../assets/logo/logo-full-white.svg" alt="logo" class="logo"> AceLeague</ion-title>
-    <ion-button color="tertiary" slot="end" (click)="getNotif()" *ngIf="isConnect"><ion-icon name="mail-outline"></ion-icon></ion-button>
+    <ion-title *ngIf="goBackConf" (click)="goBack('settings')"> 
+      <ion-icon name="arrow-back-outline" color="dark"></ion-icon>
+    </ion-title>
+    <ion-title *ngIf="!goBackConf">
+      <img src="../../assets/logo/logo-full-white.svg" alt="logo" class="logo"> AceLeague
+    </ion-title>
+    <ion-button color="tertiary" slot="end" (click)="goToChat()" *ngIf="isConnect"><ion-icon name="mail-outline"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-header>

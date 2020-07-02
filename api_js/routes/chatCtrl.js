@@ -1,7 +1,5 @@
 // Imports
-var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
@@ -24,7 +22,6 @@ module.exports = {
       });
     } else {
       let nom = Math.random().toString(36).substring(7);
-      console.log(data)
       asyncLib.waterfall([
         function (done) {
           sequelize.query('INSERT INTO chat (nom,createdAt,updateAt,nomvue) VALUES ($nom,NOW(),NOW(),$nomvue)', {
@@ -86,10 +83,8 @@ module.exports = {
           });
         }
       });
-
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getChat: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -140,7 +135,6 @@ module.exports = {
           });
         }
       });
-
     }
   },
   getChatMessage: function (req, res) {
