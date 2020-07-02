@@ -78,6 +78,7 @@ export class RegisterComponent implements OnInit {
   previewImagePath: any
 
   publication: any;
+  photo: any;
 
   imageUrl: string | ArrayBuffer =
     'https://bulma.io/images/placeholders/480x480.png';

@@ -22,7 +22,7 @@
     <form [formGroup]="editUserform" (ngSubmit)="checkData()" class="formSend">
       <ion-select formControlName="user" multiple="false" cancelText="Annuler" okText="Valider" >
         <ion-select-option value="" disabled="true" default class="myFriends">Mes amis</ion-select-option>
-        <ion-select-option *ngFor="let friend of lisFriend" value="{{ friend.ref_id_user_friend }}" placeholder="Amis">{{ friend.username }}</ion-select-option>
+        <ion-select-option *ngFor="let friend of listFriend" value="{{ friend.ref_id_user_friend }}" placeholder="Amis">{{ friend.username }}</ion-select-option>
       </ion-select>
       <ion-button type="submit" [disabled]="!editUserform.valid">Ajouter</ion-button>
     </form>

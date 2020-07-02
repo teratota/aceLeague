@@ -55,6 +55,7 @@ export class PublicationComponent implements OnInit {
 
   publication: any;
   position: object;
+  photo: any;
 
   imageUrl: string | ArrayBuffer =
     'https://bulma.io/images/placeholders/480x480.png';
