@@ -1,6 +1,6 @@
 var CryptoJS = require("crypto-js");
 
-const key = "cle de securite";
+const key = "cledesecurite";
 
 module.exports = {
     encrypt: function(data) {

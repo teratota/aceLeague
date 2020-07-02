@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class SecurityService {
 
-  key:string = 'cle de securite';
+  key:string = 'cledesecurite';
 
   constructor(
     private router: Router,
