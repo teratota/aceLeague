@@ -8,7 +8,6 @@ import { ActionSheetController, Platform } from '@ionic/angular';
 import * as _ from 'lodash';
 import { SecurityService } from '../service/security.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { HeaderComponent } from '../header/header.component';
 import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
@@ -81,21 +80,30 @@ export class RegisterComponent implements OnInit {
   publication: any;
 
   imageUrl: string | ArrayBuffer =
-    "https://bulma.io/images/placeholders/480x480.png";
-  fileName: string = "No file selected";
+    'https://bulma.io/images/placeholders/480x480.png';
+  fileName: string = 'No file selected';
 
-  constructor(private ValidationService: ValidationService, private UserService: UserService, private router: Router, private photoService: PhotoService, public actionSheetController: ActionSheetController, public platform: Platform, private activeRoute: ActivatedRoute, private SecurityService: SecurityService, private navBarComponent: NavbarComponent, private imageCompress: NgxImageCompressService) {
+  constructor(
+    private validationService: ValidationService,
+    private userService: UserService,
+    private router: Router,
+    private photoService: PhotoService,
+    public actionSheetController: ActionSheetController,
+    public platform: Platform,
+    private activeRoute: ActivatedRoute,
+    private securityService: SecurityService,
+    private navBarComponent: NavbarComponent,
+    private imageCompress: NgxImageCompressService) {
     this.confirmation = true;
   }
 
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      this.navBarComponent.refreshNavbar()
-      //this.headerComponent.refreshHeader()
-      let platform = this.platform.platforms()
-      this.photoService.base = null
-      if (platform[0] == 'electron' || platform[0] == 'desktop') {
+      this.navBarComponent.refreshNavbar();
+      const platform = this.platform.platforms();
+      this.photoService.base = null;
+      if (platform[0] === 'electron' || platform[0] === 'desktop') {
         this.isPC = true;
         this.isImagePc = false;
       } else {
@@ -114,14 +122,16 @@ export class RegisterComponent implements OnInit {
         image: '',
         sportDescription: '',
         ville: ''
-      })
+      });
     });
   }
 
+  // Envoi de l'utilisateur
   checkData() {
-    this.sendForElectron()
+    this.sendForElectron();
   }
 
+  // Initialisation section 1
   login() {
     this.firstView = true;
     this.secondView = false;
@@ -131,6 +141,7 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  // Passage a la section 2
   next() {
     this.firstView = false;
     this.secondView = true;
@@ -139,6 +150,7 @@ export class RegisterComponent implements OnInit {
     this.fiveView = false;
   }
 
+  // Passage a la section 3
   nextTwo() {
     this.firstView = false;
     this.secondView = false;
@@ -146,8 +158,10 @@ export class RegisterComponent implements OnInit {
     this.foorView = false;
     this.fiveView = false;
   }
+
+  // Passage a la section 4
   nextThree() {
-    if (this.sportView == true) {
+    if (this.sportView === true) {
       this.firstView = false;
       this.secondView = false;
       this.thirdView = false;
@@ -161,6 +175,8 @@ export class RegisterComponent implements OnInit {
       this.fiveView = true;
     }
   }
+
+  // Passage a la section 5
   nextFour() {
     this.firstView = false;
     this.secondView = false;
@@ -169,6 +185,7 @@ export class RegisterComponent implements OnInit {
     this.fiveView = true;
   }
 
+  // Retour a la section 1
   last() {
     this.firstView = true;
     this.secondView = false;
@@ -177,6 +194,7 @@ export class RegisterComponent implements OnInit {
     this.fiveView = false;
   }
 
+  // Retour a la section 2
   lastTwo() {
     this.firstView = false;
     this.secondView = true;
@@ -184,6 +202,8 @@ export class RegisterComponent implements OnInit {
     this.foorView = false;
     this.fiveView = false;
   }
+
+  // Retour a la section 3
   lastThree() {
     this.firstView = false;
     this.secondView = false;
@@ -191,8 +211,10 @@ export class RegisterComponent implements OnInit {
     this.foorView = false;
     this.fiveView = false;
   }
+
+  // Retour a la section 4
   lastFour() {
-    if (this.sportView == true) {
+    if (this.sportView === true) {
       this.firstView = false;
       this.secondView = false;
       this.thirdView = false;
@@ -207,16 +229,18 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Affichage de la page sport suivant le choix
   changeSport(data) {
-    if (data == "oui") {
+    if (data === 'oui') {
       this.sportView = true;
-    } else if (data == "non") {
+    } else if (data === 'non') {
       this.sportView = false;
     }
   }
 
+  // Apercu de l'image
   onChange() {
-    this.isImagePc = true
+    this.isImagePc = true;
     this.imageCompress.uploadFile().then(({
       image,
       orientation
@@ -227,38 +251,33 @@ export class RegisterComponent implements OnInit {
           result => this.previewImagePath = result
         );
       } else {
-        this.previewImagePath = image
+        this.previewImagePath = image;
       }
     });
   }
 
-  photo() {
-    this.photoService.addNewToGallery()
-  }
-
+  // Envoi de l'utilisateur
   sendForElectron() {
-    var mail = this.ValidationService.validationEmail(this.registerForm.value.email)
-    if (mail = false) {
+    const mail = this.validationService.validationEmail(this.registerForm.value.email);
+    if (mail === false) {
       this.mail = true;
     } else {
       this.mail = false;
-      var result = this.ValidationService.validationIdentiquePassword(this.registerForm.value.password, this.registerForm.value.password2);
-      if (result == false) {
+      const result = this.validationService.validationIdentiquePassword(this.registerForm.value.password, this.registerForm.value.password2);
+      if (result === false) {
         this.password = true;
       } else {
         this.password = false;
-        var user = JSON.stringify(this.registerForm.value)
-        this.UserService.newUser(this.registerForm.value, this.previewImagePath).subscribe(response => {
+        this.userService.newUser(this.registerForm.value, this.previewImagePath).subscribe(response => {
           this.config = response;
-          this.config.token = this.SecurityService.encode(this.config.token);
+          this.config.token = this.securityService.encode(this.config.token);
           localStorage.setItem('token', this.config.token);
           this.firstView = true;
           this.secondView = false;
           this.thirdView = false;
           this.foorView = false;
           this.fiveView = false;
-          this.navBarComponent.refreshNavbar()
-          //  this.headerComponent.refreshHeader()
+          this.navBarComponent.refreshNavbar();
           this.router.navigate(['/profile']);
           return this.config;
         });
@@ -266,6 +285,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Affichage popup photo
   public async showActionSheetElectron(photo, position) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
@@ -275,10 +295,10 @@ export class RegisterComponent implements OnInit {
         icon: 'trash',
         handler: () => {
           this.isImagePc = false;
-          this.previewImagePath = "";
+          this.previewImagePath = '';
           this.registerForm.patchValue({
             image: ''
-          })
+          });
         }
       }, {
         text: 'Cancel',

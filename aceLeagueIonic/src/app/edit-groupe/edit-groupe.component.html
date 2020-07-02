@@ -35,7 +35,7 @@
                 <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
                   (click)="showActionSheetElectron(photo, position)">
                 </div>
-            
+
                 <div class="popopo" *ngIf="!isImagePc">
                   <div class="upload-btn-wrapper">
                     <div class="uploadBtnPc">
@@ -43,7 +43,7 @@
                     </div>
                   </div>
                 </div>
-            
+
               </div>
 
               <ion-button color="primary" (click)="last()">Précédent</ion-button>

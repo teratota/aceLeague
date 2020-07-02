@@ -3,13 +3,9 @@
   <ion-grid fixed>
     <ion-row>
       <ion-col size="12" size-md="8">
-
-          <!-- <app-publication></app-publication> VOIR POUR METTRA CE COMPONENT ICI -->
-
         <div *ngFor="let publication of publications">
           <ion-card>
             <ion-card-header>
-
               <div class="profilePic">
                 <div [style.background-image]="'url('+publication.profilePic+')'" *ngIf="publication.profilePic != null"></div>
                 <div [style.background-image]="'url('+publication.proPic+')'" *ngIf="publication.proPic != null"></div>
@@ -24,7 +20,6 @@
                 </div>
                 <ion-card-subtitle>{{ publication.createdAt | date:'dd/MM/yyyy' }}</ion-card-subtitle>
               </div>
-
             </ion-card-header>
 
             <ion-card-content>
@@ -34,9 +29,7 @@
               <ion-row>
                 <ion-col size="12">
                   <div *ngIf="publication.image" class="publicationPic">
-                    
                     <img src="{{publication.image}}" alt="">
-
                   </div>
                 </ion-col>
               </ion-row>

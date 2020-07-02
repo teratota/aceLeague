@@ -12,20 +12,20 @@ export class ChatService {
 
   configUrl = api_path;
 
-  addChat(data){
-    let token = this.securityService.getToken();
-    data = this.securityService.encode(JSON.stringify(data))
-    return this.http.post(this.configUrl+"chat/add/",{token: token,data:data});
+  addChat(data) {
+    const token = this.securityService.getToken();
+    data = this.securityService.encode(JSON.stringify(data));
+    return this.http.post(this.configUrl + 'chat/add/', {token, data});
   }
 
-  getChat(){
-    let token = this.securityService.getToken();
-    return this.http.post(this.configUrl+"chat/get/",{token: token});
+  getChat() {
+    const token = this.securityService.getToken();
+    return this.http.post(this.configUrl + 'chat/get/', {token});
   }
 
-  getChatMessage(data){
-    let token = this.securityService.getToken();
-    let room = this.securityService.encode(data)
-    return this.http.post(this.configUrl+"chat/get/message",{token: token, room: room});
+  getChatMessage(data) {
+    const token = this.securityService.getToken();
+    const room = this.securityService.encode(data);
+    return this.http.post(this.configUrl + 'chat/get/message', {token, room});
   }
 }

@@ -2,7 +2,6 @@
 var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
 var cryptoUtils = require('../utils/crypto.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 const fs = require('fs');
@@ -47,7 +46,6 @@ module.exports = {
       }
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   register: function (req, res) {
 
     // Params
@@ -183,7 +181,6 @@ module.exports = {
         });
     });
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   login: function (req, res) {
     // Params
     data = cryptoUtils.decrypt(req.body.data)
@@ -253,7 +250,6 @@ module.exports = {
       }
     });
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getUserProfile: function (req, res) {
     // Getting auth header
     var headerAuth = cryptoUtils.decrypt(req.body.token);
@@ -295,7 +291,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUser: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -327,7 +322,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUserImage: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -398,7 +392,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getlist: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);

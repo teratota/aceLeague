@@ -10,14 +10,11 @@ import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ListPublicationComponent } from './list-publication/list-publication.component';
 import { ListNotificationComponent } from './list-notification/list-notification.component';
 import { ListCommunicationComponent } from './list-communication/list-communication.component';
-import { ListChatMessageComponent } from './list-chat-message/list-chat-message.component';
 import { PublicationComponent } from './publication/publication.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
-import { SendChatMessageComponent } from './send-chat-message/send-chat-message.component';
 import { SearchComponent } from './search/search.component';
 import { NotificationComponent } from './notification/notification.component';
 import { NewsFeedComponent } from './news-feed/news-feed.component';
@@ -46,14 +43,11 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     ChatComponent,
     LoginComponent,
     RegisterComponent,
-    ListPublicationComponent,
     ListNotificationComponent,
     ListCommunicationComponent,
-    ListChatMessageComponent,
     PublicationComponent,
     ProfileComponent,
     SettingsComponent,
-    SendChatMessageComponent,
     SearchComponent,
     NotificationComponent,
     NewsFeedComponent,
@@ -72,7 +66,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3001', options: {} };
     EditUserGroupeComponent
   ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule,HttpClientModule,SocketIoModule.forRoot(config)],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ReactiveFormsModule, HttpClientModule, SocketIoModule.forRoot(config)],
   providers: [
     StatusBar,
     NgxImageCompressService,

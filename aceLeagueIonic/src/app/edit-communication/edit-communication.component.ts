@@ -14,35 +14,41 @@ import { SecurityService } from '../service/security.service';
 export class EditCommunicationComponent implements OnInit {
 
   chatForm = new FormGroup({
-    friend:new FormControl('',[
+    friend: new FormControl('', [
       Validators.required
     ]),
-    nom:new FormControl('',[
+    nom: new FormControl('', [
       Validators.required
     ]),
   });
-  user:number = null;
-  friends : object;
+  user: number = null;
+  friends: object;
 
-  constructor( private router : Router, private socket: Socket,  private FriendService: FriendService, private chatService: ChatService,private securityService: SecurityService) { }
+  constructor(
+    private router: Router,
+    private socket: Socket,
+    private friendService: FriendService,
+    private chatService: ChatService,
+    private securityService: SecurityService) { }
 
   ngOnInit() {
-    this.FriendService.getFriendList(this.user).subscribe(response => {
+    this.friendService.getFriendList(this.user).subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
       return this.friends;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
-  joinChat() {
+  // Creer un chat
+  addChat() {
     this.chatService.addChat(this.chatForm.value).subscribe(response => {
       this.router.navigate(['listCommunication']);
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }

@@ -1,13 +1,7 @@
 // Imports
-var models = require('../models');
 var jwtUtils = require('../utils/jwt.utils');
-var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
-
-// Constants
-const DISLIKED = 0;
-const LIKED = 1;
 
 // Routes
 module.exports = {
@@ -42,7 +36,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   dislikePublication: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);

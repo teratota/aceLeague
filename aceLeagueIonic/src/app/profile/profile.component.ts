@@ -11,7 +11,6 @@ import { FriendService } from 'src/app/service/friend.service';
 import { ModalController } from '@ionic/angular';
 import { ProService } from '../service/pro.service';
 import { UploadPictureComponent } from '../upload-picture/upload-picture.component';
-import { RegisterComponent } from '../register/register.component';
 import { CommentaireComponent } from '../commentaire/commentaire.component';
 import { SecurityService } from '../service/security.service';
 import { Location } from '@angular/common';
@@ -59,6 +58,7 @@ export class ProfileComponent implements OnInit {
     ville: null
   };
 
+  // Details utilisateurs
   userPicture;
   userName;
   userBio;
@@ -90,19 +90,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.user.username = null;
-
     this.activeRoute.params.subscribe(routeParams => {
       this.userId = history.state.data;
-      if(this.userId != null){
+      if (this.userId != null) {
         this.UserService.isCurrentUser(this.userId).subscribe(response => {
-          if(response == true){
-            this.isCurrentUser = false
-          }else{
-            this.isCurrentUser = true
+          if (response === true) {
+            this.isCurrentUser = false;
+          } else {
+            this.isCurrentUser = true;
           }
-        },err => {
-          if(err.error.error == "wrong token"){
-            this.securityService.presentToast()
+        }, err => {
+          if (err.error.error === 'wrong token') {
+            this.securityService.presentToast();
           }
         });
         this.isOtherUser = false;
@@ -117,14 +116,13 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
-
+  // Recuperation profil utilisateur
   getDataProfile() {
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
       return this.user;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
@@ -133,18 +131,17 @@ export class ProfileComponent implements OnInit {
       this.publication = JSON.parse(this.securityService.decode(response));
       return this.publication;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
 
     this.FriendService.getFriendList(this.userId).subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
-      console.log(this.friends)
       this.friendsNumber = Object.keys(this.friends).length;
       return this.friends;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
@@ -153,7 +150,7 @@ export class ProfileComponent implements OnInit {
       this.abonnement = JSON.parse(this.securityService.decode(response))[0]['COUNT(*)'];
       return this.abonnement;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
@@ -162,7 +159,7 @@ export class ProfileComponent implements OnInit {
       this.pros = JSON.parse(this.securityService.decode(response));
       return this.pros;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
@@ -171,7 +168,7 @@ export class ProfileComponent implements OnInit {
       this.publicGroups = JSON.parse(this.securityService.decode(response));
       return this.publicGroups;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
@@ -180,48 +177,51 @@ export class ProfileComponent implements OnInit {
       this.privateGroups = JSON.parse(this.securityService.decode(response));
       return this.privateGroups;
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
 
   }
 
-  deletePublication(id){
+  // Supprimer la publication
+  deletePublication(id) {
     this.PublicationService.deletePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
         this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
       }, err => {
-        if (err.error.error == 'wrong token') {
+        if (err.error.error === 'wrong token') {
           this.securityService.presentToast();
         }
       });
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
   }
-  deleteFriend(id){
+
+  // Supprimer ami
+  deleteFriend(id) {
     this.FriendService.deleteFriend(id).subscribe(response => {
       this.FriendService.getFriendList(this.userId).subscribe(response => {
         this.friends = JSON.parse(this.securityService.decode(response));
         this.friendsNumber = Object.keys(this.friends).length;
         return this.friends;
       }, err => {
-        if (err.error.error == 'wrong token') {
+        if (err.error.error === 'wrong token') {
           this.securityService.presentToast();
         }
       });
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
   }
 
-
+  // Ouvrir modal edition profil
   async editing() {
     const modal = await this.modalController.create({
       component: EditProfileComponent,
@@ -233,6 +233,7 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  // Editer image utilisateur
   async editingUserImage() {
     const modal = await this.modalController.create({
       component: UploadPictureComponent,
@@ -244,6 +245,7 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  // Creation nouveau professionnel
   async createNewPro() {
     const modal = await this.modalController.create({
       component: EditProComponent,
@@ -253,6 +255,7 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  // Creer un nouveau groupe
   async createNewGroup() {
     const modal = await this.modalController.create({
       component: EditGroupeComponent,
@@ -262,6 +265,7 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  // Afficher le popup de choix pour les paramètres
   async choiceAction() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Modification',
@@ -311,60 +315,65 @@ export class ProfileComponent implements OnInit {
     await actionSheet.present();
   }
 
+  // Retirer le like d'une publication
   publicationDislike(id) {
     this.PublicationService.dislikePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
         this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
       }, err => {
-        if (err.error.error == 'wrong token') {
+        if (err.error.error === 'wrong token') {
           this.securityService.presentToast();
         }
       });
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
   }
 
+  // Ajouter un like sur un publication
   publicationLike(id) {
     this.PublicationService.likePublication(id).subscribe(response => {
       this.PublicationService.getPublications(this.userId).subscribe(response => {
         this.publication = JSON.parse(this.securityService.decode(response));
         return this.publication;
       }, err => {
-        if (err.error.error == 'wrong token') {
+        if (err.error.error === 'wrong token') {
           this.securityService.presentToast();
         }
       });
     }, err => {
-      if (err.error.error == 'wrong token') {
+      if (err.error.error === 'wrong token') {
         this.securityService.presentToast();
       }
     });
   }
 
+  // Verification des amis sur le profil
   checkFriend() {
     this.isNotFriend = false;
     this.isFriendCours = false;
     this.isFriend = false;
     this.FriendService.checkFriend(this.userId).subscribe(response => {
-        if (response === true) {
-          this.isNotFriend = false;
-          this.isFriendCours = false;
-          this.isFriend = true;
-        } else if (response === 'cour') {
-          this.isNotFriend = false;
-          this.isFriendCours = true;
-          this.isFriend = false;
-        } else if (response === false) {
-          this.isNotFriend = true;
-          this.isFriendCours = false;
-          this.isFriend = false;
-        }
-      });
+      if (response === true) {
+        this.isNotFriend = false;
+        this.isFriendCours = false;
+        this.isFriend = true;
+      } else if (response === 'cour') {
+        this.isNotFriend = false;
+        this.isFriendCours = true;
+        this.isFriend = false;
+      } else if (response === false) {
+        this.isNotFriend = true;
+        this.isFriendCours = false;
+        this.isFriend = false;
+      }
+    });
   }
+
+  // Ajout des amis
   addFriend() {
     this.FriendService.addFriend(this.userId).subscribe(response => {
       this.checkFriend();
@@ -375,6 +384,7 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // Ouverture du modal commentaire
   async commentaireModal(id) {
     const modal = await this.modalController.create({
       component: CommentaireComponent,
@@ -386,6 +396,7 @@ export class ProfileComponent implements OnInit {
     return await modal.present();
   }
 
+  // Changer d'onglet dans le profil
   goTo(link, event) {
     const Mytabs = document.getElementsByClassName('profileTab');
 
@@ -421,14 +432,17 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  // Aller a la page pro
   goToPro(idPro) {
     this.router.navigate(['pro'], {state: {data: idPro}});
   }
 
+  // Aller a la page de groupe
   goToGroupe(idGroupe) {
     this.router.navigate(['groupe'], {state: {data: idGroupe}});
   }
 
+  // Aller sur le profil utilisateur
   goToUser(idUser) {
     const location = this.location.path();
 

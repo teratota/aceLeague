@@ -44,11 +44,6 @@ server.use('/api/', apiRouter);
 
 io.on('connection', (socket) => {
 
-  // socket.on('createRoom', function(){
-  //   console.log(socket)
-  //   socket.join(socket.room);  
-  // });
-
   socket.on('join', function (room) {
     var headerAuth = cryptoUtils.decrypt(room.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -113,6 +108,7 @@ io.on('connection', (socket) => {
     }
   });
 });
+
 var port = process.env.PORT || 3001;
 
 http.listen(port, function () {
