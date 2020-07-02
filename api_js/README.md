@@ -31,6 +31,8 @@ Se rendre dans le fichier `config/config.json` et modifier dans **development**,
 
 ```json
 "host": "URL"
+"username": "username",
+"password": "password",
 ```
 
 
