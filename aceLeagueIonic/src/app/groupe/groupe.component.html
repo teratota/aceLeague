@@ -39,6 +39,7 @@
       <ion-col size="12">
         <div *ngFor="let publications of publication">
           <ion-card class="publicationCard">
+
             <ion-card-header>
               <div class="profilePicFriends" [style.background-image]="'url('+publications.profilePic+')'"></div>
               <div class="infosUser">
@@ -53,10 +54,11 @@
                 <ion-icon name="trash-outline" size="large" (click)="deletePublication(publications.id)"></ion-icon>
               </div>
             </ion-card-header>
-      
+
             <ion-card-content>
               <p>{{ publications.description }}</p>
             </ion-card-content>
+
             <ion-grid fixed>
               <ion-row>
                 <ion-col size="12">
@@ -66,6 +68,7 @@
                 </ion-col>
               </ion-row>
             </ion-grid>
+
             <div class="button-bottom">
               <ion-grid>
                 <ion-row>
@@ -94,9 +97,9 @@
                 </ion-row>
               </ion-grid>
             </div>
+            
           </ion-card>
         </div>
-        
       </ion-col>
     </ion-row>
   </ion-grid>

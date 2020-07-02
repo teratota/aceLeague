@@ -27,27 +27,30 @@
             </div>
             <div *ngIf="secondView">
               <ion-item>
+                <ion-input type="text" formControlName="ville" placeholder="Ville"></ion-input>
+              </ion-item>
+              <ion-item>
                 <ion-textarea formControlName="bio" placeholder="Description"></ion-textarea>
               </ion-item>
-              <ion-button color="tertiary" (click)="last()">Précédent</ion-button>
-              <ion-button color="tertiary" (click)="nextTwo()">Suivant</ion-button>
+              <ion-button (click)="last()">Précédent</ion-button>
+              <ion-button (click)="nextTwo()">Suivant</ion-button>
             </div>
             <div *ngIf="thirdView">
               <div class="likeItem">
-                <ion-label>Pratiquez-vous un sport ?</ion-label>
+                <p class="question">Pratiquez-vous un sport ?</p>
               </div>
               <ion-radio-group formControlName="question" (ionChange)='changeSport($event.target.value)'>
                 <ion-item class="noBorder">
-                  <ion-label>Oui</ion-label>
+                  <ion-label color="tertiary">Oui</ion-label>
                   <ion-radio slot="start" color="tertiary" value="oui"></ion-radio>
                 </ion-item>
                 <ion-item class="noBorder">
-                  <ion-label>Non</ion-label>
+                  <ion-label color="tertiary">Non</ion-label>
                   <ion-radio slot="start" color="tertiary" value="non"></ion-radio>
                 </ion-item>
               </ion-radio-group>
-              <ion-button color="tertiary" (click)="lastTwo()">Précédent</ion-button>
-              <ion-button color="tertiary" (click)="nextThree()">Suivant</ion-button>
+              <ion-button (click)="lastTwo()">Précédent</ion-button>
+              <ion-button (click)="nextThree()">Suivant</ion-button>
             </div>
             <div *ngIf="foorView">
             <ion-item class="noBorder">
@@ -63,11 +66,11 @@
             <ion-item>
               <ion-textarea formControlName="sportDescription" placeholder="Autre information"></ion-textarea>
             </ion-item>
-            <ion-button color="tertiary" (click)="lastThree()">Précédent</ion-button>
-            <ion-button color="tertiary" (click)="nextFour()">Suivant</ion-button>
+            <ion-button (click)="lastThree()">Précédent</ion-button>
+            <ion-button (click)="nextFour()">Suivant</ion-button>
           </div>
             <div *ngIf="fiveView">
-              <p class="infos">Vous pouvez changer l'image <br/> en cliquant dessus</p>
+              <p class="infos question">Vous pouvez changer l'image <br/> en cliquant dessus</p>
                 <div class="previewPic">                  
                   <div *ngIf="isImagePc" [style.background-image]="'url('+previewImagePath+')'"
                     (click)="showActionSheetElectron(photo, position)">
@@ -80,8 +83,8 @@
                     </div>
                   </div>
                 </div>
-              <ion-button color="tertiary" (click)="lastFour()">Précédent</ion-button>
-              <ion-button type="submit" color="tertiary" [disabled]="!registerForm.valid">Inscrire</ion-button>
+              <ion-button (click)="lastFour()">Précédent</ion-button>
+              <ion-button type="submit" [disabled]="!registerForm.valid">Inscrire</ion-button>
             </div>
 
           </form>

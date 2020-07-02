@@ -60,3 +60,12 @@ server.listen([PORT], function () {
 });
 ```
 
+### Système de cryptage
+
+Modifier la clé de sécurité dans le fichier : `crypto.utils.js`
+
+```javascript
+const key = "cle de securite";
+```
+
+**La clé doit être identique à celle dans la partie application**

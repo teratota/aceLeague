@@ -1,14 +1,9 @@
 // Imports
-var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
 
-// Constants
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 // Routes
 module.exports = {
@@ -41,7 +36,6 @@ module.exports = {
       });
     })
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkGroupe2User: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -74,7 +68,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   deleteGroupe2user: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -103,7 +96,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addUser2Groupe: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -158,7 +150,6 @@ module.exports = {
       }
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   groupe2userNumberUser: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -191,7 +182,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListUserInGroupe2User: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -226,7 +216,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListUserInGroupe2UserIsNot: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -318,6 +307,4 @@ module.exports = {
         });
     }
   },
-
-
 }

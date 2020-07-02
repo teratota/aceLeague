@@ -6,7 +6,7 @@
           <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
 
           <div class="detailsProfile">
-            <p class="name">{{ user.username }}</p>
+            <p class="name">{{ user.username }}, {{ user.ville }}</p>
             <div class="description">
               <p>
                 {{ user.bio }}
@@ -103,7 +103,7 @@
         Groupe
       </div>
 
-      <div class="profileTab" (click)="goTo('pros', $event)">
+      <div *ngIf="isOtherUser" class="profileTab" (click)="goTo('pros', $event)">
         Pros
       </div>
     </div>
@@ -240,7 +240,7 @@
         <div *ngFor="let publications of publication">
           <ion-card class="publicationCard">
             <ion-card-header>
-              <div class="profilePic" [style.background-image]="'url('+user.image+')'"></div>
+              <div class="profilePicFriends" [style.background-image]="'url('+user.image+')'"></div>
               <div class="headerCard">
                 <ion-card-title><span>{{ publications.username }}</span></ion-card-title>
                 <ion-card-subtitle><span>{{ publications.createdAt | date:'dd/MM/yyyy' }}</span></ion-card-subtitle>

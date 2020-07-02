@@ -1,7 +1,5 @@
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { SecurityService } from '../service/security.service';
 
 @Component({
   selector: 'app-list-settings',
@@ -10,21 +8,16 @@ import { SecurityService } from '../service/security.service';
 })
 export class ListSettingsComponent implements OnInit {
 
-  option: any =  '1';
-
-  settingForm = new FormGroup({
-    test01: new FormControl('',
-    [
-      Validators.required
-    ]),
-  });
+  option: string = '1';
 
   settingStorage: object = {
     firstOption: true,
     secondOption: false,
   };
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute,private securityService: SecurityService) { }
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
@@ -32,11 +25,9 @@ export class ListSettingsComponent implements OnInit {
     });
   }
 
+  // Retour arriere
   goBack() {
     this.router.navigate(['settings']);
-  }
-
-  validateOptions(event, name) {
   }
 
 }

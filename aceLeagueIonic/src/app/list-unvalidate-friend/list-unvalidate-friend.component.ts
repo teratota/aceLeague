@@ -14,7 +14,7 @@ export class ListUnvalidateFriendComponent implements OnInit {
   friendsExist: boolean = false;
 
   constructor(
-    private FriendService: FriendService,
+    private friendService: FriendService,
     private activeRoute: ActivatedRoute,
     private securityService: SecurityService,
     private router: Router
@@ -23,47 +23,51 @@ export class ListUnvalidateFriendComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.refresh();
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
-  accepted(id){
-    this.FriendService.ValidateFriend(true,id).subscribe(response => {
+  // Accepter ami
+  accepted(id) {
+    this.friendService.ValidateFriend(true, id).subscribe(response => {
       this.refresh();
     }, err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
-      }
-    });
-  }
-  
-  refused(id){
-    this.FriendService.ValidateFriend(false,id).subscribe(response => {
-      this.refresh();
-    }, err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Refuser ami
+  refused(id) {
+    this.friendService.ValidateFriend(false, id).subscribe(response => {
+      this.refresh();
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
+      }
+    });
+  }
+
+  // Rafraichir la page
   refresh() {
-    this.FriendService.ListUnvalidateFriend().subscribe(response => {
+    this.friendService.ListUnvalidateFriend().subscribe(response => {
       this.friends = JSON.parse(this.securityService.decode(response));
       if (this.friends.length === 0) {
         this.friendsExist = true;
       }
-      return this.friends
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+      return this.friends;
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Aller dans le profil la personne
   goToProfil(id) {
     this.router.navigate(['profile'], {state: {data: id}});
   }

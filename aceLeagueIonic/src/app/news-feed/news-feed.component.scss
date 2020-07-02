@@ -38,6 +38,7 @@ ion-icon {
     border: 1px solid white;
     overflow: hidden;
     width: $profilePicture-size;
+    min-width: $profilePicture-size;
     height: $profilePicture-size;
     background-size: contain;
     background-position: center;
@@ -91,5 +92,17 @@ ion-icon {
 @media (max-width: 575.98px) {
     .sideBarStyle {
         display: none;
+    }
+
+    .userInfos {
+        padding-left: 5px;
+    }
+
+    .userInfos ion-card-title {
+        font-size: 16px;
+    }
+    
+    .userInfos ion-card-subtitle {
+        font-size: 14px;
     }
 }

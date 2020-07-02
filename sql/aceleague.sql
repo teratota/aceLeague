@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(50) NOT NULL COMMENT 'null',
   `username` varchar(50) NOT NULL COMMENT 'null',
   `password` varchar(255) NOT NULL COMMENT 'null',
+  `ville` varchar(255) NOT NULL COMMENT 'null',
   `bio` text COMMENT 'null',
   `isAdmin` int(4) NOT NULL COMMENT 'null',
   `image` varchar(255) DEFAULT NULL,
@@ -31,8 +32,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `sportDescription` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL COMMENT 'null',
   `updatedAt` datetime NOT NULL COMMENT 'null',
-  `token` varchar(255) DEFAULT NULL COMMENT 'null',
-  `token_date` datetime DEFAULT NULL COMMENT 'null',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
@@ -181,14 +180,6 @@ CREATE TABLE IF NOT EXISTS `like` (
   CONSTRAINT `like_ibfk_2` FOREIGN KEY (`ref_id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 
--- Les données exportées n'étaient pas sélectionnées.
--- Listage de la structure de la table aceleague-dev. message
-CREATE TABLE IF NOT EXISTS `message` (
-  `title` varchar(255) DEFAULT NULL,
-  `content` varchar(255) DEFAULT NULL,
-  `attachment` varchar(255) DEFAULT NULL,
-  `likes` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Les données exportées n'étaient pas sélectionnées.
 -- Listage de la structure de la table aceleague-dev. notification

@@ -1,15 +1,9 @@
 // Imports
-var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 var cryptoUtils = require('../utils/crypto.utils');
 const fs = require('fs');
-
-// Constants
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 // Routes
 module.exports = {
@@ -88,7 +82,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   addNewUserFriend: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -119,7 +112,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   ValidateNewUserFriend: function (req, res) {
     //update or delete
     var headerAuth = cryptoUtils.decrypt(req.body.token);
@@ -168,7 +160,6 @@ module.exports = {
     }
 
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getListValidateNewUserFriend: function (req, res) {
     //list pas valider
     var headerAuth = cryptoUtils.decrypt(req.body.token);
@@ -198,7 +189,6 @@ module.exports = {
       })
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   checkFriend: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -259,7 +249,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   deleteFriend: function (req, res) {
     //update or delete
     var headerAuth = cryptoUtils.decrypt(req.body.token);

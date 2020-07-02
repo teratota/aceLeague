@@ -13,48 +13,59 @@ import { SecurityService } from '../service/security.service';
 })
 export class ListCommunicationComponent implements OnInit {
 
-  constructor(private router : Router,  private chatService: ChatService, private activeRoute: ActivatedRoute, private socket: Socket, private UserService: UserService, private securityService: SecurityService) { }
+  constructor(
+    private router: Router,
+    private chatService: ChatService,
+    private activeRoute: ActivatedRoute,
+    private socket: Socket,
+    private UserService: UserService,
+    private securityService: SecurityService) { }
+
   chat: object;
+  userId: number = null;
   user = {
     username: null,
     bio: null
   };
-  userId: number = null;
+
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
       this.getData();
     });
   }
 
-  getData(){
+  // Recuperation donnees liste chat
+  getData() {
     this.chatService.getChat().subscribe(response => {
-      this.chat=JSON.parse(this.securityService.decode(response))
+      this.chat = JSON.parse(this.securityService.decode(response))
       return this.chat;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
     this.UserService.getInfosUser(this.userId).subscribe(response => {
       this.user = JSON.parse(this.securityService.decode(response))[0];
       return this.user;
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
-  addCom(){
+  // Creation salon chat
+  addCom() {
     this.router.navigate(['editCommunication']);
   }
 
+  // Rejoindre chat
   join(nom) {
      this.socket.connect();
-     let token = this.securityService.getToken();
-     this.socket.emit('join', {nom:nom,token:token});
-     this.socket.emit('set-nickname', {nickname:this.user.username,room:nom,token:token});
-     this.router.navigate(['chat'], {state: {data:this.user.username, room:nom}});
+     const token = this.securityService.getToken();
+     this.socket.emit('join', {nom: nom, token: token});
+     this.socket.emit('set-nickname', {nickname: this.user.username, room: nom, token: token});
+     this.router.navigate(['chat'], {state: {data: this.user.username, room: nom}});
   }
 
 }

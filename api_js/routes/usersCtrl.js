@@ -2,7 +2,6 @@
 var bcrypt = require('bcrypt');
 var jwtUtils = require('../utils/jwt.utils');
 var cryptoUtils = require('../utils/crypto.utils');
-var models = require('../models');
 var asyncLib = require('async');
 const sequelize = require('../models/index')
 const fs = require('fs');
@@ -47,7 +46,6 @@ module.exports = {
       }
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   register: function (req, res) {
 
     // Params
@@ -60,6 +58,7 @@ module.exports = {
     var level = data.level;
     var sport = data.sport;
     var sportDescription = data.sportDescription;
+    var ville = data.ville;
 
     if (email == null || username == null || password == null) {
       return res.status(400).json({
@@ -124,7 +123,7 @@ module.exports = {
         if (file != '') {
           nameFile = r;
         }
-        var newUser = sequelize.query('INSERT INTO user (email,username,password,bio,image,level,sport,sportDescription,isAdmin,createdAt,updatedAt) VALUES ($email,$username,$password,$bio,$image,$level,$sport,$sportDescription,$isAdmin,NOW(),NOW())', {
+        var newUser = sequelize.query('INSERT INTO user (email,username,password,bio,image,level,sport,sportDescription,isAdmin,createdAt,updatedAt,ville) VALUES ($email,$username,$password,$bio,$image,$level,$sport,$sportDescription,$isAdmin,NOW(),NOW(),$ville)', {
             bind: {
               email: email,
               username: username,
@@ -134,7 +133,8 @@ module.exports = {
               level: level,
               sport: sport,
               sportDescription: sportDescription,
-              isAdmin: 0
+              isAdmin: 0,
+              ville: ville
             },
             type: sequelize.QueryTypes.INSERT
           })
@@ -181,7 +181,6 @@ module.exports = {
         });
     });
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   login: function (req, res) {
     // Params
     data = cryptoUtils.decrypt(req.body.data)
@@ -251,7 +250,6 @@ module.exports = {
       }
     });
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getUserProfile: function (req, res) {
     // Getting auth header
     var headerAuth = cryptoUtils.decrypt(req.body.token);
@@ -265,7 +263,7 @@ module.exports = {
       if (otherUser != '' && otherUser != 'null') {
         userId = otherUser
       }
-      var user = sequelize.query('Select username, bio, image, sport, level, sportDescription from user where id = $id limit 1', {
+      var user = sequelize.query('Select username, bio, image, sport, level, sportDescription, ville from user where id = $id limit 1', {
         bind: {
           id: userId
         },
@@ -293,7 +291,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUser: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -325,7 +322,6 @@ module.exports = {
         });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   updateUserImage: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -396,7 +392,6 @@ module.exports = {
       });
     }
   },
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   getlist: function (req, res) {
     var headerAuth = cryptoUtils.decrypt(req.body.token);
     var userId = jwtUtils.getUserId(headerAuth);
@@ -406,7 +401,7 @@ module.exports = {
         'error': 'wrong token'
       });
     } else {
-      sequelize.query('Select id, username From user WHERE username LIKE $nom', {
+      sequelize.query('Select id, username From user WHERE username LIKE $nom or sport LIKE $nom or ville Like $nom', {
         bind: {
           nom: '%' + data + '%'
         },

@@ -115,6 +115,11 @@ ion-button {
   font-weight: bold;
 }
 
+.question {
+  color: white;
+  font-weight: bold;
+}
+
 .content {
   position: relative;
   z-index: 2;
@@ -122,6 +127,10 @@ ion-button {
 
 .infos {
   text-align: center;
+}
+
+.choice:hover {
+  // color: white;
 }
 
 // BUTTONS

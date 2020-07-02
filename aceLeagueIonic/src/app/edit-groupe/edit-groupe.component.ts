@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ValidationService } from 'src/app/service/validation.service';
-import { UserService } from 'src/app/service/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PhotoService } from '../service/photo.service';
@@ -28,10 +26,10 @@ export class EditGroupeComponent implements OnInit {
   addView: boolean = true;
   editView: boolean = false;
 
-  isPC: boolean = false
-  isMobile: boolean = false
-  isImagePc: boolean = false
-  isImageMobile: boolean = false
+  isPC: boolean = false;
+  isMobile: boolean = false;
+  isImagePc: boolean = false;
+  isImageMobile: boolean = false;
 
   groupeEdit: any;
 
@@ -73,18 +71,20 @@ export class EditGroupeComponent implements OnInit {
 
   imageError: string;
   isImageSaved: boolean;
-  previewImagePath: any
+  previewImagePath: any;
 
   publication: any;
 
+  photo: any;
+  position: any;
+
 
   imageUrl: string | ArrayBuffer =
-    "https://bulma.io/images/placeholders/480x480.png";
-  fileName: string = "No file selected";
+    'https://bulma.io/images/placeholders/480x480.png';
+  fileName: string = 'No file selected';
 
   constructor(
-    private ValidationService: ValidationService,
-    private GroupeService: GroupeService,
+    private groupeService: GroupeService,
     private router: Router,
     private photoService: PhotoService,
     public actionSheetController: ActionSheetController,
@@ -100,9 +100,9 @@ export class EditGroupeComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.params.subscribe(routeParams => {
-      let platform = this.platform.platforms()
-      this.photoService.base = null
-      if (platform[0] == 'electron' || platform[0] == 'desktop') {
+      const platform = this.platform.platforms();
+      this.photoService.base = null;
+      if (platform[0] === 'electron' || platform[0] === 'desktop') {
         this.isPC = true;
         this.isImagePc = false;
       } else {
@@ -115,7 +115,7 @@ export class EditGroupeComponent implements OnInit {
           private: 0,
           description: '',
           image: '',
-        })
+        });
       } else {
         this.editView = true;
         this.addView = false;
@@ -124,18 +124,20 @@ export class EditGroupeComponent implements OnInit {
     });
   }
 
+  // Creation d'un groupe
   checkData() {
-    this.sendForElectron()
+    this.sendForElectron();
   }
 
+  // Mise a jour du groupe
   checkDataEdit() {
-    this.GroupeService.updateGroupe(this.groupeFormEdit.value, this.data).subscribe(response => {
+    this.groupeService.updateGroupe(this.groupeFormEdit.value, this.data).subscribe(response => {
       this.firstView = true;
       this.secondView = false;
       this.addView = true;
       this.editView = false;
-      let location = this.location.path()
-      if (location == "/groupe") {
+      const location = this.location.path();
+      if (location === '/groupe') {
         this.router.navigate(['groupeReload'], {
           state: {
             data: this.data
@@ -151,38 +153,42 @@ export class EditGroupeComponent implements OnInit {
       this.modalCtrl.dismiss();
       return this.config;
     }, err => {
-      if (err.error.error == "wrong token") {
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Recuperation des infos pour la mise a jour
   getData() {
-    this.GroupeService.getGroupeInfo(this.data).subscribe(response => {
+    this.groupeService.getGroupeInfo(this.data).subscribe(response => {
       this.groupeEdit = JSON.parse(this.securityService.decode(response))[0];
       this.groupeFormEdit.patchValue({
         nom: this.groupeEdit.nom,
         private: this.groupeEdit.private,
         description: this.groupeEdit.description,
-      })
+      });
       return this.groupeEdit;
     }, err => {
-      if (err.error.error == "wrong token") {
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Passage a la section suivante du formulaire
   next() {
     this.firstView = false;
     this.secondView = true;
   }
 
+  // Retour en arriere dans le formulaire
   last() {
     this.firstView = true;
     this.secondView = false;
   }
 
+  // Upload de l'image du groupe
   onChange() {
     this.isImagePc = true;
     this.imageCompress.uploadFile().then(({
@@ -200,12 +206,13 @@ export class EditGroupeComponent implements OnInit {
     });
   }
 
+  // Création du groupe
   sendForElectron() {
-    this.GroupeService.newGroupe(this.groupeForm.value, this.previewImagePath).subscribe(response => {
+    this.groupeService.newGroupe(this.groupeForm.value, this.previewImagePath).subscribe(response => {
       this.firstView = true;
       this.secondView = false;
-      let location = this.location.path()
-      if (location == "/profile") {
+      const location = this.location.path();
+      if (location === '/profile') {
         this.router.navigate(['profileReload']);
       } else {
         this.router.navigate(['profile']);
@@ -213,12 +220,13 @@ export class EditGroupeComponent implements OnInit {
       this.modalCtrl.dismiss();
       return this.config;
     }, err => {
-      if (err.error.error == "wrong token") {
-        this.securityService.presentToast()
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Affichage popup modification image
   public async showActionSheetElectron(photo, position) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
@@ -231,7 +239,7 @@ export class EditGroupeComponent implements OnInit {
           this.previewImagePath = null;
           this.groupeForm.patchValue({
             image: ''
-          })
+          });
         }
       }, {
         text: 'Cancel',
@@ -243,26 +251,7 @@ export class EditGroupeComponent implements OnInit {
     await actionSheet.present();
   }
 
-  public async showActionSheet(photo, position) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [{
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          this.photoService.deletePicture(photo, position);
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {}
-      }]
-    });
-    await actionSheet.present();
-  }
-
+  // Fermeture du modal
   public async closeModal() {
     await this.modalCtrl.dismiss();
   }

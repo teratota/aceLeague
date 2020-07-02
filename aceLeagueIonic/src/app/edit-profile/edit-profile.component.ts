@@ -44,31 +44,42 @@ export class EditProfileComponent implements OnInit {
   });
 
 
-  constructor(private UserService: UserService, private router: Router,private securityService: SecurityService, private location: Location, private modalCtrl: ModalController) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private securityService: SecurityService,
+    private location: Location,
+    private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.profileForm.setValue({
-      username: this.user['username'], bio: this.user['bio'], sport: this.user['sport'], level:this.user['level'], sportDescription:this.user['sportDescription']
+      username: this.user['username'],
+      bio: this.user['bio'],
+      sport: this.user['sport'],
+      level: this.user['level'],
+      sportDescription: this.user['sportDescription']
     });
   }
 
+  // Mise à jour du profil
   checkData() {
-    this.UserService.userUpdate(this.profileForm.value).subscribe(response => {
+    this.userService.userUpdate(this.profileForm.value).subscribe(response => {
       this.config = response;
-      let location = this.location.path()
-            if(location == "/profile"){
-              this.router.navigate(['profileReload']);
-            }else{
-              this.router.navigate(['profile']);
-            }
-            this.modalCtrl.dismiss();
-    },err => {
-      if(err.error.error == "wrong token"){
-        this.securityService.presentToast()
+      const location = this.location.path();
+      if (location === '/profile') {
+        this.router.navigate(['profileReload']);
+      } else {
+        this.router.navigate(['profile']);
+      }
+      this.modalCtrl.dismiss();
+    }, err => {
+      if (err.error.error === 'wrong token') {
+        this.securityService.presentToast();
       }
     });
   }
 
+  // Fermeture modal
   public async closeModal() {
     await this.modalCtrl.dismiss();
   }
