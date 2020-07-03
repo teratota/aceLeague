@@ -11,26 +11,6 @@ Facebook: https://www.facebook.com/Ace-League-107515264183799/
 Instagram: https://instagram.com/aceleagueofficial?igshid=1cphk9ucg5j3j
 
 
-
-## Mise en place du projet
-
-**Voici les différentes étapes pour récupérer et faire fonctionner le projet :**
-
-1. Faire un clone du projet
-2. Aller dans le dossier `AceLeagueIonic` et dans `Api_js` et faire la commande suivante : `npm i`
-3. Une fois les différents paquets installés ils vous suffira d'exécuter ceci :
-   1. Dans `AceLeagueIonic`  : `ionic serve`
-   2. Dans  `Api_js` : `npm start`
-4. Importer dans un MySql le fichier SQL fourni dans le dossier `sql`
-5. Changer les infos de connexions qui se trouvent dans : `config.json` dans le dossier `Api_js`
-6. Le projet se lancera
-
-### Dans le cas où votre serveur est sur une machine différente
-
-Modifier la variable `configUrl` dans les différents services : `aceLeagueIonic\src\app\service\[nom du service].service.ts`
-
-
-
 ## Technologie
 
 Ce projet est multiplateforme, il est basé sur les technologies suivantes : 
